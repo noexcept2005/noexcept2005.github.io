@@ -6,7 +6,38 @@
         <description>Recent content on WormWaker</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 16 Nov 2024 02:02:40 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>About</title>
+        <link>http://localhost:1313/page/about/</link>
+        <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/page/about/</guid>
+        <description>&lt;h1 id=&#34;wormwaker&#34;&gt;Wormwaker
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WAKE &lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; slumber
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;这是-wormwaker-的一个临时网页站点&#34;&gt;这是 Wormwaker 的一个临时网页站点。
+&lt;/h2&gt;&lt;p&gt;欢迎加入粉丝群 196218959&lt;/p&gt;
+&lt;p&gt;欢迎加入编程交流群 786411273&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;哔哩哔哩&lt;/strong&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://space.bilibili.com/3494361276877525&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://space.bilibili.com/3494361276877525&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Github&lt;/strong&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/noexcept2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/noexcept2005&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CSDN&lt;/strong&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cjz2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/cjz2005&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Products</title>
+        <link>http://localhost:1313/page/products/</link>
+        <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/page/products/</guid>
+        <description>&lt;p&gt;products&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>I Got Smoke (English Ver.)</title>
         <link>http://localhost:1313/post/i-got-smoke-english-ver./</link>
         <pubDate>Sat, 16 Nov 2024 02:02:40 +0800</pubDate>
@@ -657,28 +688,6 @@ Go go go go go go
 &lt;h1 id=&#34;千恋万花&#34;&gt;“千恋*万花”
 &lt;/h1&gt;&lt;p&gt;点击购买安装好后立即运行打开千恋万花，在主页面点击开始游戏进入游戏页面，然后依次选择“敷衍过去”、“不好说”、“看着不奇怪”、“挖野菜”、“不行”、“用语音感谢”、“有点担心”和“还是别说多余的话比较好”
 进入茉子路线。[doge]&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>About</title>
-        <link>http://localhost:1313/page/about/</link>
-        <pubDate>Tue, 06 Aug 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/page/about/</guid>
-        <description>&lt;h1 id=&#34;wormwaker&#34;&gt;Wormwaker
-&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WAKE &lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; slumber
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;这是-wormwaker-的一个临时网页站点&#34;&gt;这是 Wormwaker 的一个临时网页站点。
-&lt;/h2&gt;&lt;p&gt;欢迎加入粉丝群 196218959&lt;/p&gt;
-&lt;p&gt;欢迎加入编程交流群 786411273&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;哔哩哔哩&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://space.bilibili.com/3494361276877525&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://space.bilibili.com/3494361276877525&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Github&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://github.com/noexcept2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://github.com/noexcept2005&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;CSDN&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cjz2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://blog.csdn.net/cjz2005&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>

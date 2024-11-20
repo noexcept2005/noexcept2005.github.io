@@ -1,7 +1,7 @@
 ---
 title: About
 description: 666
-date: 2024-08-06
+date: 2024-11-16
 aliases:
   - about-us
   - about-hugo

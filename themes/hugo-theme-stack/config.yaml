@@ -123,6 +123,9 @@ params:
             - type: archives
               params:
                   limit: 5
+            - type: products
+              params:
+                  limit: 10
             - type: categories
               params:
                   limit: 10
@@ -172,10 +175,10 @@ menu:
           name: Bilibili
           url: https://space.bilibili.com/3494361276877525
           params:
-              icon: brand-github
+              icon: bilibili
 
         - identifier: csdn
           name: Csdn
           url: https://blog.csdn.net/cjz2005
           params:
-              icon: brand-github
+              icon: csdn

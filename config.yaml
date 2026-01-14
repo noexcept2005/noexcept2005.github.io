@@ -11,7 +11,7 @@ params:
     favicon:
 
     footer:
-        since:
+        since: 2024
         customText:
 
     dateFormat:

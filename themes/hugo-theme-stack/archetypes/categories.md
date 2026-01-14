@@ -1,5 +1,5 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
+title: "categories"
 image: 
 style:
     background: "#2a9d8f"

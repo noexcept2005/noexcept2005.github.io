@@ -1,0 +1,9 @@
+# By: @Wormwaker.
+# robots.txt文件 - 告诉搜索引擎哪些页面可以抓取
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /search/
+
+# 网站地图位置
+Sitemap: https://www.wormwake.com/sitemap.xml

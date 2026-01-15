@@ -1,0 +1,34 @@
+<!-- 结构化数据 - 帮助搜索引擎更好地理解网站内容 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Author.name | default .Site.Title }}"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ .Site.BaseURL }}search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- 添加百度站长验证 -->
+{{ if .Site.Params.baiduVerification }}
+<meta name="baidu-site-verification" content="{{ .Site.Params.baiduVerification }}" />
+{{ end }}
+
+<!-- 添加Google Search Console验证 -->
+{{ if .Site.Params.googleVerification }}
+<meta name="google-site-verification" content="{{ .Site.Params.googleVerification }}" />
+{{ end }}
+
+<!-- 添加Bing网站管理员工具验证 -->
+{{ if .Site.Params.bingVerification }}
+<meta name="msvalidate.01" content="{{ .Site.Params.bingVerification }}" />
+{{ end }}

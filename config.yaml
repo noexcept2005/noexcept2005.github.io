@@ -3,12 +3,45 @@ module:
         extended: true
         min: "0.87.0"
 
+# 网站基本SEO配置
+baseURL: "https://www.wormwake.com/"
+title: "Wormwake Official"
+author: "Wormwake"
+copyright: "© 2024 Wormwake. All rights reserved."
+languageCode: "zh-cn"
+defaultContentLanguage: "zh-cn"
+
+# SEO配置
+description: "Wormwake官方主页 - 提供关于Wormwake的最新信息、项目和服务"
+keywords: ["wormwake", "wormwake official", "官方网站", "个人博客", "技术分享"]
+
+# 搜索引擎验证配置
+# 在各个搜索引擎平台注册后，获取验证代码填入下方
+baiduVerification: ""
+googleVerification: ""
+bingVerification: ""
+
+# 多语言支持
+languages:
+    zh-cn:
+        languageName: "简体中文"
+        title: "Wormwake官方"
+        weight: 1
+    en:
+        languageName: "English"
+        title: "Wormwake Official"
+        weight: 2
+
 params:
     mainSections:
         - post
     featuredImageField: image
     rssFullContent: true
     favicon:
+        # 网站图标
+        src: "img/avatar.png"
+        # 图标大小
+        sizes: "32x32"
 
     footer:
         since: 2024
@@ -130,16 +163,23 @@ params:
     opengraph:
         twitter:
             # Your Twitter username
-            site:
+            site: "@wormwake"
+            creator: "@wormwake"
 
             # Available values: summary, summary_large_image
             card: summary_large_image
+        
+        # Open Graph默认配置
+        title: "Wormwake Official"
+        description: "Wormwake官方主页 - 提供关于Wormwake的最新信息、项目和服务"
+        type: "website"
+        locale: "zh_CN"
 
     defaultImage:
         opengraph:
-            enabled: false
-            local: false
-            src:
+            enabled: true
+            local: true
+            src: img/cover.png
 
     colorScheme:
         # Display toggle

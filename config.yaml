@@ -53,8 +53,8 @@ params:
 
     sidebar:
         compact: false
+        emoji:👻
         subtitle: WormWaker
-        emoji: 👻
         avatar:
             enabled: true
             local: true

@@ -1,0 +1,18 @@
+[
+    { "name": "AutoStart Registry", "enabled": true },
+    { "name": "BetterLyrics Island", "enabled": true },
+    { "name": "WindowHighlight", "enabled": true },
+    { "name": "NoSmartScreen", "enabled": true },
+    { "name": "AudioVisualizer", "enabled": true },
+    { "name": "TypingEffects", "enabled": true },
+    { "name": "MusicOverlay", "enabled": true },
+    { "name": "MemeTrigger", "enabled": true },
+    { "name": "WindowTags", "enabled": true },
+    { "name": "BiliFans Title", "enabled": true },
+    { "name": "GUIBlur Blur", "enabled": true },
+    { "name": "SessionHUD", "enabled": true },
+    { "name": "TargetHUD", "enabled": true },
+    { "name": "AutoSpeak", "enabled": true },
+    { "name": "HUDBlur 4", "enabled": true },
+    { "name": "Shell", "enabled": true }
+]

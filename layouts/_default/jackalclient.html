@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JackalClient - {{ .Title }}</title>
     {{ partial "head/style.html" . }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #8b5cf6;
@@ -12,9 +15,11 @@
             --secondary-color: #3b82f6;
             --text-color: #ffffff;
             --text-secondary: #a0aec0;
-            --background: #0f0f0f;
-            --card-background: #1a1a1a;
-            --border-color: #2d2d2d;
+            --background: #050505;
+            --card-background: rgba(20, 20, 20, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
         * {
@@ -24,11 +29,12 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: var(--font-main);
             background-color: var(--background);
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Dynamic Background */
@@ -39,174 +45,16 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
         }
 
-        /* Snow Effect */
-        .snowflake {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0) 100%);
-            border-radius: 50%;
-            top: -20px;
-            animation: fall linear forwards;
-        }
-
-        .snowflake.near {
-            width: 15px;
-            height: 15px;
-            filter: blur(1px);
-        }
-
-        .snowflake.far {
-            width: 5px;
-            height: 5px;
-            filter: blur(2px);
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Rain Effect */
-        .raindrop {
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(transparent, rgba(174, 194, 224, 0.5));
-            top: -20px;
-            animation: rain linear forwards;
-        }
-
-        @keyframes rain {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Ripple Effect */
-        .ripple {
-            position: absolute;
-            border: 2px solid rgba(174, 194, 224, 0.3);
-            border-radius: 50%;
-            animation: ripple 2s linear forwards;
-        }
-
-        @keyframes ripple {
-            0% {
-                width: 0;
-                height: 0;
-                opacity: 1;
-            }
-            100% {
-                width: 100px;
-                height: 100px;
-                opacity: 0;
-            }
-        }
-
-        /* Firework Effect */
-        .firework {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            animation: explode 1s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(20);
-                opacity: 0;
-            }
-        }
-
-        /* Star Effect */
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.3;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* ArrayList */
-        .arraylist {
-            position: fixed;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            text-align: right;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
-
-        .arraylist.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .arraylist-item {
-            font-size: 1.8rem;
-            margin: 0.2rem 0;
-            padding: 0.3rem;
-            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: rainbowFlow 2s ease infinite;
-            opacity: 1;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
-            transition: opacity 0.3s ease;
-            cursor: default;
-            font-weight: 600;
-        }
-
-        .arraylist:hover .arraylist-item {
-            opacity: 0.2;
-        }
-
-        .arraylist:hover .arraylist-item:hover {
-            opacity: 1;
-        }
-
-        @keyframes rainbowFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .arraylist-item:hover {
-            opacity: 0.2;
-        }
-
-        .arraylist-item .extra-info {
-            background: linear-gradient(90deg, #ffffff, #a0aec0);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: rainbow 3s ease infinite;
+        /* Glassmorphism Utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* Navigation */
@@ -215,15 +63,20 @@
             top: 0;
             left: 0;
             right: 0;
-            background-color: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
             z-index: 1000;
             padding: 1rem 2rem;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .navbar.scrolled {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 0.8rem 2rem;
         }
 
         .navbar-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -231,74 +84,168 @@
         }
 
         .navbar-brand {
-            font-size: 3.24rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-            background-size: 400% 400%;
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #a0aec0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: rainbow 8s ease infinite;
             text-decoration: none;
-        }
-        
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            letter-spacing: -0.05em;
         }
 
         .navbar-nav {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             list-style: none;
         }
 
         .navbar-nav a {
-            color: #e0e0e0;
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 1.98rem;
-            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            letter-spacing: 0.05em;
+        }
+
+        .navbar-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
         }
 
         .navbar-nav a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            color: #fff;
+        }
+
+        .navbar-nav a:hover::after {
+            width: 100%;
         }
 
         /* Hero Section */
         .hero-section {
-            padding: 8rem 2rem 4rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero-logo {
-            max-width: 300px;
-            margin: 0 auto 2rem;
+        .hero-content {
+            z-index: 2;
+            max-width: 900px;
         }
 
         .hero-title {
-            font-size: 6rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: purpleFlow 3s ease infinite;
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
         }
 
-        @keyframes purpleFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .hero-title .highlight {
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Glitch Effect for Title */
+        .glitch-text {
+            position: relative;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(38px, 9999px, 34px, 0); }
+            5% { clip: rect(72px, 9999px, 11px, 0); }
+            10% { clip: rect(6px, 9999px, 86px, 0); }
+            15% { clip: rect(54px, 9999px, 18px, 0); }
+            20% { clip: rect(22px, 9999px, 63px, 0); }
+            25% { clip: rect(81px, 9999px, 35px, 0); }
+            30% { clip: rect(13px, 9999px, 92px, 0); }
+            35% { clip: rect(65px, 9999px, 49px, 0); }
+            40% { clip: rect(27px, 9999px, 7px, 0); }
+            45% { clip: rect(98px, 9999px, 53px, 0); }
+            50% { clip: rect(44px, 9999px, 26px, 0); }
+            55% { clip: rect(15px, 9999px, 88px, 0); }
+            60% { clip: rect(61px, 9999px, 39px, 0); }
+            65% { clip: rect(33px, 9999px, 74px, 0); }
+            70% { clip: rect(89px, 9999px, 12px, 0); }
+            75% { clip: rect(5px, 9999px, 68px, 0); }
+            80% { clip: rect(47px, 9999px, 94px, 0); }
+            85% { clip: rect(76px, 9999px, 21px, 0); }
+            90% { clip: rect(19px, 9999px, 57px, 0); }
+            95% { clip: rect(92px, 9999px, 43px, 0); }
+            100% { clip: rect(58px, 9999px, 81px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(12px, 9999px, 91px, 0); }
+            5% { clip: rect(67px, 9999px, 24px, 0); }
+            10% { clip: rect(34px, 9999px, 58px, 0); }
+            15% { clip: rect(88px, 9999px, 15px, 0); }
+            20% { clip: rect(42px, 9999px, 77px, 0); }
+            25% { clip: rect(9px, 9999px, 36px, 0); }
+            30% { clip: rect(55px, 9999px, 83px, 0); }
+            35% { clip: rect(28px, 9999px, 46px, 0); }
+            40% { clip: rect(73px, 9999px, 19px, 0); }
+            45% { clip: rect(16px, 9999px, 62px, 0); }
+            50% { clip: rect(94px, 9999px, 31px, 0); }
+            55% { clip: rect(39px, 9999px, 85px, 0); }
+            60% { clip: rect(82px, 9999px, 48px, 0); }
+            65% { clip: rect(25px, 9999px, 71px, 0); }
+            70% { clip: rect(69px, 9999px, 14px, 0); }
+            75% { clip: rect(46px, 9999px, 97px, 0); }
+            80% { clip: rect(13px, 9999px, 52px, 0); }
+            85% { clip: rect(59px, 9999px, 29px, 0); }
+            90% { clip: rect(96px, 9999px, 66px, 0); }
+            95% { clip: rect(31px, 9999px, 89px, 0); }
+            100% { clip: rect(78px, 9999px, 41px, 0); }
         }
 
         .hero-subtitle {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             color: var(--text-secondary);
             margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-buttons {
@@ -308,96 +255,60 @@
         }
 
         .btn {
-            display: inline-block;
-            padding: 1.5rem 3rem;
+            padding: 1rem 2.5rem;
             border-radius: 8px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
-            border: none;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-hover);
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+        
+        .btn-primary:hover::before {
+            transform: translateX(100%);
         }
 
         .btn-secondary {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-large {
-            padding: 2rem 4rem;
-            font-size: 2rem;
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: 4rem 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .feature-card p {
-            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
         }
 
         /* Feature Section */
         .feature-section {
-            min-height: 80vh;
-            padding: 6rem 2rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            display: flex;
-            align-items: center;
-        }
-
-        .feature-section.visible {
-            opacity: 1;
-            transform: translateY(0);
+            padding: 8rem 2rem;
+            position: relative;
         }
 
         .feature-container {
@@ -406,116 +317,533 @@
             display: flex;
             align-items: center;
             gap: 6rem;
-            width: 100%;
-            padding: 2rem;
-        }
-
-        /* Feature Section 1 - Image Left, Content Right */
-        .feature-section:nth-of-type(1) .feature-container {
-            flex-direction: row;
-            gap: 10rem;
-        }
-
-        /* Feature Section 2 - Content Left, Image Right */
-        .feature-section:nth-of-type(2) .feature-container {
-            flex-direction: row-reverse;
-            gap: 10rem;
-        }
-
-        /* Feature Section 3 - Image Left, Content Right */
-        .feature-section:nth-of-type(3) .feature-container {
-            flex-direction: row;
-            gap: 10rem;
-        }
-
-        /* Feature Section 4 - Content Left, Image Right */
-        .feature-section:nth-of-type(4) .feature-container {
-            flex-direction: row-reverse;
-            gap: 10rem;
-        }
-
-        /* Feature Section 5 - Image Left, Content Right */
-        .feature-section:nth-of-type(5) .feature-container {
-            flex-direction: row;
-            gap: 10rem;
-        }
-
-        /* Feature Section 6 - Content Left, Image Right */
-        .feature-section:nth-of-type(6) .feature-container {
-            flex-direction: row-reverse;
-            gap: 15rem;
-        }
-
-        .feature-section:nth-of-type(6) .feature-content {
-            padding: 0;
         }
 
         .feature-content {
             flex: 1;
+            z-index: 2;
+        }
+
+        .feature-image-wrapper {
+            flex: 1;
+            position: relative;
+            perspective: 1000px;
         }
 
         .feature-image {
-            flex: 1;
-        }
-
-        .feature-image img {
-            width: 120%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            border: 3px solid transparent;
-        }
-
-        .feature-image img:hover {
-            transform: scale(1.1) rotate(-2deg);
-            filter: brightness(1.1);
-            border-color: rgba(255, 0, 0, 0.6);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(20, 20, 20, 0.5);
         }
 
         .feature-title {
-            font-size: 3.75rem;
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #8b5cf6, #a78bfa, #8b5cf6, #7c3aed, #8b5cf6);
-            background-size: 400% 400%;
+            background: linear-gradient(90deg, #fff, #a0aec0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: flow 3s ease infinite;
-        }
-
-        @keyframes flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .feature-subtitle {
-            font-size: 1.8rem;
+            font-family: var(--font-mono);
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            display: block;
         }
 
         .feature-description {
-            font-size: 2.2rem;
             color: var(--text-secondary);
+            font-size: 1.1rem;
             line-height: 1.8;
         }
 
-        /* Character fade-in animation */
-        .feature-description span {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeInChar 0.5s ease forwards;
+        /* Alternating Layout */
+        .feature-section:nth-of-type(even) .feature-container {
+            flex-direction: row-reverse;
         }
 
-        @keyframes fadeInChar {
+        /* Universal Container */
+        .container {
+            width: 90%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Section Spacing */
+        .contact-section,
+        .docs-section,
+        .pricing-section,
+        .module-section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(90deg, #fff, #a0aec0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Grid Layouts */
+        .contact-grid,
+        .docs-grid,
+        .pricing-grid,
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        /* Card Styles */
+        .contact-card,
+        .doc-card,
+        .pricing-card,
+        .module-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover,
+        .doc-card:hover,
+        .pricing-card:hover,
+        .module-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .contact-card h3,
+        .doc-card h3,
+        .pricing-title,
+        .module-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .contact-card p,
+        .doc-card p,
+        .pricing-features li,
+        .module-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Pricing Specifics */
+        .pricing-card {
+            text-align: center;
+            align-items: center;
+        }
+
+        .pricing-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .pricing-features li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pro-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-large {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Module Card Specifics */
+        .module-card {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 200px;
+            cursor: pointer;
+        }
+
+        .module-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+
+        .module-card:hover .module-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .module-status {
+            margin-top: auto;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .module-card:hover .module-status {
+            background: rgba(139, 92, 246, 0.2);
+            color: #fff;
+        }
+
+        /* Config Panel (Integrated) */
+        .config-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .config-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            margin-top: 10px; /* Spacing from content */
+        }
+
+        .config-toggle:hover {
+            background: var(--primary-color);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .config-content {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 220px;
+            transform-origin: bottom right;
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            margin-bottom: 10px;
+        }
+
+        .config-panel.open .config-content {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .config-label {
+            font-weight: 500;
+        }
+
+        .config-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .config-select:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom Select Styles */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 120px;
+        }
+        
+        .custom-select {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .custom-select__trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-select__trigger:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-select__options {
+            position: absolute;
+            display: block;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 2;
+            margin-top: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .custom-select.open .custom-select__options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+
+        .custom-option {
+            position: relative;
+            display: block;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-option:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: white;
+        }
+
+        .custom-option.selected {
+            color: white;
+            background: rgba(139, 92, 246, 0.4);
+        }
+
+        .arrow {
+            position: relative;
+            height: 8px;
+            width: 8px;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 2px;
+            top: -2px;
+            right: 0;
+            transform: rotate(45deg);
+            transition: all 0.2s;
+        }
+
+        .custom-select.open .arrow::after {
+            transform: rotate(-135deg);
+            top: 2px;
+        }
+        
+        /* Scrollbar for options */
+        .custom-select__options::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-select__options::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .custom-select__options::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .arraylist {
+                top: auto;
+                bottom: 80px; /* Above config toggle */
+                right: 10px;
+                transform: scale(0.9);
+                transform-origin: bottom right;
+                max-height: 60vh;
+                overflow-y: auto;
+                padding-right: 5px; /* Space for scrollbar if needed */
+            }
+            
+            .module-item {
+                font-size: 0.9rem;
+                padding: 3px 8px;
+                min-width: 100px;
+            }
+        }
+        
+        /* ArrayList Styles */
+        .arraylist {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: var(--font-mono);
+            pointer-events: none;
+            transition: top 0.3s;
+        }
+
+        .config-panel.open ~ .arraylist {
+            /* Optional: Push list down if needed, but absolute positioning makes this tricky. 
+               Instead, we just position the list slightly lower or let it overlap cleanly. */
+        }
+
+        .module-item {
+            pointer-events: auto;
+            padding: 4px 12px;
+            margin-bottom: 2px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            min-width: 120px;
+            /* Slide in animation */
+            transform: translateX(50px);
+            opacity: 0;
+            animation: slideInRight 0.5s forwards;
+            outline: none; /* Managed by focus-visible */
+        }
+
+        .module-item:focus-visible {
+            box-shadow: 0 0 0 2px var(--primary-color);
+            background: rgba(139, 92, 246, 0.3);
+        }
+
+        @keyframes slideInRight {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .module-item:hover {
+            transform: translateX(-5px);
+            background: rgba(20, 20, 20, 0.8);
+        }
+
+        .module-item.disabled {
+            opacity: 0.5;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: none;
+            text-decoration: line-through;
+            color: #a0aec0 !important;
+            border-right: 2px solid #555 !important;
+        }
+
+        .module-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 3px;
+            background: currentColor;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -523,290 +851,135 @@
             }
         }
 
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* Button Fixes */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            /* Removed overflow: hidden to allow shadow to spread fully if needed, but kept z-index management */
+            z-index: 1;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            /* Add overflow hidden back ONLY for the shine effect, but wrap content if needed. 
+               Actually, for box-shadow to work well with overflow hidden, we need a wrapper or use a pseudo-element for the shadow. 
+               Let's try a different approach: keep overflow hidden but ensure margin/padding allows shadow? 
+               No, overflow:hidden clips content inside. Box shadow is outside. It should be fine. 
+               The issue might be the display property or stacking context. */
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6); /* Intensified shadow */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container { width: 95%; }
+            .section-title { font-size: 2rem; }
+            .contact-grid, .docs-grid, .pricing-grid, .module-grid { grid-template-columns: 1fr; }
+        }
+
         /* Footer */
         .footer {
-            padding: 2rem;
             text-align: center;
-            background-color: var(--card-background);
-            border-top: 1px solid var(--border-color);
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(to top, #000, transparent);
+            margin-top: 4rem;
         }
 
         .footer p {
-            color: var(--text-secondary);
-        }
-
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            background-color: var(--card-background);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        .back-to-top svg {
-            color: var(--primary-color);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            min-height: 60vh;
-            padding: 4rem 2rem;
-            text-align: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, var(--background) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cta-section h2 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        /* Docs Section */
-        .docs-section {
-            padding: 4rem 2rem;
-        }
-
-        .docs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .doc-card {
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
-        }
-
-        .doc-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .doc-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .doc-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        /* Pricing Section */
-        .pricing-section {
-            padding: 4rem 2rem;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background-color: var(--card-background);
-            padding: 8rem 2rem;
-            padding-top: 9rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
-        }
-
-        .pricing-card.pro {
-            border-color: var(--border-color);
-        }
-
-        .pricing-card.pro:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-        }
-
-        .pro-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.25rem 1rem;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: bold;
-        }
-
-        .pricing-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features li {
-            padding: 1.5rem 0;
-            color: var(--text-secondary);
-        }
-
-        /* Contact Section */
-        .contact-section {
-            padding: 4rem 2rem;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .contact-card {
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .contact-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .contact-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .contact-info {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar-brand {
-                font-size: 1.5rem;
-            }
-            
-            .navbar-nav a {
-                font-size: 0.9rem;
-            }
-            
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .navbar-nav {
-                gap: 1rem;
-            }
-
-            .features-grid,
-            .docs-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing-grid {
-                grid-template-columns: 1fr;
-                max-width: 500px;
-            }
-
-            .feature-container {
-                flex-direction: column !important;
-                gap: 2rem;
-            }
-
-            .feature-title {
-                font-size: 2.5rem;
-            }
-
-            .feature-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .feature-description {
-                font-size: 1.4rem;
-            }
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <!-- Dynamic Background -->
-    <div class="dynamic-background" id="dynamicBackground"></div>
+    <canvas id="bgCanvas" class="dynamic-background"></canvas>
+    
+    <!-- Config Panel -->
+    <div class="config-panel" id="configPanel">
+        <div class="config-toggle" id="configToggle" title="Settings">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </div>
+        <div class="config-content">
+            <div class="config-row">
+                <span class="config-label">Sort Mode</span>
+                <div class="custom-select-wrapper">
+                    <div class="custom-select" id="sortSelectCustom">
+                        <div class="custom-select__trigger">
+                            <span>Length</span>
+                            <div class="arrow"></div>
+                        </div>
+                        <div class="custom-select__options">
+                            <span class="custom-option selected" data-value="width">Length</span>
+                            <span class="custom-option" data-value="alphabetical">Alphabet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="config-row">
+                <span class="config-label">Color Mode</span>
+                <div class="custom-select-wrapper">
+                    <div class="custom-select" id="colorSelectCustom">
+                        <div class="custom-select__trigger">
+                            <span>Rainbow</span>
+                            <div class="arrow"></div>
+                        </div>
+                        <div class="custom-select__options">
+                            <span class="custom-option selected" data-value="rainbow">Rainbow</span>
+                            <span class="custom-option" data-value="rainbow-flow">Rainbow Flow</span>
+                            <span class="custom-option" data-value="astolfo">Astolfo</span>
+                            <span class="custom-option" data-value="gradient-purple">Grad. Purple</span>
+                            <span class="custom-option" data-value="gradient-blue">Grad. Blue</span>
+                            <span class="custom-option" data-value="gradient-fire">Grad. Fire</span>
+                            <span class="custom-option" data-value="gradient-ocean">Grad. Ocean</span>
+                            <span class="custom-option" data-value="gradient-nature">Grad. Nature</span>
+                            <span class="custom-option" data-value="gradient-cyber">Grad. Cyber</span>
+                            <span class="custom-option" data-value="gradient-sunset">Grad. Sunset</span>
+                            <span class="custom-option" data-value="static-purple">Static Purple</span>
+                            <span class="custom-option" data-value="static-red">Static Red</span>
+                            <span class="custom-option" data-value="static-blue">Static Blue</span>
+                            <span class="custom-option" data-value="static-green">Static Green</span>
+                            <span class="custom-option" data-value="static-white">Static White</span>
+                            <span class="custom-option" data-value="pulse-purple">Pulse Purple</span>
+                            <span class="custom-option" data-value="pulse-red">Pulse Red</span>
+                            <span class="custom-option" data-value="pulse-blue">Pulse Blue</span>
+                            <span class="custom-option" data-value="pulse-green">Pulse Green</span>
+                            <span class="custom-option" data-value="gold">Gold Luxury</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="config-row">
+                <span class="config-label">Actions</span>
+                <button class="config-select" id="rndBtn" style="width: auto;">RND</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ArrayList -->
-    <div class="arraylist" id="arraylist">
-        <div class="arraylist-item">AutoStart Registry</div>
-        <div class="arraylist-item">BetterLyrics Island</div>
-        <div class="arraylist-item">WindowHighlight</div>
-        <div class="arraylist-item">NoSmartScreen</div>
-        <div class="arraylist-item">AudioVisualizer</div>
-        <div class="arraylist-item">TypingEffects</div>
-        <div class="arraylist-item">MusicOverlay</div>
-        <div class="arraylist-item">MemeTrigger</div>
-        <div class="arraylist-item">WindowTags</div>
-        <div class="arraylist-item">BiliFans Title</div>
-        <div class="arraylist-item">GUIBlur Blur</div>
-        <div class="arraylist-item">SessionHUD</div>
-        <div class="arraylist-item">TargetHUD</div>
-        <div class="arraylist-item">AutoSpeak</div>
-        <div class="arraylist-item">HUDBlur 4</div>
-        <div class="arraylist-item">Shell</div>
-    </div>
+    <div class="arraylist" id="arraylist"></div>
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -822,8 +995,447 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="fade-in-up">
         {{ .Content }}
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ now.Year }} {{ .Site.Title }}. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- 1. Canvas Particle System ---
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = `rgba(139, 92, 246, ${Math.random() * 0.5})`; // Primary color
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw connections
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                let p1 = particles[i];
+                p1.update();
+                p1.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p1.x - p2.x;
+                    let dy = p1.y - p2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${1 - dist / 150})`;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resize);
+        
+        // Optimize LCP: Defer particle system initialization
+        window.addEventListener('load', () => {
+            resize();
+            initParticles();
+            animateParticles();
+        });
+
+        // --- 2. Navbar Scroll Effect ---
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- 4. 3D Tilt Effect for Cards ---
+        document.querySelectorAll('.feature-image-wrapper').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                const img = card.querySelector('.feature-image');
+                if(img) {
+                    img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                const img = card.querySelector('.feature-image');
+                if(img) {
+                    img.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                }
+            });
+        });
+        
+        // --- 5. Hero Title Glitch on Load ---
+        const heroTitle = document.querySelector('.hero-title');
+        if(heroTitle) {
+            heroTitle.classList.add('glitch-text');
+            heroTitle.setAttribute('data-text', heroTitle.innerText);
+        }
+
+        // --- 6. ArrayList Implementation ---
+        let arrayListModules = [];
+        let activeModuleElements = []; // Cache for performance
+        let sortMode = localStorage.getItem('jackal_sortMode') || 'width'; 
+        let colorMode = localStorage.getItem('jackal_colorMode') || 'rainbow';
+        let rainbowSpeed = 0.5;
+        let rainbowOffset = 0;
+        let animationFrameId;
+
+        const arrayListContainer = document.getElementById('arraylist');
+        const configPanel = document.getElementById('configPanel');
+        const configToggle = document.getElementById('configToggle');
+        const rndBtn = document.getElementById('rndBtn');
+        
+        // Initial UI State Sync
+        document.querySelector(`#sortSelectCustom .custom-option[data-value="${sortMode}"]`)?.classList.add('selected');
+        document.querySelector(`#sortSelectCustom .custom-select__trigger span`).textContent = 
+            document.querySelector(`#sortSelectCustom .custom-option[data-value="${sortMode}"]`)?.textContent || 'Length';
+
+        document.querySelector(`#colorSelectCustom .custom-option[data-value="${colorMode}"]`)?.classList.add('selected');
+        document.querySelector(`#colorSelectCustom .custom-select__trigger span`).textContent = 
+            document.querySelector(`#colorSelectCustom .custom-option[data-value="${colorMode}"]`)?.textContent || 'Rainbow';
+
+        // Toggle Config Panel
+        configToggle.addEventListener('click', () => {
+            configPanel.classList.toggle('open');
+        });
+        
+        // Save Settings
+        function saveSettings() {
+            localStorage.setItem('jackal_sortMode', sortMode);
+            localStorage.setItem('jackal_colorMode', colorMode);
+            // Save enabled states
+            const enabledMap = {};
+            arrayListModules.forEach(m => enabledMap[m.name] = m.enabled);
+            localStorage.setItem('jackal_modules', JSON.stringify(enabledMap));
+        }
+
+        // Custom Select Implementation
+        function initCustomSelect(selectorId, onChange) {
+            const wrapper = document.getElementById(selectorId);
+            if (!wrapper) return;
+            
+            const trigger = wrapper.querySelector('.custom-select__trigger');
+            const options = wrapper.querySelectorAll('.custom-option');
+            const triggerSpan = trigger.querySelector('span');
+            
+            // Set initial selected class based on current mode
+            const currentVal = selectorId === 'sortSelectCustom' ? sortMode : colorMode;
+            options.forEach(opt => {
+                if(opt.dataset.value === currentVal) opt.classList.add('selected');
+                else opt.classList.remove('selected');
+            });
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Close other selects
+                document.querySelectorAll('.custom-select').forEach(s => {
+                    if (s !== wrapper) s.classList.remove('open');
+                });
+                wrapper.classList.toggle('open');
+            });
+
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent closing immediately from window click
+                    wrapper.classList.remove('open');
+                    
+                    // Update visual selection
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    triggerSpan.textContent = option.textContent;
+                    
+                    // Trigger callback
+                    onChange(option.dataset.value);
+                    saveSettings();
+                });
+            });
+        }
+        
+        // Close selects when clicking outside
+        window.addEventListener('click', () => {
+             document.querySelectorAll('.custom-select').forEach(s => {
+                s.classList.remove('open');
+            });
+        });
+
+        // Initialize Selects
+        initCustomSelect('sortSelectCustom', (value) => {
+            sortMode = value;
+            renderArrayList();
+        });
+
+        initCustomSelect('colorSelectCustom', (value) => {
+            colorMode = value;
+        });
+
+        rndBtn.addEventListener('click', () => {
+             const randomIdx = Math.floor(Math.random() * arrayListModules.length);
+             if (arrayListModules[randomIdx]) {
+                arrayListModules[randomIdx].enabled = !arrayListModules[randomIdx].enabled;
+                renderArrayList();
+                saveSettings();
+             }
+        });
+
+        // Fetch Modules
+        arrayListContainer.innerHTML = '<div style="color:white; opacity:0.7;">Loading...</div>';
+        
+        fetch('/jackalclient/modules.json')
+            .then(response => response.json())
+            .then(data => {
+                // Restore enabled states
+                const savedModules = JSON.parse(localStorage.getItem('jackal_modules') || '{}');
+                
+                arrayListModules = data.map(mod => ({
+                    ...mod,
+                    enabled: savedModules.hasOwnProperty(mod.name) ? savedModules[mod.name] : mod.enabled
+                }));
+                
+                renderArrayList();
+                updateVisuals();
+            })
+            .catch(err => {
+                console.error('Failed to load modules:', err);
+                // Fallback data if fetch fails
+                arrayListModules = [
+                    { name: 'Modules Failed', enabled: true },
+                    { name: 'Check Console', enabled: true }
+                ];
+                renderArrayList();
+                updateVisuals();
+            });
+
+        function renderArrayList() {
+            // Sort modules
+            const sortedModules = [...arrayListModules].sort((a, b) => {
+                // Enabled first
+                if (a.enabled && !b.enabled) return -1;
+                if (!a.enabled && b.enabled) return 1;
+                
+                // Then by sort mode
+                if (sortMode === 'width') {
+                    const lenA = a.name.length;
+                    const lenB = b.name.length;
+                    return lenB - lenA; // Descending
+                } else {
+                    return a.name.localeCompare(b.name);
+                }
+            });
+
+            // Clear container and cache
+            arrayListContainer.innerHTML = '';
+            activeModuleElements = [];
+
+            // Module Items
+            sortedModules.forEach((mod, index) => {
+                const item = document.createElement('div');
+                item.className = `module-item ${mod.enabled ? '' : 'disabled'}`;
+                item.innerText = mod.name;
+                item.style.animationDelay = `${index * 0.05}s`; // Staggered entrance
+                
+                // Accessibility
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-pressed', mod.enabled);
+                
+                const toggle = () => {
+                     const originalMod = arrayListModules.find(m => m.name === mod.name);
+                     if (originalMod) {
+                         originalMod.enabled = !originalMod.enabled;
+                         renderArrayList();
+                         saveSettings();
+                     }
+                };
+
+                // Click to toggle
+                item.onclick = toggle;
+                
+                // Keyboard toggle
+                item.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                };
+                
+                arrayListContainer.appendChild(item);
+                
+                // Cache active items for animation loop
+                if (mod.enabled) {
+                    activeModuleElements.push(item);
+                }
+            });
+        }
+
+        function updateVisuals() {
+            // Use cached elements instead of querySelectorAll
+            const items = activeModuleElements;
+            rainbowOffset -= rainbowSpeed; 
+            // const time = Date.now() / 1000; // Replaced by rainbowOffset for consistent speed
+
+            items.forEach((item, index) => {
+                let color;
+                
+                // Helper for oscillating hue
+                // center: middle hue
+                // range: deviation (+/-)
+                // speed: multiplier for rainbowOffset (animation speed)
+                // offset: multiplier for index (wave density)
+                const getDynamicHue = (center, range, speed = 0.05, offset = 0.2) => {
+                    return center + Math.sin((rainbowOffset * speed) + (index * offset)) * range;
+                };
+
+                switch (colorMode) {
+                    case 'rainbow':
+                        const hue = (rainbowOffset + (index * 15)) % 360;
+                        color = `hsl(${hue}, 80%, 60%)`;
+                        break;
+                    case 'rainbow-flow':
+                        color = `hsl(${(rainbowOffset * 2 + (index * 10)) % 360}, 90%, 65%)`;
+                        break;
+                    case 'astolfo':
+                         // Pink (320) <-> Cyan (190). Center 255, Range 65.
+                        const aHue = getDynamicHue(255, 65, 0.05, 0.2); 
+                        color = `hsl(${aHue}, 90%, 75%)`;
+                        break;
+                    case 'gradient-purple':
+                        // 240 (Blue) <-> 300 (Magenta). Center 270, Range 30.
+                        const gHueP = getDynamicHue(270, 30, 0.05, 0.2); 
+                        color = `hsl(${gHueP}, 70%, 65%)`;
+                        break;
+                    case 'gradient-blue':
+                        // 190 (Cyan) <-> 250 (Blue). Center 220, Range 30.
+                        const gHueB = getDynamicHue(220, 30, 0.05, 0.2); 
+                        color = `hsl(${gHueB}, 80%, 60%)`;
+                        break;
+                    case 'gradient-fire':
+                        // 0 (Red) <-> 60 (Yellow). Center 30, Range 30.
+                        const gHueF = getDynamicHue(30, 30, 0.05, 0.2); 
+                        color = `hsl(${gHueF}, 100%, 60%)`;
+                        break;
+                    case 'gradient-ocean':
+                        // 170 (Turquoise) <-> 230 (Blue). Center 200, Range 30.
+                        const gHueO = getDynamicHue(200, 30, 0.05, 0.2); 
+                        color = `hsl(${gHueO}, 80%, 60%)`;
+                        break;
+                    case 'gradient-nature':
+                        // 80 (Lime) <-> 140 (Green). Center 110, Range 30.
+                        const gHueN = getDynamicHue(110, 30, 0.05, 0.2); 
+                        color = `hsl(${gHueN}, 80%, 50%)`;
+                        break;
+                    case 'gradient-cyber':
+                         // 280 (Purple) <-> 180 (Cyan). Center 230, Range 50.
+                         const gHueC = getDynamicHue(230, 50, 0.05, 0.2);
+                         color = `hsl(${gHueC}, 100%, 60%)`;
+                         break;
+                    case 'gradient-sunset':
+                         // 340 (Pink) <-> 40 (Orange). Center 10 (Red). Range 30.
+                         const gHueS = getDynamicHue(10, 30, 0.05, 0.2);
+                         color = `hsl(${gHueS}, 90%, 60%)`;
+                         break;
+                    
+                    // Static modes remain static
+                    case 'static-purple': color = '#8b5cf6'; break;
+                    case 'static-red': color = '#ef4444'; break;
+                    case 'static-blue': color = '#3b82f6'; break;
+                    case 'static-green': color = '#10b981'; break; 
+                    case 'static-white': color = '#ffffff'; break;
+                    
+                    // Pulse modes (using rainbowOffset for sync)
+                    case 'pulse-purple':
+                        const pp = (Math.sin(rainbowOffset * 0.1 + index * 0.5) + 1) / 2;
+                        color = `hsl(260, 80%, ${50 + (pp * 20)}%)`;
+                        break;
+                    case 'pulse-red':
+                        const pr = (Math.sin(rainbowOffset * 0.1 + index * 0.2) + 1) / 2;
+                        color = `hsl(0, 80%, ${50 + (pr * 30)}%)`;
+                        break;
+                    case 'pulse-blue':
+                        const pb = (Math.sin(rainbowOffset * 0.1 + index * 0.5) + 1) / 2;
+                        color = `hsl(210, 90%, ${50 + (pb * 20)}%)`;
+                        break;
+                    case 'pulse-green':
+                        const pg = (Math.sin(rainbowOffset * 0.2 + index * 0.1) + 1) / 2;
+                        color = `hsl(140, 100%, ${40 + (pg * 40)}%)`;
+                        break;
+                    case 'gold':
+                         const goldHue = 45 + Math.sin(rainbowOffset * 0.1 + index * 0.5) * 5;
+                         color = `hsl(${goldHue}, 100%, 60%)`;
+                         break;
+                    default:
+                        color = '#8b5cf6';
+                        break;
+                }
+
+                item.style.color = color;
+                item.style.borderRightColor = color;
+            });
+            
+            animationFrameId = requestAnimationFrame(updateVisuals);
+        }
+
+
+    </script>
 </body>
 </html>

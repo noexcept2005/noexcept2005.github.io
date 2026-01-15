@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
-<head>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JackalClient - {{ .Title }}</title>
-    {{ partial "head/style.html" . }}
+    <title>JackalClient - Documentation</title>
+    
+
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css">
     <style>
         :root {
             --primary-color: #8b5cf6;
@@ -31,7 +33,7 @@
             overflow-x: hidden;
         }
 
-        /* Dynamic Background */
+         
         .dynamic-background {
             position: fixed;
             top: 0;
@@ -42,7 +44,7 @@
             overflow: hidden;
         }
 
-        /* Snow Effect */
+         
         .snowflake {
             position: absolute;
             width: 10px;
@@ -71,7 +73,7 @@
             }
         }
 
-        /* Rain Effect */
+         
         .raindrop {
             position: absolute;
             width: 2px;
@@ -87,7 +89,7 @@
             }
         }
 
-        /* Ripple Effect */
+         
         .ripple {
             position: absolute;
             border: 2px solid rgba(174, 194, 224, 0.3);
@@ -108,7 +110,7 @@
             }
         }
 
-        /* Firework Effect */
+         
         .firework {
             position: absolute;
             width: 4px;
@@ -128,7 +130,7 @@
             }
         }
 
-        /* Star Effect */
+         
         .star {
             position: absolute;
             width: 2px;
@@ -147,7 +149,7 @@
             }
         }
 
-        /* ArrayList */
+         
         .arraylist {
             position: fixed;
             top: 50%;
@@ -201,7 +203,7 @@
             animation: rainbow 3s ease infinite;
         }
 
-        /* Navigation */
+         
         .navbar {
             position: fixed;
             top: 0;
@@ -259,7 +261,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Hero Section */
+         
         .hero-section {
             padding: 8rem 2rem 4rem;
             text-align: center;
@@ -329,7 +331,7 @@
             font-size: 2rem;
         }
 
-        /* Features Section */
+         
         .features-section {
             padding: 4rem 2rem;
         }
@@ -369,7 +371,7 @@
             color: var(--text-secondary);
         }
 
-        /* Feature Section */
+         
         .feature-section {
             min-height: 80vh;
             padding: 6rem 2rem;
@@ -395,36 +397,36 @@
             padding: 2rem;
         }
 
-        /* Feature Section 1 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(1) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 2 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(2) .feature-container {
             flex-direction: row-reverse;
         }
 
-        /* Feature Section 3 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(3) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 4 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(4) .feature-container {
             flex-direction: row-reverse;
             gap: 8rem;
         }
 
-        /* Feature Section 5 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(5) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 6 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(6) .feature-container {
             flex-direction: row-reverse;
             gap: 8rem;
@@ -485,7 +487,7 @@
             line-height: 1.8;
         }
 
-        /* Character fade-in animation */
+         
         .feature-description span {
             opacity: 0;
             display: inline-block;
@@ -503,7 +505,7 @@
             }
         }
 
-        /* Footer */
+         
         .footer {
             padding: 2rem;
             text-align: center;
@@ -515,7 +517,7 @@
             color: var(--text-secondary);
         }
 
-        /* Back to Top Button */
+         
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -550,7 +552,7 @@
             color: var(--primary-color);
         }
 
-        /* CTA Section */
+         
         .cta-section {
             min-height: 60vh;
             padding: 4rem 2rem;
@@ -573,7 +575,7 @@
             font-size: 2rem;
         }
 
-        /* Docs Section */
+         
         .docs-section {
             padding: 4rem 2rem;
         }
@@ -608,7 +610,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Pricing Section */
+         
         .pricing-section {
             padding: 4rem 2rem;
         }
@@ -674,7 +676,7 @@
             color: var(--text-secondary);
         }
 
-        /* Contact Section */
+         
         .contact-section {
             padding: 4rem 2rem;
         }
@@ -711,7 +713,7 @@
             color: var(--text-color);
         }
 
-        /* Responsive */
+         
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -756,10 +758,10 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic Background -->
+    
     <div class="dynamic-background" id="dynamicBackground"></div>
 
-    <!-- ArrayList -->
+    
     <div class="arraylist" id="arraylist">
         <div class="arraylist-item">AutoStart Registry</div>
         <div class="arraylist-item">BetterLyrics Island</div>
@@ -779,7 +781,7 @@
         <div class="arraylist-item">Shell</div>
     </div>
 
-    <!-- Navigation -->
+    
     <nav class="navbar">
         <div class="navbar-container">
             <a href="/jackalclient/" class="navbar-brand">JackalClient</a>
@@ -792,9 +794,59 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    
     <main>
-        {{ .Content }}
+        
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="hero-title">Documentation</h1>
+    <p class="hero-subtitle">探索JackalClient的详细文档和指南</p>
+</div>
+
+<!-- Docs List Section -->
+<div class="docs-section">
+    <div class="container">
+        <h2 class="section-title">文档列表</h2>
+        <div class="docs-grid">
+            <div class="doc-card">
+                <h3>JackalClient 常见问题</h3>
+                <p>了解JackalClient的常见问题解答，快速解决您遇到的问题</p>
+                <a href="https://www.yuque.com/wormwaker/tkpgqw/yc5y1ty9pg215me1" target="_blank" class="btn btn-secondary">查看文档</a>
+            </div>
+
+            <div class="doc-card">
+                <h3>如何下载并运行 JackalClient</h3>
+                <p>How To Download and Run JackalClient Instructions - 给电脑小白用的详细指南</p>
+                <a href="https://www.yuque.com/wormwaker/tkpgqw/ppfnlcaqdkcsfmkd" target="_blank" class="btn btn-secondary">查看文档</a>
+            </div>
+
+            <div class="doc-card">
+                <h3>更好的歌词 BetterLyrics 说明</h3>
+                <p>了解JackalClient中的BetterLyrics功能及其使用方法</p>
+                <a href="https://www.yuque.com/wormwaker/tkpgqw/spwhbekbeycybdxw" target="_blank" class="btn btn-secondary">查看文档</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Built-in Documentation -->
+<div class="docs-section fade-in">
+    <div class="container">
+        <h2 class="section-title">内置文档介绍</h2>
+        <div class="docs-grid">
+            <div class="doc-card">
+                <h3>HISTORY.TXT</h3>
+                <p>更新日志 - 记录JackalClient每个版本的详细更新内容，包括新增功能、修复的问题和改进的地方。通过查看更新日志，您可以了解软件的发展历程和最新动态。</p>
+            </div>
+            
+            <div class="doc-card">
+                <h3>COMMANDS.TXT</h3>
+                <p>命令行帮助以及命令文档 - 提供完整的客户端命令列表和详细的使用说明。每个命令都有详细的参数说明和示例，帮助您快速掌握JackalClient的命令行操作。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
     </main>
 </body>
 </html>

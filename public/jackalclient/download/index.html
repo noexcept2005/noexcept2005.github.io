@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
-<head>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JackalClient - {{ .Title }}</title>
-    {{ partial "head/style.html" . }}
+    <title>JackalClient - Download</title>
+    
+
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css">
     <style>
         :root {
             --primary-color: #8b5cf6;
@@ -31,7 +33,7 @@
             overflow-x: hidden;
         }
 
-        /* Dynamic Background */
+         
         .dynamic-background {
             position: fixed;
             top: 0;
@@ -42,7 +44,7 @@
             overflow: hidden;
         }
 
-        /* Snow Effect */
+         
         .snowflake {
             position: absolute;
             width: 10px;
@@ -71,7 +73,7 @@
             }
         }
 
-        /* Rain Effect */
+         
         .raindrop {
             position: absolute;
             width: 2px;
@@ -87,7 +89,7 @@
             }
         }
 
-        /* Ripple Effect */
+         
         .ripple {
             position: absolute;
             border: 2px solid rgba(174, 194, 224, 0.3);
@@ -108,7 +110,7 @@
             }
         }
 
-        /* Firework Effect */
+         
         .firework {
             position: absolute;
             width: 4px;
@@ -128,7 +130,7 @@
             }
         }
 
-        /* Star Effect */
+         
         .star {
             position: absolute;
             width: 2px;
@@ -147,7 +149,7 @@
             }
         }
 
-        /* ArrayList */
+         
         .arraylist {
             position: fixed;
             top: 50%;
@@ -201,7 +203,7 @@
             animation: rainbow 3s ease infinite;
         }
 
-        /* Navigation */
+         
         .navbar {
             position: fixed;
             top: 0;
@@ -259,7 +261,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Hero Section */
+         
         .hero-section {
             padding: 8rem 2rem 4rem;
             text-align: center;
@@ -329,7 +331,7 @@
             font-size: 2rem;
         }
 
-        /* Features Section */
+         
         .features-section {
             padding: 4rem 2rem;
         }
@@ -369,7 +371,7 @@
             color: var(--text-secondary);
         }
 
-        /* Feature Section */
+         
         .feature-section {
             min-height: 80vh;
             padding: 6rem 2rem;
@@ -395,36 +397,36 @@
             padding: 2rem;
         }
 
-        /* Feature Section 1 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(1) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 2 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(2) .feature-container {
             flex-direction: row-reverse;
         }
 
-        /* Feature Section 3 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(3) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 4 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(4) .feature-container {
             flex-direction: row-reverse;
             gap: 8rem;
         }
 
-        /* Feature Section 5 - Image Left, Content Right */
+         
         .feature-section:nth-of-type(5) .feature-container {
             flex-direction: row;
             gap: 8rem;
         }
 
-        /* Feature Section 6 - Content Left, Image Right */
+         
         .feature-section:nth-of-type(6) .feature-container {
             flex-direction: row-reverse;
             gap: 8rem;
@@ -485,7 +487,7 @@
             line-height: 1.8;
         }
 
-        /* Character fade-in animation */
+         
         .feature-description span {
             opacity: 0;
             display: inline-block;
@@ -503,7 +505,7 @@
             }
         }
 
-        /* Footer */
+         
         .footer {
             padding: 2rem;
             text-align: center;
@@ -515,7 +517,7 @@
             color: var(--text-secondary);
         }
 
-        /* Back to Top Button */
+         
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -550,7 +552,7 @@
             color: var(--primary-color);
         }
 
-        /* CTA Section */
+         
         .cta-section {
             min-height: 60vh;
             padding: 4rem 2rem;
@@ -573,7 +575,7 @@
             font-size: 2rem;
         }
 
-        /* Docs Section */
+         
         .docs-section {
             padding: 4rem 2rem;
         }
@@ -608,7 +610,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Pricing Section */
+         
         .pricing-section {
             padding: 4rem 2rem;
         }
@@ -674,7 +676,7 @@
             color: var(--text-secondary);
         }
 
-        /* Contact Section */
+         
         .contact-section {
             padding: 4rem 2rem;
         }
@@ -711,7 +713,7 @@
             color: var(--text-color);
         }
 
-        /* Responsive */
+         
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -756,10 +758,10 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic Background -->
+    
     <div class="dynamic-background" id="dynamicBackground"></div>
 
-    <!-- ArrayList -->
+    
     <div class="arraylist" id="arraylist">
         <div class="arraylist-item">AutoStart Registry</div>
         <div class="arraylist-item">BetterLyrics Island</div>
@@ -779,7 +781,7 @@
         <div class="arraylist-item">Shell</div>
     </div>
 
-    <!-- Navigation -->
+    
     <nav class="navbar">
         <div class="navbar-container">
             <a href="/jackalclient/" class="navbar-brand">JackalClient</a>
@@ -792,9 +794,46 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    
     <main>
-        {{ .Content }}
+        
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="hero-title">DOWNLOAD JACKAL</h1>
+    <p class="hero-subtitle">Select an Edition</p>
+</div>
+
+<!-- Pricing Section -->
+<div class="pricing-section">
+    <div class="container">
+        <div class="pricing-grid">
+            <!-- Free Edition -->
+            <div class="pricing-card">
+                <h2 class="pricing-title">Free</h2>
+                <ul class="pricing-features">
+                    <li>✓ Most People Choose</li>
+                    <li>✓ Lots of Users</li>
+                    <li>✓ 300+ Modules</li>
+                </ul>
+                <a href="https://space.bilibili.com/3494361276877525/lists/3986082?type=season" target="_blank" class="btn btn-primary btn-large">FREE DOWNLOAD</a>
+            </div>
+
+            <!-- Pro Edition -->
+            <div class="pricing-card pro">
+                <div class="pro-badge">PRO</div>
+                <h2 class="pricing-title">Pro</h2>
+                <ul class="pricing-features">
+                    <li>✓ For Advanced Users</li>
+                    <li>✓ Permanent Subscription</li>
+                    <li>✓ More Customizable</li>
+                    <li>✓ More Useful Modules</li>
+                </ul>
+                <a href="https://afdian.com/item/1eda4ca6ca2511f0a7ae52540025c377" target="_blank" class="btn btn-primary btn-large">￥128 PURCHASE NOW</a>
+            </div>
+        </div>
+    </div>
+</div>
+
     </main>
 </body>
 </html>

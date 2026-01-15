@@ -2,7 +2,6 @@
 title: "Products"
 description: "探索Wormwake的创新产品，包括JackalClient等实用工具"
 date: 2024-11-16
-layout: "products"
 slug: "products"
 menu:
     main:

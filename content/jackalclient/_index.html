@@ -1,0 +1,284 @@
+---
+title: "JackalClient"
+layout: "jackalclient"
+---
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="hero-title">JackalClient</h1>
+    <p class="hero-subtitle">一个 Minecraft 作弊端视觉的 Windows 工具箱</p>
+    <div class="hero-buttons">
+        <a href="/jackalclient/download" class="btn btn-primary">Download Now</a>
+        <a href="https://github.com/noexcept2005/JackalClient" class="btn btn-secondary">View Github Repo</a>
+    </div>
+</div>
+
+<!-- Feature Section 1 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/gui-preview-1.png" alt="GUI Preview 1">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">Minecraft 客户端风格的 ClickGUI</h2>
+            <p class="feature-subtitle">Minecraft-Client-Styled ClickGUI</p>
+            <p class="feature-description">多种作弊端界面风格供你选择，Vape/LiquidBounce/Meteor/Future/Opai...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Section 2 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/gui-preview-2.png" alt="GUI Preview 2">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">超过三百个可用模块</h2>
+            <p class="feature-subtitle">Over 300 Available Modules</p>
+            <p class="feature-description">分为竞技/窗口/进程/文件/注册表/渲染/控制/网络/其他/驱动，对 Windows 进行全方面覆盖</p>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Section 3 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/gui-modern-1.png" alt="GUI Modern 1">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">上千行的可调节配置</h2>
+            <p class="feature-subtitle">Thousands of Adjustable Configs</p>
+            <p class="feature-description">具有高度可调节的配置项，使你灵活运用客户端操作系统，不同的用户具有不同的需求</p>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Section 4 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/shell-system-1.png" alt="Shell System 1">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">庞大的命令系统</h2>
+            <p class="feature-subtitle">Powerful Command System</p>
+            <p class="feature-description">多种酷炫的命令行主题，上百条可及时补全的客户端命令，实现系统快速操作，有完整的帮助文档可供参考</p>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Section 5 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/old-version-peek.png" alt="Old Version Peek">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">两年的匠心打磨</h2>
+            <p class="feature-subtitle">Two Years of Craftsmanship</p>
+            <p class="feature-description">从开始的一个想法，到现在成规模的软件，每一个更新都是灵感和创意的迸发</p>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Section 6 -->
+<div class="feature-section fade-in">
+    <div class="feature-container">
+        <div class="feature-image">
+            <img src="/img/jackalclient/gui-nl-style-1.png" alt="GUI NL Style 1">
+        </div>
+        <div class="feature-content">
+            <h2 class="feature-title">高级订阅计划</h2>
+            <p class="feature-subtitle">Premium Subscription Plan</p>
+            <p class="feature-description">购买专业版永久许可证，保证持续更新，获取更酷炫的视觉，使用更多有趣实用的功能！</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section fade-in">
+    <div class="container">
+        <h2>Ready to Get Started?</h2>
+        <p>立即下载 JackalClient 体验</p>
+        <a href="/jackalclient/download" class="btn btn-primary btn-large">Download Now</a>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&copy; 2026 JackalClient. All Rights Reserved.</p>
+</div>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+</button>
+
+<script>
+// Dynamic Background Effect
+const dynamicBackground = document.getElementById('dynamicBackground');
+const currentMonth = new Date().getMonth() + 1; // 1-12
+
+function createSnowflake() {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    
+    // Randomly assign near or far
+    const isNear = Math.random() > 0.5;
+    if (isNear) {
+        snowflake.classList.add('near');
+    } else {
+        snowflake.classList.add('far');
+    }
+    
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    const duration = Math.random() * 3 + 2;
+    snowflake.style.animationDuration = duration + 's';
+    dynamicBackground.appendChild(snowflake);
+
+    // Remove snowflake when animation completes
+    setTimeout(() => {
+        snowflake.remove();
+    }, duration * 1000);
+}
+
+function createRaindrop() {
+    const raindrop = document.createElement('div');
+    raindrop.classList.add('raindrop');
+    raindrop.style.left = Math.random() * 100 + 'vw';
+    raindrop.style.animationDuration = Math.random() * 0.5 + 0.5 + 's';
+    dynamicBackground.appendChild(raindrop);
+
+    // Create ripple at bottom
+    setTimeout(() => {
+        const ripple = document.createElement('div');
+        ripple.classList.add('ripple');
+        ripple.style.left = raindrop.style.left;
+        ripple.style.top = '90vh';
+        dynamicBackground.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 2000);
+    }, 500);
+
+    setTimeout(() => {
+        raindrop.remove();
+    }, 1000);
+}
+
+function createFirework() {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+    firework.style.left = Math.random() * 100 + 'vw';
+    firework.style.top = Math.random() * 50 + 'vh';
+    firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    dynamicBackground.appendChild(firework);
+
+    setTimeout(() => {
+        firework.remove();
+    }, 1000);
+}
+
+function createStar() {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.animationDelay = Math.random() * 2 + 's';
+    dynamicBackground.appendChild(star);
+}
+
+// Initialize background effect based on month
+if (currentMonth === 12 || currentMonth === 1 || currentMonth === 2) {
+    // Winter: Snow
+    setInterval(createSnowflake, 200);
+} else if (currentMonth === 3 || currentMonth === 4) {
+    // Spring: Rain with ripples
+    setInterval(createRaindrop, 100);
+} else if (currentMonth === 7 || currentMonth === 8) {
+    // Summer: Fireworks
+    setInterval(createFirework, 500);
+} else {
+    // Other months: Stars
+    for (let i = 0; i < 100; i++) {
+        createStar();
+    }
+}
+
+// ArrayList visibility
+const arraylist = document.getElementById('arraylist');
+const featureSections = document.querySelectorAll('.feature-section');
+
+window.addEventListener('scroll', () => {
+    let isAnyFeatureVisible = false;
+    
+    featureSections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+            isAnyFeatureVisible = true;
+        }
+    });
+    
+    if (isAnyFeatureVisible) {
+        arraylist.classList.add('visible');
+    } else {
+        arraylist.classList.remove('visible');
+    }
+});
+
+// Fade in animation on scroll
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Character fade-in animation for feature descriptions
+            const description = entry.target.querySelector('.feature-description');
+            if (description) {
+                const text = description.textContent;
+                description.textContent = '';
+                
+                text.split('').forEach((char, index) => {
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    span.style.animationDelay = `${index * 0.05}s`;
+                    description.appendChild(span);
+                });
+            }
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+});
+
+// Back to top button
+const backToTopButton = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+    } else {
+        backToTopButton.classList.remove('visible');
+    }
+});
+
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+</script>

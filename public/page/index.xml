@@ -34,7 +34,22 @@
         <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/page/products/</guid>
-        <description>&lt;p&gt;products&lt;/p&gt;
+        <description>&lt;h1 id=&#34;我们的产品&#34;&gt;我们的产品
+&lt;/h1&gt;&lt;p&gt;探索Wormwake的创新产品，提升您的工作效率和游戏体验。&lt;/p&gt;
+&lt;h2 id=&#34;产品列表&#34;&gt;产品列表
+&lt;/h2&gt;&lt;h3 id=&#34;jackalclient&#34;&gt;JackalClient
+&lt;/h3&gt;&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;一个Minecraft作弊端视觉的Windows工具箱，为您提供强大的功能和极致的用户体验。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;主要功能:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;精美的用户界面&lt;/li&gt;
+&lt;li&gt;丰富的功能模块&lt;/li&gt;
+&lt;li&gt;高性能优化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.wormwake.com/jackalclient&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;了解更多&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;https://www.wormwake.com/jackalclient&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;下载&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>

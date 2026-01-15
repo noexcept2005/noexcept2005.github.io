@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>WormWaker</title>
+        <title>Wormwake Official - 官方网站 on WormWaker</title>
         <link>http://localhost:1313/</link>
-        <description>Recent content on WormWaker</description>
+        <description>Recent content in Wormwake Official - 官方网站 on WormWaker</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
@@ -34,7 +34,10 @@
         <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/page/products/</guid>
-        <description>&lt;p&gt;products&lt;/p&gt;
+        <description>&lt;p&gt;你可以在这个页面中找到我写的一些实用程序。&lt;/p&gt;
+&lt;h2 id=&#34;产品列表&#34;&gt;产品列表
+&lt;/h2&gt;&lt;h3 id=&#34;jackalclientjackalclient&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://localhost:1313/jackalclient/&#34; &gt;JackalClient&lt;/a&gt;
+&lt;/h3&gt;&lt;p&gt;一个Minecraft作弊端视觉的Windows工具箱。&lt;/p&gt;
 </description>
         </item>
         <item>

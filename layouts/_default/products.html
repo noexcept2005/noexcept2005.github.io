@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - {{ .Site.Title }}</title>
+    {{ partial "head/style.html" . }}
+    <style>
+        {{ $products := resources.Get "scss/products.scss" | css.Sass | minify }}
+        {{ $products.Content | safeCSS }}
+    </style>
+</head>
+<body>
+    <div class="products-page">
+        <div class="container">
+            <div class="product-header">
+                <h1>{{ .Title }}</h1>
+                <p>{{ .Description }}</p>
+            </div>
+
+            <div class="products-list">
+                <div class="product-card">
+                    <h2>JackalClient</h2>
+                    <!-- 在此处插入产品图片 -->
+                    <!-- 示例: <img src="/img/jackalclient-preview.jpg" alt="JackalClient预览图" class="product-image"> -->
+
+                    <p class="product-description">
+                        一个Minecraft作弊端视觉的Windows工具箱，为您提供强大的功能和极致的用户体验。
+                    </p>
+
+                    <ul class="product-features">
+                        <li>精美的用户界面</li>
+                        <li>丰富的功能模块</li>
+                        <li>高性能优化</li>
+                    </ul>
+
+                    <div class="product-actions">
+                        <a href="https://www.wormwake.com/jackalclient" class="btn-primary">了解更多</a>
+                        <a href="https://www.wormwake.com/jackalclient" class="btn-secondary">下载</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

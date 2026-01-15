@@ -1,0 +1,123 @@
+// 产品页面样式
+.products-page {
+    padding: 2rem 0;
+}
+
+.product-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+}
+
+.products-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .product-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .product-description {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .product-features {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 1.5rem;
+
+        li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+
+            &:before {
+                content: "✓";
+                color: var(--accent-color);
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    .product-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+
+        a {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+
+            &.btn-primary {
+                background-color: var(--accent-color);
+                color: white;
+
+                &:hover {
+                    background-color: var(--accent-color-dark);
+                }
+            }
+
+            &.btn-secondary {
+                background-color: transparent;
+                border: 2px solid var(--accent-color);
+                color: var(--accent-color);
+
+                &:hover {
+                    background-color: var(--accent-color);
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .products-list {
+        grid-template-columns: 1fr;
+    }
+
+    .product-header h1 {
+        font-size: 2rem;
+    }
+}

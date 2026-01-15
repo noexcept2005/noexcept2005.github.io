@@ -1,63 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Pages on WormWaker</title>
-        <link>http://localhost:1313/page/</link>
-        <description>Recent content in Pages on WormWaker</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/page/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>About</title>
-        <link>http://localhost:1313/page/about/</link>
-        <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/page/about/</guid>
-        <description>&lt;h1 id=&#34;wormwaker&#34;&gt;Wormwaker
-&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WAKE &lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; slumber
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;这是-wormwaker-的一个临时网页站点&#34;&gt;这是 Wormwaker 的一个临时网页站点。
-&lt;/h2&gt;&lt;p&gt;欢迎加入粉丝群 196218959&lt;/p&gt;
-&lt;p&gt;欢迎加入编程交流群 786411273&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;哔哩哔哩&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://space.bilibili.com/3494361276877525&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://space.bilibili.com/3494361276877525&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Github&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://github.com/noexcept2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://github.com/noexcept2005&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;CSDN&lt;/strong&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cjz2005&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://blog.csdn.net/cjz2005&lt;/a&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>Products</title>
-        <link>http://localhost:1313/page/products/</link>
-        <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/page/products/</guid>
-        <description>&lt;p&gt;你可以在这个页面中找到我写的一些实用程序。&lt;/p&gt;
-&lt;h2 id=&#34;产品列表&#34;&gt;产品列表
-&lt;/h2&gt;&lt;h3 id=&#34;jackalclientjackalclient&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://localhost:1313/jackalclient/&#34; &gt;JackalClient&lt;/a&gt;
-&lt;/h3&gt;&lt;p&gt;一个Minecraft作弊端视觉的Windows工具箱。&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>Archives</title>
-        <link>http://localhost:1313/page/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/page/archives/</guid>
-        <description>&lt;p&gt;archive?&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>Search</title>
-        <link>http://localhost:1313/page/search/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/page/search/</guid>
-        <description>&lt;p&gt;search?&lt;/p&gt;
-</description>
-        </item>
-        
-    </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on WormWaker</title><link>https://example.org/page/</link><description>Recent content in Pages on WormWaker</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/page/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://example.org/page/about/</link><pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate><guid>https://example.org/page/about/</guid><description>&lt;h1 id="wormwaker">Wormwaker
+&lt;/h1>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>WAKE &lt;span style="color:#f92672">from&lt;/span> slumber
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="这是-wormwaker-的一个临时网页站点">这是 Wormwaker 的一个临时网页站点。
+&lt;/h2>&lt;p>欢迎加入粉丝群 196218959&lt;/p>
+&lt;p>欢迎加入编程交流群 786411273&lt;/p>
+&lt;p>&lt;strong>哔哩哔哩&lt;/strong>
+&lt;a class="link" href="https://space.bilibili.com/3494361276877525" target="_blank" rel="noopener"
+>https://space.bilibili.com/3494361276877525&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Github&lt;/strong>
+&lt;a class="link" href="https://github.com/noexcept2005" target="_blank" rel="noopener"
+>https://github.com/noexcept2005&lt;/a>&lt;/p>
+&lt;p>&lt;strong>CSDN&lt;/strong>
+&lt;a class="link" href="https://blog.csdn.net/cjz2005" target="_blank" rel="noopener"
+>https://blog.csdn.net/cjz2005&lt;/a>&lt;/p></description></item><item><title>Products</title><link>https://example.org/page/products/</link><pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate><guid>https://example.org/page/products/</guid><description>&lt;p>你可以在这个页面中找到我写的一些实用程序。&lt;/p>
+&lt;h2 id="产品列表">产品列表
+&lt;/h2>&lt;h3 id="jackalclientjackalclient">&lt;a class="link" href="https://example.org/jackalclient/" >JackalClient&lt;/a>
+&lt;/h3>&lt;p>一个Minecraft作弊端视觉的Windows工具箱。&lt;/p></description></item><item><title>Archives</title><link>https://example.org/page/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://example.org/page/archives/</guid><description>&lt;p>archive?&lt;/p></description></item><item><title>Search</title><link>https://example.org/page/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.org/page/search/</guid><description>&lt;p>search?&lt;/p></description></item></channel></rss>

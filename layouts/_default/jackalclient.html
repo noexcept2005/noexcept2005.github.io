@@ -170,16 +170,24 @@
             margin: 0.2rem 0;
             padding: 0.3rem;
             background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-            background-size: 400% 400%;
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: rainbowFlow 3s ease infinite;
-            opacity: 0.9;
+            animation: rainbowFlow 2s ease infinite;
+            opacity: 1;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
             transition: opacity 0.3s ease;
             cursor: default;
             font-weight: 600;
+        }
+
+        .arraylist:hover .arraylist-item {
+            opacity: 0.2;
+        }
+
+        .arraylist:hover .arraylist-item:hover {
+            opacity: 1;
         }
 
         @keyframes rainbowFlow {
@@ -225,7 +233,7 @@
         .navbar-brand {
             font-size: 3.24rem;
             font-weight: bold;
-            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+            background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -278,6 +286,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: purpleFlow 3s ease infinite;
+        }
+
+        @keyframes purpleFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .hero-subtitle {
@@ -398,36 +413,41 @@
         /* Feature Section 1 - Image Left, Content Right */
         .feature-section:nth-of-type(1) .feature-container {
             flex-direction: row;
-            gap: 8rem;
+            gap: 10rem;
         }
 
         /* Feature Section 2 - Content Left, Image Right */
         .feature-section:nth-of-type(2) .feature-container {
             flex-direction: row-reverse;
+            gap: 10rem;
         }
 
         /* Feature Section 3 - Image Left, Content Right */
         .feature-section:nth-of-type(3) .feature-container {
             flex-direction: row;
-            gap: 8rem;
+            gap: 10rem;
         }
 
         /* Feature Section 4 - Content Left, Image Right */
         .feature-section:nth-of-type(4) .feature-container {
             flex-direction: row-reverse;
-            gap: 8rem;
+            gap: 10rem;
         }
 
         /* Feature Section 5 - Image Left, Content Right */
         .feature-section:nth-of-type(5) .feature-container {
             flex-direction: row;
-            gap: 8rem;
+            gap: 10rem;
         }
 
         /* Feature Section 6 - Content Left, Image Right */
         .feature-section:nth-of-type(6) .feature-container {
             flex-direction: row-reverse;
-            gap: 8rem;
+            gap: 15rem;
+        }
+
+        .feature-section:nth-of-type(6) .feature-content {
+            padding: 0;
         }
 
         .feature-content {
@@ -448,7 +468,7 @@
         }
 
         .feature-image img:hover {
-            transform: scale(1.1) rotate(2deg);
+            transform: scale(1.1) rotate(-2deg);
             filter: brightness(1.1);
             border-color: rgba(255, 0, 0, 0.6);
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
@@ -623,7 +643,8 @@
 
         .pricing-card {
             background-color: var(--card-background);
-            padding: 3rem 2rem;
+            padding: 8rem 2rem;
+            padding-top: 9rem;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             text-align: center;
@@ -670,7 +691,7 @@
         }
 
         .pricing-features li {
-            padding: 0.75rem 0;
+            padding: 1.5rem 0;
             color: var(--text-secondary);
         }
 
@@ -713,6 +734,14 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .navbar-nav a {
+                font-size: 0.9rem;
+            }
+            
             .hero-title {
                 font-size: 2.5rem;
             }

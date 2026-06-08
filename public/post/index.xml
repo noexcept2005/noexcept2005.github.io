@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on WormWaker</title>
-        <link>http://localhost:1313/post/</link>
+        <link>https://example.org/post/</link>
         <description>Recent content in Posts on WormWaker</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 16 Nov 2024 02:02:40 +0800</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 16 Nov 2024 02:02:40 +0800</lastBuildDate><atom:link href="https://example.org/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>I Got Smoke (English Ver.)</title>
-        <link>http://localhost:1313/post/i-got-smoke-english-ver./</link>
+        <link>https://example.org/post/i-got-smoke-english-ver./</link>
         <pubDate>Sat, 16 Nov 2024 02:02:40 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/i-got-smoke-english-ver./</guid>
+        <guid>https://example.org/post/i-got-smoke-english-ver./</guid>
         <description>&lt;h3 id=&#34;i-got-smoke-english-ver&#34;&gt;I Got Smoke (English ver.)
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Video:&lt;/strong&gt;
 &lt;strong&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1zRHtexEKe&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -309,11 +309,11 @@ Go go go go go go
         </item>
         <item>
         <title>测试博客</title>
-        <link>http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/</link>
+        <link>https://example.org/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/</link>
         <pubDate>Sat, 16 Nov 2024 01:39:48 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/</guid>
-        <description>&lt;img src="http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/cover.jpg" alt="Featured image of post 测试博客" /&gt;&lt;h1 id=&#34;wormwaker&#34;&gt;Wormwaker
+        <guid>https://example.org/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/</guid>
+        <description>&lt;img src="https://example.org/post/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/cover.jpg" alt="Featured image of post 测试博客" /&gt;&lt;h1 id=&#34;wormwaker&#34;&gt;Wormwaker
 &lt;/h1&gt;&lt;p&gt;&lt;strong&gt;这是一篇测试博客&lt;/strong&gt;
 &lt;strong&gt;你不需要好奇，也不需要看下面的内容&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;⎛⎝≥⏝⏝≤⎛⎝&lt;/p&gt;

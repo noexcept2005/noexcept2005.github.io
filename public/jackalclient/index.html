@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JackalClient - JackalClient - 一个 Minecraft 作弊端视觉的 Windows 工具箱</title>
@@ -83,6 +83,41 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .language-switcher button {
+            border: 0;
+            border-radius: 999px;
+            padding: 0.35rem 0.7rem;
+            color: var(--text-secondary);
+            background: transparent;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            color: #fff;
+            background: rgba(139, 92, 246, 0.35);
         }
 
         .navbar-brand {
@@ -891,6 +926,18 @@
             .container { width: 95%; }
             .section-title { font-size: 2rem; }
             .contact-grid, .docs-grid, .pricing-grid, .module-grid { grid-template-columns: 1fr; }
+            .navbar-container { gap: 1rem; }
+            .navbar-actions { gap: 0.75rem; }
+            .navbar-nav { gap: 0.75rem; }
+            .language-switcher button { padding: 0.3rem 0.5rem; }
+        }
+
+        .download-password-note {
+            margin: -0.75rem 0 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.82;
         }
 
          
@@ -982,12 +1029,18 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="/jackalclient/" class="navbar-brand">JackalClient</a>
-            <ul class="navbar-nav">
-                <li><a href="/jackalclient/">HOME</a></li>
-                <li><a href="/jackalclient/docs">DOCS</a></li>
-                <li><a href="/jackalclient/contact">CONTACT</a></li>
-                <li><a href="/jackalclient/download">DOWNLOAD</a></li>
-            </ul>
+            <div class="navbar-actions">
+                <div class="language-switcher" aria-label="Language selector">
+                    <button type="button" data-lang-switch="zh" aria-label="切换到中文">中</button>
+                    <button type="button" data-lang-switch="en" aria-label="Switch to English">EN</button>
+                </div>
+                <ul class="navbar-nav">
+                    <li><a href="/jackalclient/" data-i18n="nav.home">HOME</a></li>
+                    <li><a href="/jackalclient/docs" data-i18n="nav.docs">DOCS</a></li>
+                    <li><a href="/jackalclient/contact" data-i18n="nav.contact">CONTACT</a></li>
+                    <li><a href="/jackalclient/download" data-i18n="nav.download">DOWNLOAD</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -1039,10 +1092,10 @@
 <div class="hero-section">
     <div class="hero-content">
         <h1 class="hero-title">Jackal<span class="highlight">Client</span></h1>
-        <p class="hero-subtitle">一个 Minecraft 作弊端视觉的 Windows 工具箱</p>
+        <p class="hero-subtitle" data-i18n="home.subtitle">一个 Minecraft 作弊端视觉的 Windows 工具箱</p>
         <div class="hero-buttons">
-            <a href="/jackalclient/download" class="btn btn-primary">Download Now</a>
-            <a href="https://github.com/noexcept2005/JackalClient" class="btn btn-secondary">GitHub Repo</a>
+            <a href="/jackalclient/download" class="btn btn-primary" data-i18n="home.downloadNow">Download Now</a>
+            <a href="https://github.com/noexcept2005/JackalClient" class="btn btn-secondary" data-i18n="home.githubRepo">GitHub Repo</a>
         </div>
     </div>
 </div>
@@ -1054,9 +1107,9 @@
             <img class="feature-image" src="/img/jackalclient/gui-preview-1.png" alt="GUI Preview 1">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">Minecraft 风格</h2>
-            <span class="feature-subtitle">ClickGUI Style</span>
-            <p class="feature-description">多种作弊端界面风格供你选择，包括 Vape, LiquidBounce, Meteor, Future, Opai 等经典设计，让你的工具箱与众不同。</p>
+            <h2 class="feature-title" data-i18n="home.feature1.title">Minecraft 风格</h2>
+            <span class="feature-subtitle" data-i18n="home.feature1.subtitle">ClickGUI Style</span>
+            <p class="feature-description" data-i18n="home.feature1.desc">多种作弊端界面风格供你选择，包括 Vape, LiquidBounce, Meteor, Future, Opai 等经典设计，让你的工具箱与众不同。</p>
         </div>
     </div>
 </div>
@@ -1068,9 +1121,9 @@
             <img class="feature-image" src="/img/jackalclient/gui-preview-2.png" alt="GUI Preview 2">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">300+ 可用模块</h2>
-            <span class="feature-subtitle">Powerful Modules</span>
-            <p class="feature-description">涵盖竞技、窗口管理、进程控制、文件操作、注册表优化、渲染增强、网络工具等十大类，全方位覆盖 Windows 系统增强需求。</p>
+            <h2 class="feature-title" data-i18n="home.feature2.title">300+ 可用模块</h2>
+            <span class="feature-subtitle" data-i18n="home.feature2.subtitle">Powerful Modules</span>
+            <p class="feature-description" data-i18n="home.feature2.desc">涵盖竞技、窗口管理、进程控制、文件操作、注册表优化、渲染增强、网络工具等十大类，全方位覆盖 Windows 系统增强需求。</p>
         </div>
     </div>
 </div>
@@ -1082,9 +1135,9 @@
             <img class="feature-image" src="/img/jackalclient/gui-modern-1.png" alt="GUI Modern 1">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">高度可定制</h2>
-            <span class="feature-subtitle">Fully Configurable</span>
-            <p class="feature-description">上千行可调节配置项，支持导入导出配置。无论你是极简主义者还是硬核玩家，都能打造出专属的操作系统体验。</p>
+            <h2 class="feature-title" data-i18n="home.feature3.title">高度可定制</h2>
+            <span class="feature-subtitle" data-i18n="home.feature3.subtitle">Fully Configurable</span>
+            <p class="feature-description" data-i18n="home.feature3.desc">上千行可调节配置项，支持导入导出配置。无论你是极简主义者还是硬核玩家，都能打造出专属的操作系统体验。</p>
         </div>
     </div>
 </div>
@@ -1096,9 +1149,9 @@
             <img class="feature-image" src="/img/jackalclient/shell-system-1.png" alt="Shell System 1">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">命令系统</h2>
-            <span class="feature-subtitle">Command System</span>
-            <p class="feature-description">内置强大的终端系统，支持上百条自定义命令。支持自动补全、命令别名和多种配色主题，让系统操作效率倍增。</p>
+            <h2 class="feature-title" data-i18n="home.feature4.title">命令系统</h2>
+            <span class="feature-subtitle" data-i18n="home.feature4.subtitle">Command System</span>
+            <p class="feature-description" data-i18n="home.feature4.desc">内置强大的终端系统，支持上百条自定义命令。支持自动补全、命令别名和多种配色主题，让系统操作效率倍增。</p>
         </div>
     </div>
 </div>
@@ -1110,9 +1163,9 @@
             <img class="feature-image" src="/img/jackalclient/old-version-peek.png" alt="Old Version Peek">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">匠心打磨</h2>
-            <span class="feature-subtitle">Craftsmanship</span>
-            <p class="feature-description">历经两年持续开发，从最初的一个简单想法演变为成熟的软件生态。每一次更新都凝聚了对细节的极致追求。</p>
+            <h2 class="feature-title" data-i18n="home.feature5.title">匠心打磨</h2>
+            <span class="feature-subtitle" data-i18n="home.feature5.subtitle">Craftsmanship</span>
+            <p class="feature-description" data-i18n="home.feature5.desc">历经两年持续开发，从最初的一个简单想法演变为成熟的软件生态。每一次更新都凝聚了对细节的极致追求。</p>
         </div>
     </div>
 </div>
@@ -1124,9 +1177,9 @@
             <img class="feature-image" src="/img/jackalclient/gui-nl-style-1.png" alt="GUI NL Style 1">
         </div>
         <div class="feature-content glass-panel" style="padding: 2rem; border-radius: 16px;">
-            <h2 class="feature-title">高级订阅</h2>
-            <span class="feature-subtitle">Premium Plan</span>
-            <p class="feature-description">解锁专业版永久许可证，获取持续更新支持。享受更多独家视觉特效、高级功能模块和优先技术支持。</p>
+            <h2 class="feature-title" data-i18n="home.feature6.title">高级订阅</h2>
+            <span class="feature-subtitle" data-i18n="home.feature6.subtitle">Premium Plan</span>
+            <p class="feature-description" data-i18n="home.feature6.desc">解锁专业版永久许可证，获取持续更新支持。享受更多独家视觉特效、高级功能模块和优先技术支持。</p>
         </div>
     </div>
 </div>
@@ -1134,9 +1187,9 @@
 <!-- CTA Section -->
 <div class="hero-section" style="min-height: 50vh;">
     <div class="hero-content">
-        <h2 style="font-size: 3rem; margin-bottom: 1rem;">Ready to Hack?</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem;">立即下载 JackalClient，开启全新的 Windows 体验</p>
-        <a href="/jackalclient/download" class="btn btn-primary" style="font-size: 1.2rem; padding: 1.2rem 3rem;">Download Now</a>
+        <h2 style="font-size: 3rem; margin-bottom: 1rem;" data-i18n="home.cta.title">Ready to Hack?</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;" data-i18n="home.cta.desc">立即下载 JackalClient，开启全新的 Windows 体验</p>
+        <a href="/jackalclient/download" class="btn btn-primary" style="font-size: 1.2rem; padding: 1.2rem 3rem;" data-i18n="home.downloadNow">Download Now</a>
     </div>
 </div>
 
@@ -1148,6 +1201,170 @@
     </footer>
 
     <script>
+        
+        const JACKAL_I18N = {
+            zh: {
+                'nav.home': '首页',
+                'nav.docs': '文档',
+                'nav.contact': '联系',
+                'nav.download': '下载',
+                'home.subtitle': '一个 Minecraft 作弊端视觉的 Windows 工具箱',
+                'home.downloadNow': '立即下载',
+                'home.githubRepo': 'GitHub 仓库',
+                'home.feature1.title': 'Minecraft 风格',
+                'home.feature1.subtitle': 'ClickGUI 风格',
+                'home.feature1.desc': '多种作弊端界面风格供你选择，包括 Vape, LiquidBounce, Meteor, Future, Opai 等经典设计，让你的工具箱与众不同。',
+                'home.feature2.title': '300+ 可用模块',
+                'home.feature2.subtitle': '强大的模块',
+                'home.feature2.desc': '涵盖竞技、窗口管理、进程控制、文件操作、注册表优化、渲染增强、网络工具等十大类，全方位覆盖 Windows 系统增强需求。',
+                'home.feature3.title': '高度可定制',
+                'home.feature3.subtitle': '完全可配置',
+                'home.feature3.desc': '上千行可调节配置项，支持导入导出配置。无论你是极简主义者还是硬核玩家，都能打造出专属的操作系统体验。',
+                'home.feature4.title': '命令系统',
+                'home.feature4.subtitle': '命令系统',
+                'home.feature4.desc': '内置强大的终端系统，支持上百条自定义命令。支持自动补全、命令别名和多种配色主题，让系统操作效率倍增。',
+                'home.feature5.title': '匠心打磨',
+                'home.feature5.subtitle': '匠心品质',
+                'home.feature5.desc': '历经两年持续开发，从最初的一个简单想法演变为成熟的软件生态。每一次更新都凝聚了对细节的极致追求。',
+                'home.feature6.title': '高级订阅',
+                'home.feature6.subtitle': '专业版计划',
+                'home.feature6.desc': '解锁专业版永久许可证，获取持续更新支持。享受更多独家视觉特效、高级功能模块和优先技术支持。',
+                'home.cta.title': '准备好开玩了吗？',
+                'home.cta.desc': '立即下载 JackalClient，开启全新的 Windows 体验',
+                'docs.title': '文档',
+                'docs.subtitle': '探索 JackalClient 的详细文档和指南',
+                'docs.list': '文档列表',
+                'docs.faq.title': 'JackalClient 常见问题',
+                'docs.faq.desc': '了解 JackalClient 的常见问题解答，快速解决您遇到的问题',
+                'docs.download.title': '如何下载并运行 JackalClient',
+                'docs.download.desc': 'How To Download and Run JackalClient Instructions - 给电脑小白用的详细指南',
+                'docs.lyrics.title': '更好的歌词 BetterLyrics 说明',
+                'docs.lyrics.desc': '了解 JackalClient 中的 BetterLyrics 功能及其使用方法',
+                'docs.more.desc': '查看更多教程？前往我们的文档官网！',
+                'docs.view': '查看文档',
+                'docs.builtin': '内置文档介绍',
+                'docs.history.desc': '更新日志 - 记录 JackalClient 每个版本的详细更新内容，包括新增功能、修复的问题和改进的地方。通过查看更新日志，您可以了解软件的发展历程和最新动态。',
+                'docs.commands.desc': '命令行帮助以及命令文档 - 提供完整的客户端命令列表和详细的使用说明。每个命令都有详细的参数说明和示例，帮助您快速掌握 JackalClient 的命令行操作。',
+                'contact.title': '联系我们',
+                'contact.subtitle': '随时与我们联系，获取帮助和支持',
+                'contact.section': '联系方式',
+                'contact.bilibili.desc': '关注我们的 B 站账号，获取最新动态',
+                'contact.visit': '访问主页',
+                'contact.qq.desc': '加入我们的 QQ 群，与其他用户交流',
+                'contact.qq.info': 'QQ群号: 196218959',
+                'contact.discord.desc': '加入我们的 Discord 社区，参与讨论',
+                'contact.discord.join': '加入服务器',
+                'download.title': '下载 JACKAL',
+                'download.subtitle': '选择版本',
+                'download.free': '免费版',
+                'download.free.1': '✓ 大多数用户的选择',
+                'download.free.2': '✓ 大量用户正在使用',
+                'download.free.3': '✓ 300+ 模块',
+                'download.domestic': '国内下载',
+                'download.password': '密码 d1lu',
+                'download.pro': '专业版',
+                'download.pro.1': '✓ 适合高级用户',
+                'download.pro.2': '✓ 100+ 用户',
+                'download.pro.3': '✓ 永久订阅',
+                'download.pro.4': '✓ 更多自定义能力',
+                'download.pro.5': '✓ 更多实用模块',
+                'download.purchase': '￥79 立即购买'
+            },
+            en: {
+                'nav.home': 'HOME',
+                'nav.docs': 'DOCS',
+                'nav.contact': 'CONTACT',
+                'nav.download': 'DOWNLOAD',
+                'home.subtitle': 'A Windows toolbox with a Minecraft cheat-client visual style',
+                'home.downloadNow': 'Download Now',
+                'home.githubRepo': 'GitHub Repo',
+                'home.feature1.title': 'Minecraft Style',
+                'home.feature1.subtitle': 'ClickGUI Style',
+                'home.feature1.desc': 'Choose from multiple cheat-client inspired interface styles, including classic looks like Vape, LiquidBounce, Meteor, Future, and Opai.',
+                'home.feature2.title': '300+ Modules',
+                'home.feature2.subtitle': 'Powerful Modules',
+                'home.feature2.desc': 'Covers competitive tools, window management, process control, file operations, registry optimization, rendering enhancements, network tools, and more.',
+                'home.feature3.title': 'Highly Customizable',
+                'home.feature3.subtitle': 'Fully Configurable',
+                'home.feature3.desc': 'Thousands of adjustable configuration lines with import and export support, so both minimalists and power users can craft their own Windows experience.',
+                'home.feature4.title': 'Command System',
+                'home.feature4.subtitle': 'Command System',
+                'home.feature4.desc': 'A powerful built-in terminal system with hundreds of custom commands, autocomplete, aliases, and multiple color themes for faster system operations.',
+                'home.feature5.title': 'Carefully Crafted',
+                'home.feature5.subtitle': 'Craftsmanship',
+                'home.feature5.desc': 'After two years of continuous development, a simple idea has grown into a mature software ecosystem, with every update focused on details.',
+                'home.feature6.title': 'Premium Plan',
+                'home.feature6.subtitle': 'Premium Plan',
+                'home.feature6.desc': 'Unlock a permanent Pro license with ongoing updates, exclusive visual effects, advanced modules, and priority technical support.',
+                'home.cta.title': 'Ready to Hack?',
+                'home.cta.desc': 'Download JackalClient now and start a new Windows experience',
+                'docs.title': 'Documentation',
+                'docs.subtitle': 'Explore detailed JackalClient documentation and guides',
+                'docs.list': 'Documentation List',
+                'docs.faq.title': 'JackalClient FAQ',
+                'docs.faq.desc': 'Learn answers to common JackalClient questions and quickly solve issues you encounter.',
+                'docs.download.title': 'How to Download and Run JackalClient',
+                'docs.download.desc': 'Detailed instructions for beginners on how to download and run JackalClient.',
+                'docs.lyrics.title': 'BetterLyrics Guide',
+                'docs.lyrics.desc': 'Learn about the BetterLyrics feature in JackalClient and how to use it.',
+                'docs.more.desc': 'Want more tutorials? Visit our documentation site!',
+                'docs.view': 'View Docs',
+                'docs.builtin': 'Built-in Documentation',
+                'docs.history.desc': 'Update log - Records detailed changes for each JackalClient version, including new features, fixes, and improvements.',
+                'docs.commands.desc': 'Command-line help and command documentation - Provides a complete client command list with detailed usage notes, parameters, and examples.',
+                'contact.title': 'Contact Us',
+                'contact.subtitle': 'Contact us anytime for help and support',
+                'contact.section': 'Contact Methods',
+                'contact.bilibili.desc': 'Follow our Bilibili account for the latest updates',
+                'contact.visit': 'Visit Page',
+                'contact.qq.desc': 'Join our QQ group to chat with other users',
+                'contact.qq.info': 'QQ Group: 196218959',
+                'contact.discord.desc': 'Join our Discord community and take part in discussions',
+                'contact.discord.join': 'Join Server',
+                'download.title': 'DOWNLOAD JACKAL',
+                'download.subtitle': 'Select an Edition',
+                'download.free': 'Free',
+                'download.free.1': '✓ Most People Choose',
+                'download.free.2': '✓ Lots of Users',
+                'download.free.3': '✓ 300+ Modules',
+                'download.domestic': 'Domestic Download',
+                'download.password': 'Password: d1lu',
+                'download.pro': 'Pro',
+                'download.pro.1': '✓ For Advanced Users',
+                'download.pro.2': '✓ 100+ Users',
+                'download.pro.3': '✓ Permanent Subscription',
+                'download.pro.4': '✓ More Customizable',
+                'download.pro.5': '✓ More Useful Modules',
+                'download.purchase': '￥79 PURCHASE NOW'
+            }
+        };
+
+        function getInitialJackalLang() {
+            const savedLang = localStorage.getItem('jackalclient-lang');
+            if (savedLang === 'zh' || savedLang === 'en') return savedLang;
+            const browserLanguages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+            return browserLanguages.some(lang => (lang || '').toLowerCase().startsWith('zh')) ? 'zh' : 'en';
+        }
+
+        function setJackalLang(lang, persist = true) {
+            const dictionary = JACKAL_I18N[lang] || JACKAL_I18N.en;
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const translation = dictionary[element.dataset.i18n];
+                if (translation) element.textContent = translation;
+            });
+            document.querySelectorAll('[data-lang-switch]').forEach(button => {
+                button.classList.toggle('active', button.dataset.langSwitch === lang);
+            });
+            if (persist) localStorage.setItem('jackalclient-lang', lang);
+        }
+
+        document.querySelectorAll('[data-lang-switch]').forEach(button => {
+            button.addEventListener('click', () => setJackalLang(button.dataset.langSwitch));
+        });
+
+        setJackalLang(getInitialJackalLang(), false);
+
         
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');

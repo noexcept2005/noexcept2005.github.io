@@ -19,6 +19,7 @@
 
 - JackalClient uses a lightweight client-side i18n system in `layouts/_default/jackalclient.html`.
 - The language selector is in the JackalClient navbar, to the left of the nav links.
+- The selector is styled as an animated slider switch; keep the `.language-switcher.lang-en` state class in sync when changing the language logic.
 - On first visit, JavaScript checks `navigator.languages` / `navigator.language`:
   - Chinese browser languages use Chinese.
   - All other browser languages use English.
@@ -26,6 +27,7 @@
 - Translatable elements use `data-i18n="key.name"`.
 - Translation strings are stored in the `JACKAL_I18N` object in `layouts/_default/jackalclient.html`.
 - When adding JackalClient text that should switch languages, add a `data-i18n` key and update both `zh` and `en` dictionaries.
+- Download page button spacing uses `.download-actions` and `.domestic-download-wrap`; keep password/helper text above the domestic download button.
 
 ## Development Notes
 

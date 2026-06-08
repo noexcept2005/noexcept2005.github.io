@@ -92,32 +92,55 @@
         }
 
         .language-switcher {
-            display: flex;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem;
+            width: 76px;
+            height: 34px;
+            padding: 3px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .language-switcher::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: calc(50% - 3px);
+            height: calc(100% - 6px);
+            border-radius: 999px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.45);
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .language-switcher.lang-en::before {
+            transform: translateX(100%);
         }
 
         .language-switcher button {
+            position: relative;
+            z-index: 1;
             border: 0;
             border-radius: 999px;
-            padding: 0.35rem 0.7rem;
+            padding: 0;
             color: var(--text-secondary);
             background: transparent;
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            font-weight: 700;
+            font-weight: 800;
+            line-height: 28px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: color 0.25s ease;
         }
 
         .language-switcher button:hover,
         .language-switcher button.active {
             color: #fff;
-            background: rgba(139, 92, 246, 0.35);
         }
 
         .navbar-brand {
@@ -498,6 +521,21 @@
         .pricing-card {
             text-align: center;
             align-items: center;
+        }
+
+        .download-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1.35rem;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .domestic-download-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
         }
 
         .pricing-title {
@@ -923,17 +961,163 @@
 
          
         @media (max-width: 768px) {
-            .container { width: 95%; }
-            .section-title { font-size: 2rem; }
-            .contact-grid, .docs-grid, .pricing-grid, .module-grid { grid-template-columns: 1fr; }
-            .navbar-container { gap: 1rem; }
-            .navbar-actions { gap: 0.75rem; }
-            .navbar-nav { gap: 0.75rem; }
-            .language-switcher button { padding: 0.3rem 0.5rem; }
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+
+            .navbar.scrolled {
+                padding: 0.65rem 1rem;
+            }
+
+            .navbar-container {
+                gap: 0.9rem;
+                align-items: flex-start;
+            }
+
+            .navbar-brand {
+                font-size: 1.35rem;
+                line-height: 34px;
+            }
+
+            .navbar-actions {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.65rem;
+            }
+
+            .navbar-nav {
+                gap: 0.65rem;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .navbar-nav a {
+                font-size: 0.78rem;
+            }
+
+            .language-switcher {
+                width: 68px;
+                height: 32px;
+            }
+
+            .language-switcher button {
+                font-size: 0.68rem;
+                line-height: 26px;
+            }
+
+            .container {
+                width: 94%;
+                padding: 0 0.5rem;
+            }
+
+            .hero-section {
+                min-height: 52vh;
+                padding: 7rem 1rem 3rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 14vw, 4.5rem);
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .contact-section,
+            .docs-section,
+            .pricing-section,
+            .module-section {
+                padding: 3rem 0;
+            }
+
+            .contact-grid,
+            .docs-grid,
+            .pricing-grid,
+            .module-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .pricing-card,
+            .contact-card,
+            .doc-card,
+            .module-card {
+                padding: 1.6rem;
+                border-radius: 18px;
+            }
+
+            .pricing-card:hover,
+            .contact-card:hover,
+            .doc-card:hover,
+            .module-card:hover {
+                transform: translateY(-4px);
+            }
+
+            .pricing-title {
+                font-size: 2rem;
+                margin-bottom: 1.35rem;
+            }
+
+            .pricing-features {
+                margin-bottom: 1.75rem;
+            }
+
+            .btn-large {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .download-actions {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .navbar-actions {
+                align-items: stretch;
+            }
+
+            .language-switcher {
+                align-self: flex-end;
+            }
+
+            .navbar-nav {
+                justify-content: space-between;
+                gap: 0.45rem;
+            }
+
+            .navbar-nav a {
+                font-size: 0.72rem;
+            }
+
+            .hero-section {
+                padding-top: 9rem;
+            }
+
+            .hero-buttons {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
         }
 
         .download-password-note {
-            margin: -0.75rem 0 1rem;
+            margin: 0;
             color: var(--text-secondary);
             font-size: 0.85rem;
             text-align: center;
@@ -1355,6 +1539,9 @@
             });
             document.querySelectorAll('[data-lang-switch]').forEach(button => {
                 button.classList.toggle('active', button.dataset.langSwitch === lang);
+            });
+            document.querySelectorAll('.language-switcher').forEach(switcher => {
+                switcher.classList.toggle('lang-en', lang === 'en');
             });
             if (persist) localStorage.setItem('jackalclient-lang', lang);
         }
@@ -1799,3 +1986,4 @@
     </script>
 </body>
 </html>
+

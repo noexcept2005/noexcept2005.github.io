@@ -1,1846 +1,812 @@
-﻿<!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JackalClient - {{ .Title }}</title>
-    {{ partial "head/style.html" . }}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <title>JackalClient — {{ .Title }}</title>
+    <meta name="description" content="JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。" data-i18n-attr="content:site.description">
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="icon" type="image/svg+xml" href="{{ "img/jackalclient/favicon.svg" | relURL }}">
+    <meta property="og:title" content="JackalClient — {{ .Title }}">
+    <meta property="og:description" content="JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。" data-i18n-attr="content:site.description">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:image" content="{{ "img/jackalclient/gui-nl-style-3-1600.webp" | absURL }}">
+    <link rel="stylesheet" href="{{ "vendor/ak-ui/1.1.0/tokens.css" | relURL }}">
+    <link rel="preload" href="{{ "fonts/jackalclient/BarlowCondensed-ExtraBold.ttf" | relURL }}" as="font" type="font/ttf" crossorigin>
+    {{ if eq .RelPermalink ("jackalclient/" | relURL) }}
+    <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "SoftwareApplication" "name" "JackalClient" "applicationCategory" "UtilitiesApplication" "operatingSystem" "Windows" "description" "A configurable Windows toolbox with utility modules and a built-in command system." "url" .Permalink | jsonify | safeJS }}</script>
+    {{ end }}
     <style>
-        :root {
-            --primary-color: #8b5cf6;
-            --primary-hover: #7c3aed;
-            --secondary-color: #3b82f6;
-            --text-color: #ffffff;
-            --text-secondary: #a0aec0;
-            --background: #050505;
-            --card-background: rgba(20, 20, 20, 0.6);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --font-main: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background-color: var(--background);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Dynamic Background */
-        .dynamic-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
-        }
-
-        /* Glassmorphism Utility */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1rem 2rem;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .navbar.scrolled {
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 0.8rem 2rem;
-        }
-
-        .navbar-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .language-switcher {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            width: 76px;
-            height: 34px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.25);
-        }
-
-        .language-switcher::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: calc(50% - 3px);
-            height: calc(100% - 6px);
-            border-radius: 999px;
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.45);
-            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .language-switcher.lang-en::before {
-            transform: translateX(100%);
-        }
-
-        .language-switcher button {
-            position: relative;
-            z-index: 1;
-            border: 0;
-            border-radius: 999px;
-            padding: 0;
-            color: var(--text-secondary);
-            background: transparent;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 800;
-            line-height: 28px;
-            cursor: pointer;
-            transition: color 0.25s ease;
-        }
-
-        .language-switcher button:hover,
-        .language-switcher button.active {
-            color: #fff;
-        }
-
-        .navbar-brand {
-            font-family: var(--font-mono);
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #a0aec0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            letter-spacing: -0.05em;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .navbar-nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            font-weight: 500;
-            position: relative;
-            letter-spacing: 0.05em;
-        }
-
-        .navbar-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .navbar-nav a:hover {
-            color: #fff;
-        }
-
-        .navbar-nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 8rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            z-index: 2;
-            max-width: 900px;
-        }
-
-        .hero-title {
-            font-size: 5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-        }
-
-        .hero-title .highlight {
-            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-        
-        /* Glitch Effect for Title */
-        .glitch-text {
-            position: relative;
-        }
-        
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .glitch-text::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        
-        .glitch-text::after {
-            left: -2px;
-            text-shadow: -1px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-anim {
-            0% { clip: rect(38px, 9999px, 34px, 0); }
-            5% { clip: rect(72px, 9999px, 11px, 0); }
-            10% { clip: rect(6px, 9999px, 86px, 0); }
-            15% { clip: rect(54px, 9999px, 18px, 0); }
-            20% { clip: rect(22px, 9999px, 63px, 0); }
-            25% { clip: rect(81px, 9999px, 35px, 0); }
-            30% { clip: rect(13px, 9999px, 92px, 0); }
-            35% { clip: rect(65px, 9999px, 49px, 0); }
-            40% { clip: rect(27px, 9999px, 7px, 0); }
-            45% { clip: rect(98px, 9999px, 53px, 0); }
-            50% { clip: rect(44px, 9999px, 26px, 0); }
-            55% { clip: rect(15px, 9999px, 88px, 0); }
-            60% { clip: rect(61px, 9999px, 39px, 0); }
-            65% { clip: rect(33px, 9999px, 74px, 0); }
-            70% { clip: rect(89px, 9999px, 12px, 0); }
-            75% { clip: rect(5px, 9999px, 68px, 0); }
-            80% { clip: rect(47px, 9999px, 94px, 0); }
-            85% { clip: rect(76px, 9999px, 21px, 0); }
-            90% { clip: rect(19px, 9999px, 57px, 0); }
-            95% { clip: rect(92px, 9999px, 43px, 0); }
-            100% { clip: rect(58px, 9999px, 81px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(12px, 9999px, 91px, 0); }
-            5% { clip: rect(67px, 9999px, 24px, 0); }
-            10% { clip: rect(34px, 9999px, 58px, 0); }
-            15% { clip: rect(88px, 9999px, 15px, 0); }
-            20% { clip: rect(42px, 9999px, 77px, 0); }
-            25% { clip: rect(9px, 9999px, 36px, 0); }
-            30% { clip: rect(55px, 9999px, 83px, 0); }
-            35% { clip: rect(28px, 9999px, 46px, 0); }
-            40% { clip: rect(73px, 9999px, 19px, 0); }
-            45% { clip: rect(16px, 9999px, 62px, 0); }
-            50% { clip: rect(94px, 9999px, 31px, 0); }
-            55% { clip: rect(39px, 9999px, 85px, 0); }
-            60% { clip: rect(82px, 9999px, 48px, 0); }
-            65% { clip: rect(25px, 9999px, 71px, 0); }
-            70% { clip: rect(69px, 9999px, 14px, 0); }
-            75% { clip: rect(46px, 9999px, 97px, 0); }
-            80% { clip: rect(13px, 9999px, 52px, 0); }
-            85% { clip: rect(59px, 9999px, 29px, 0); }
-            90% { clip: rect(96px, 9999px, 66px, 0); }
-            95% { clip: rect(31px, 9999px, 89px, 0); }
-            100% { clip: rect(78px, 9999px, 41px, 0); }
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-        }
-        
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-            z-index: -1;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
-        }
-        
-        .btn-primary:hover::before {
-            transform: translateX(100%);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        /* Feature Section */
-        .feature-section {
-            padding: 8rem 2rem;
-            position: relative;
-        }
-
-        .feature-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 6rem;
-        }
-
-        .feature-content {
-            flex: 1;
-            z-index: 2;
-        }
-
-        .feature-image-wrapper {
-            flex: 1;
-            position: relative;
-            perspective: 1000px;
-        }
-
-        .feature-image {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            transition: transform 0.1s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(20, 20, 20, 0.5);
-        }
-
-        .feature-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #fff, #a0aec0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .feature-subtitle {
-            font-family: var(--font-mono);
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        /* Alternating Layout */
-        .feature-section:nth-of-type(even) .feature-container {
-            flex-direction: row-reverse;
-        }
-
-        /* Universal Container */
-        .container {
-            width: 90%;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        /* Section Spacing */
-        .contact-section,
-        .docs-section,
-        .pricing-section,
-        .module-section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 4rem;
-            background: linear-gradient(90deg, #fff, #a0aec0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Grid Layouts */
-        .contact-grid,
-        .docs-grid,
-        .pricing-grid,
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            width: 100%;
-        }
-
-        /* Card Styles */
-        .contact-card,
-        .doc-card,
-        .pricing-card,
-        .module-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border-radius: 24px;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-card:hover,
-        .doc-card:hover,
-        .pricing-card:hover,
-        .module-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .contact-card h3,
-        .doc-card h3,
-        .pricing-title,
-        .module-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-
-        .contact-card p,
-        .doc-card p,
-        .pricing-features li,
-        .module-desc {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Pricing Specifics */
-        .pricing-card {
-            text-align: center;
-            align-items: center;
-        }
-
-        .download-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 1.35rem;
-            width: 100%;
-            margin-top: auto;
-        }
-
-        .domestic-download-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            width: 100%;
-        }
-
-        .pricing-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 2.5rem;
-            text-align: left;
-            width: 100%;
-        }
-
-        .pricing-features li {
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .pro-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
-        }
-
-        .btn-large {
-            width: 100%;
-            padding: 1.2rem;
-            font-size: 1.1rem;
-            text-align: center;
-        }
-
-        /* Module Card Specifics */
-        .module-card {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 200px;
-            cursor: pointer;
-        }
-
-        .module-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0.8;
-            transition: all 0.3s;
-        }
-
-        .module-card:hover .module-icon {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .module-status {
-            margin-top: auto;
-            font-size: 0.8rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .module-card:hover .module-status {
-            background: rgba(139, 92, 246, 0.2);
-            color: #fff;
-        }
-
-        /* Config Panel (Integrated) */
-        .config-panel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: flex-end;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .config-toggle {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(20, 20, 20, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s;
-            margin-top: 10px; /* Spacing from content */
-        }
-
-        .config-toggle:hover {
-            background: var(--primary-color);
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .config-content {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            width: 220px;
-            transform-origin: bottom right;
-            transform: scale(0);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-            margin-bottom: 10px;
-        }
-
-        .config-panel.open .config-content {
-            transform: scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .config-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        .config-label {
-            font-weight: 500;
-        }
-
-        .config-select {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .config-select:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Custom Select Styles */
-        .custom-select-wrapper {
-            position: relative;
-            user-select: none;
-            width: 120px;
-        }
-        
-        .custom-select {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .custom-select__trigger {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .custom-select__trigger:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .custom-select__options {
-            position: absolute;
-            display: block;
-            top: 100%;
-            left: 0;
-            right: 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(10px);
-            transition: all 0.2s;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            z-index: 2;
-            margin-top: 4px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .custom-select.open .custom-select__options {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all;
-        }
-
-        .custom-option {
-            position: relative;
-            display: block;
-            padding: 6px 10px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .custom-option:hover {
-            background: rgba(139, 92, 246, 0.2);
-            color: white;
-        }
-
-        .custom-option.selected {
-            color: white;
-            background: rgba(139, 92, 246, 0.4);
-        }
-
-        .arrow {
-            position: relative;
-            height: 8px;
-            width: 8px;
-        }
-
-        .arrow::after {
-            content: '';
-            position: absolute;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            display: inline-block;
-            padding: 2px;
-            top: -2px;
-            right: 0;
-            transform: rotate(45deg);
-            transition: all 0.2s;
-        }
-
-        .custom-select.open .arrow::after {
-            transform: rotate(-135deg);
-            top: 2px;
-        }
-        
-        /* Scrollbar for options */
-        .custom-select__options::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-select__options::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-        }
-        .custom-select__options::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-        }
-
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .arraylist {
-                top: auto;
-                bottom: 80px; /* Above config toggle */
-                right: 10px;
-                transform: scale(0.9);
-                transform-origin: bottom right;
-                max-height: 60vh;
-                overflow-y: auto;
-                padding-right: 5px; /* Space for scrollbar if needed */
-            }
-            
-            .module-item {
-                font-size: 0.9rem;
-                padding: 3px 8px;
-                min-width: 100px;
-            }
-        }
-        
-        /* ArrayList Styles */
-        .arraylist {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            font-family: var(--font-mono);
-            pointer-events: none;
-            transition: top 0.3s;
-        }
-
-        .config-panel.open ~ .arraylist {
-            /* Optional: Push list down if needed, but absolute positioning makes this tricky. 
-               Instead, we just position the list slightly lower or let it overlap cleanly. */
-        }
-
-        .module-item {
-            pointer-events: auto;
-            padding: 4px 12px;
-            margin-bottom: 2px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            min-width: 120px;
-            /* Slide in animation */
-            transform: translateX(50px);
-            opacity: 0;
-            animation: slideInRight 0.5s forwards;
-            outline: none; /* Managed by focus-visible */
-        }
-
-        .module-item:focus-visible {
-            box-shadow: 0 0 0 2px var(--primary-color);
-            background: rgba(139, 92, 246, 0.3);
-        }
-
-        @keyframes slideInRight {
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .module-item:hover {
-            transform: translateX(-5px);
-            background: rgba(20, 20, 20, 0.8);
-        }
-
-        .module-item.disabled {
-            opacity: 0.5;
-            background: rgba(0, 0, 0, 0.2);
-            box-shadow: none;
-            text-decoration: line-through;
-            color: #a0aec0 !important;
-            border-right: 2px solid #555 !important;
-        }
-
-        .module-item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 3px;
-            background: currentColor;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-
-        /* Button Fixes */
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            /* Removed overflow: hidden to allow shadow to spread fully if needed, but kept z-index management */
-            z-index: 1;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-            /* Add overflow hidden back ONLY for the shine effect, but wrap content if needed. 
-               Actually, for box-shadow to work well with overflow hidden, we need a wrapper or use a pseudo-element for the shadow. 
-               Let's try a different approach: keep overflow hidden but ensure margin/padding allows shadow? 
-               No, overflow:hidden clips content inside. Box shadow is outside. It should be fine. 
-               The issue might be the display property or stacking context. */
-            overflow: hidden;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6); /* Intensified shadow */
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 0.8rem 1rem;
-            }
-
-            .navbar.scrolled {
-                padding: 0.65rem 1rem;
-            }
-
-            .navbar-container {
-                gap: 0.9rem;
-                align-items: flex-start;
-            }
-
-            .navbar-brand {
-                font-size: 1.35rem;
-                line-height: 34px;
-            }
-
-            .navbar-actions {
-                flex-direction: column;
-                align-items: flex-end;
-                gap: 0.65rem;
-            }
-
-            .navbar-nav {
-                gap: 0.65rem;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }
-
-            .navbar-nav a {
-                font-size: 0.78rem;
-            }
-
-            .language-switcher {
-                width: 68px;
-                height: 32px;
-            }
-
-            .language-switcher button {
-                font-size: 0.68rem;
-                line-height: 26px;
-            }
-
-            .container {
-                width: 94%;
-                padding: 0 0.5rem;
-            }
-
-            .hero-section {
-                min-height: 52vh;
-                padding: 7rem 1rem 3rem;
-            }
-
-            .hero-title {
-                font-size: clamp(2.5rem, 14vw, 4.5rem);
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-                margin-bottom: 2rem;
-            }
-
-            .contact-section,
-            .docs-section,
-            .pricing-section,
-            .module-section {
-                padding: 3rem 0;
-            }
-
-            .contact-grid,
-            .docs-grid,
-            .pricing-grid,
-            .module-grid {
-                grid-template-columns: 1fr;
-                gap: 1.25rem;
-            }
-
-            .pricing-card,
-            .contact-card,
-            .doc-card,
-            .module-card {
-                padding: 1.6rem;
-                border-radius: 18px;
-            }
-
-            .pricing-card:hover,
-            .contact-card:hover,
-            .doc-card:hover,
-            .module-card:hover {
-                transform: translateY(-4px);
-            }
-
-            .pricing-title {
-                font-size: 2rem;
-                margin-bottom: 1.35rem;
-            }
-
-            .pricing-features {
-                margin-bottom: 1.75rem;
-            }
-
-            .btn-large {
-                padding: 1rem;
-                font-size: 1rem;
-            }
-
-            .download-actions {
-                gap: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .navbar-actions {
-                align-items: stretch;
-            }
-
-            .language-switcher {
-                align-self: flex-end;
-            }
-
-            .navbar-nav {
-                justify-content: space-between;
-                gap: 0.45rem;
-            }
-
-            .navbar-nav a {
-                font-size: 0.72rem;
-            }
-
-            .hero-section {
-                padding-top: 9rem;
-            }
-
-            .hero-buttons {
-                width: 100%;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .hero-buttons .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        .download-password-note {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-align: center;
-            opacity: 0.82;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-secondary);
-            position: relative;
-            z-index: 10;
-            background: linear-gradient(to top, #000, transparent);
-            margin-top: 4rem;
-        }
-
-        .footer p {
-            margin: 0;
-            font-size: 0.9rem;
-            opacity: 0.7;
+        @font-face { font-family: "Jackal Display"; src: url('{{ "fonts/jackalclient/BarlowCondensed-ExtraBold.ttf" | relURL }}') format("truetype"); font-style: normal; font-weight: 800 900; font-display: swap; }
+        .jackal-site {
+            --ak-surface-canvas: #090b0e; --ak-surface-panel: #11161c; --ak-surface-muted: #0d1116; --ak-surface-raised: #19212a;
+            --ak-text-primary: #edf1f5; --ak-text-secondary: #a6b0bd; --ak-text-inverse: #101319;
+            --ak-signal-info: #52cbe8; --ak-signal-action: #e6c65a; --ak-signal-accent: #8b5cf6; --ak-signal-success: #68c99b; --ak-signal-danger: #f07a7a;
+            --ak-font-sans: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; --ak-font-command: "Jackal Display", "Bahnschrift", "Arial Narrow", "Arial Black", var(--ak-font-sans);
+            --ak-font-mono: "JetBrains Mono", Consolas, "SFMono-Regular", monospace;
+            --primary-color: #8b5cf6; --font-mono: var(--ak-font-mono); --jc-gutter: clamp(1.25rem, 4vw, 4.5rem);
+            --jc-line: #2b323b; --jc-nav-height: 88px; --jc-section-space: clamp(4rem, 8vw, 8rem);
+            margin: 0; min-width: 320px; background: var(--ak-surface-canvas); color: var(--ak-text-primary); font-family: var(--ak-font-sans); line-height: 1.7; color-scheme: dark;
+            background-image: linear-gradient(90deg, transparent calc(100% - 1px), #edf1f503 1px); background-size: 80px 100%;
+        }
+        .jackal-site, .jackal-site * { box-sizing: border-box; }
+        .jackal-site :where(h1, h2, h3, p, figure, ul) { margin: 0; }
+        .jackal-site :where(h1, h2) { text-wrap: balance; }
+        .jackal-site :where(button, a, summary) { -webkit-tap-highlight-color: transparent; }
+        .jackal-site :where(button, select) { font: inherit; }
+        .jackal-site button { cursor: pointer; }
+        .jackal-site [hidden] { display: none !important; }
+        .jackal-site a { color: inherit; text-decoration: none; }
+        .jackal-site img { display: block; max-width: 100%; height: auto; }
+        .jackal-site :focus-visible { outline: var(--ak-focus-width) solid var(--ak-focus-color); outline-offset: var(--ak-focus-offset); }
+        .jackal-site ::selection { background: var(--ak-signal-action); color: var(--ak-text-inverse); }
+        .jc-skip { position: fixed; top: -80px; left: var(--jc-gutter); z-index: 120; padding: var(--ak-space-3) var(--ak-space-5); background: var(--ak-signal-action); color: var(--ak-text-inverse) !important; }
+        .jc-skip:focus { top: var(--ak-space-3); }
+        .jc-header { min-height: var(--jc-nav-height); padding: var(--ak-space-4) var(--jc-gutter); display: flex; align-items: center; justify-content: space-between; gap: var(--ak-space-6); position: relative; z-index: 30; border-bottom: var(--ak-line-hairline) solid var(--jc-line); background: var(--ak-surface-canvas); }
+        .jc-brand { display: flex; align-items: center; gap: var(--ak-space-3); font-family: var(--ak-font-command); font-weight: 800; font-size: 20px; line-height: 1.1; letter-spacing: -.05em; }
+        .jc-brand-light { font-weight: 400; }
+        .jc-brand small { display: block; color: var(--ak-text-secondary); font-family: var(--ak-font-mono); font-weight: 400; font-size: 9px; letter-spacing: .2em; margin-top: 6px; }
+        .jc-brand-mark { display: flex; align-items: center; justify-content: center; width: 35px; height: 42px; background: var(--ak-signal-action); color: var(--ak-text-inverse); font-size: 30px; font-weight: 900; clip-path: polygon(0 0, 100% 0, 100% 76%, 72% 100%, 0 100%); }
+        .jc-brand-mark span { font-size: 17px; margin-left: -7px; }
+        .jc-header-actions, .jc-nav { display: flex; align-items: center; gap: var(--ak-space-6); }
+        .jc-nav { gap: var(--ak-space-2); }
+        .jc-nav a { display: flex; min-height: 44px; align-items: center; gap: var(--ak-space-2); padding: var(--ak-space-2) var(--ak-space-4); border-bottom: 2px solid transparent; font-size: 13px; transition: background var(--ak-motion-fast), border-color var(--ak-motion-fast); }
+        .jc-nav a:hover { background: var(--ak-surface-raised); border-color: var(--ak-text-secondary); }
+        .jc-nav a[aria-current] { border-color: var(--ak-signal-action); color: var(--ak-signal-action); }
+        .jc-nav a:last-child { border: var(--ak-line-hairline) solid var(--jc-line); margin-left: var(--ak-space-3); }
+        .jc-nav-code { color: var(--ak-text-secondary); font: 10px var(--ak-font-mono); }
+        .language-switcher { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; position: relative; width: 96px; height: 52px; border: var(--ak-line-hairline) solid var(--jc-line); flex: 0 0 auto; }
+        .language-switcher::before { content: ""; position: absolute; inset: 3px auto 3px 3px; width: calc(50% - 3px); background: var(--ak-surface-raised); border-bottom: 2px solid var(--ak-signal-action); transition: transform var(--ak-motion-base) var(--ak-ease-emphasized); }
+        .language-switcher.lang-en::before { transform: translateX(100%); }
+        .language-switcher button { z-index: 1; padding: 0; min-width: 44px; min-height: 44px; border: 0; color: var(--ak-text-secondary); background: transparent; font: 12px var(--ak-font-mono); }
+        .language-switcher button.active { color: var(--ak-text-primary); }
+        .jc-control { min-height: 44px; padding: var(--ak-space-2) var(--ak-space-4); border: var(--ak-line-hairline) solid var(--jc-line); background: var(--ak-surface-panel); color: var(--ak-text-primary); display: inline-flex; align-items: center; justify-content: center; gap: var(--ak-space-3); font-size: 12px; transition: background var(--ak-motion-fast), border-color var(--ak-motion-fast); }
+        .jc-control:hover { background: var(--ak-surface-raised); border-color: var(--ak-text-secondary); }
+        .jc-menu-toggle { display: none; }
+        .jc-main, .jc-footer { width: min(1380px, calc(100% - var(--jc-gutter) * 2)); margin-inline: auto; }
+        .jc-main { min-height: 65vh; }
+        .jc-main:focus { outline: none; }
+        .jc-eyebrow { display: flex; align-items: center; gap: var(--ak-space-3); color: var(--ak-text-secondary); font: 11px/1.5 var(--ak-font-mono); letter-spacing: var(--ak-type-wide); }
+        .jc-eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--ak-signal-action); flex: 0 0 auto; }
+        .jc-hero { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: var(--ak-space-6); min-height: min(760px, calc(100svh - var(--jc-nav-height))); padding-block: clamp(3.5rem, 7vw, 7rem); position: relative; }
+        .jc-hero-copy { position: relative; z-index: 1; animation: jc-enter var(--ak-motion-slow) var(--ak-ease-emphasized); }
+        .jc-wordmark { font-family: var(--ak-font-command); font-weight: 900; font-stretch: condensed; font-size: clamp(76px, 7.5vw, 132px); line-height: .9; letter-spacing: -.075em; margin: var(--ak-space-6) 0; }
+        .jc-wordmark > span { display: block; color: var(--ak-text-secondary); }
+        .jc-wordmark .jc-period { color: var(--ak-signal-action); }
+        .jc-hero-lead { font-size: clamp(19px, 1.8vw, 27px); font-weight: 600; letter-spacing: -.03em; }
+        .jc-hero-description { color: var(--ak-text-secondary); font-size: 14px; max-width: 350px; margin-top: var(--ak-space-3); }
+        .jc-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--ak-space-3); margin-top: var(--ak-space-6); }
+        .jc-button { min-height: 48px; display: inline-flex; align-items: center; justify-content: space-between; gap: var(--ak-space-5); padding: var(--ak-space-3) var(--ak-space-5); border: var(--ak-line-hairline) solid var(--jc-line); background: transparent; font-size: 13px; font-weight: 600; transition: background var(--ak-motion-fast), color var(--ak-motion-fast), border-color var(--ak-motion-fast); }
+        .jc-button:hover { background: var(--ak-surface-raised); border-color: var(--ak-text-secondary); }
+        .jc-button:active { translate: 0 1px; }
+        .jc-button-primary { background: var(--ak-signal-action); border-color: var(--ak-signal-action); color: var(--ak-text-inverse) !important; }
+        .jc-button-primary:hover { background: var(--ak-text-primary); border-color: var(--ak-text-primary); }
+        .jc-button-arrow { font: 20px/1 var(--ak-font-sans); }
+        .jc-source-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--ak-space-3); color: var(--ak-text-secondary) !important; font: 11px var(--ak-font-mono); gap: var(--ak-space-2); }
+        .jc-source-link:hover, .jc-text-link:hover { color: var(--ak-signal-info) !important; text-decoration: underline; text-underline-offset: 5px; }
+        .jc-hero-media { min-width: 0; padding-top: 58px; animation: jc-enter var(--ak-motion-slow) var(--ak-ease-emphasized); }
+        .jc-media-heading, .jc-media-caption { display: flex; align-items: center; justify-content: space-between; gap: var(--ak-space-4); font: 10px/1.6 var(--ak-font-mono); letter-spacing: .06em; color: var(--ak-text-secondary); }
+        .jc-media-heading { padding-bottom: var(--ak-space-3); border-bottom: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-media-heading span:first-child { color: var(--ak-signal-info); }
+        .jc-media-link { display: block; position: relative; margin-top: var(--ak-space-3); border: var(--ak-line-hairline) solid var(--jc-line); background: var(--ak-surface-muted); }
+        .jc-media-link img { width: 100%; }
+        .jc-media-link::after { content: "↗"; display: grid; place-items: center; position: absolute; right: 0; bottom: 0; width: 44px; height: 44px; background: var(--ak-surface-canvas); color: var(--ak-signal-action); border-left: var(--ak-line-hairline) solid var(--jc-line); border-top: var(--ak-line-hairline) solid var(--jc-line); transition: background var(--ak-motion-fast), color var(--ak-motion-fast); }
+        .jc-media-link:hover::after { background: var(--ak-signal-action); color: var(--ak-text-inverse); }
+        .jc-media-caption { margin-top: var(--ak-space-3); }
+        .jc-hero-media::after { content: ""; display: block; width: 30%; height: 3px; background: var(--ak-signal-action); margin-top: var(--ak-space-6); margin-left: auto; }
+        .jc-spec-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; border-block: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-spec-strip > div { padding: var(--ak-space-5) 0; display: flex; align-items: baseline; gap: var(--ak-space-3); }
+        .jc-spec-strip > div + div { border-left: var(--ak-line-hairline) solid var(--jc-line); padding-left: var(--ak-space-6); }
+        .jc-spec-strip strong { font: 600 27px/1 var(--ak-font-command); letter-spacing: -.04em; }
+        .jc-spec-strip span { font-size: 12px; color: var(--ak-text-secondary); }
+        .jc-section { padding-block: var(--jc-section-space); border-bottom: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-section-head { display: flex; justify-content: space-between; align-items: end; gap: var(--ak-space-6); margin-bottom: 3rem; }
+        .jc-section h2 { font-size: clamp(26px, 3vw, 42px); line-height: 1.35; font-weight: 650; letter-spacing: -.04em; margin-top: var(--ak-space-5); }
+        .jc-section-description { max-width: 370px; font-size: 14px; color: var(--ak-text-secondary); }
+        .jc-capabilities { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(2rem, 6vw, 6rem); }
+        .jc-capabilities h2 { max-width: 310px; }
+        .jc-capabilities .jc-section-description { margin-top: var(--ak-space-5); }
+        .jc-capability { display: grid; grid-template-columns: 32px 1fr; gap: var(--ak-space-5); padding-block: var(--ak-space-5); border-bottom: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-capability:first-child { padding-top: 0; }
+        .jc-capability:last-child { border-bottom: 0; }
+        .jc-capability > span { color: var(--ak-signal-action); font: 11px var(--ak-font-mono); padding-top: 7px; }
+        .jc-capability h3 { font-size: 17px; font-weight: 600; }
+        .jc-capability p { color: var(--ak-text-secondary); font-size: 13px; margin-top: var(--ak-space-2); }
+        .jc-gallery-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--ak-space-5); align-items: start; }
+        .jc-gallery-grid figure:last-child { margin-top: 4rem; }
+        .jc-gallery-grid .jc-media-caption { align-items: start; }
+        .jc-gallery-grid .jc-media-caption strong { color: var(--ak-text-primary); font: 600 14px var(--ak-font-sans); }
+        .jc-plan-strip { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--ak-space-6); align-items: center; }
+        .jc-plan-options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ak-space-5); }
+        .jc-plan-option { padding-left: var(--ak-space-5); border-left: 2px solid var(--jc-line); }
+        .jc-plan-option:last-child { border-color: var(--ak-signal-accent); }
+        .jc-plan-option strong { font: 600 26px var(--ak-font-command); }
+        .jc-plan-option p { font-size: 13px; color: var(--ak-text-secondary); margin-top: var(--ak-space-2); }
+        .jc-text-link { display: inline-flex; align-items: center; min-height: 44px; gap: var(--ak-space-3); color: var(--ak-signal-info) !important; font-size: 13px; }
+        .jc-cta { margin-block: var(--jc-section-space); border-top: 3px solid var(--ak-signal-action); padding-top: var(--ak-space-6); display: flex; justify-content: space-between; align-items: center; gap: var(--ak-space-6); }
+        .jc-cta h2 { font-size: clamp(24px, 2.5vw, 36px); letter-spacing: -.04em; }
+        .jc-cta p { color: var(--ak-text-secondary); font-size: 13px; margin-top: var(--ak-space-2); }
+        .jc-cta .jc-button { flex: 0 0 auto; }
+        .jc-page-heading { padding-block: clamp(3.5rem, 7vw, 7rem) clamp(2.5rem, 5vw, 4rem); }
+        .jc-page-heading h1 { font-size: clamp(36px, 5.5vw, 76px); font-weight: 650; line-height: 1.15; letter-spacing: -.06em; margin-top: var(--ak-space-6); overflow-wrap: anywhere; }
+        .jc-page-heading > p:last-child { margin-top: var(--ak-space-5); color: var(--ak-text-secondary); font-size: 15px; max-width: 600px; }
+        .jc-editions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ak-space-5); }
+        .jc-edition { padding: clamp(1.5rem, 3vw, 2.5rem); border: var(--ak-line-hairline) solid var(--jc-line); border-top: 3px solid var(--ak-text-secondary); background: var(--ak-surface-panel); display: flex; flex-direction: column; }
+        .jc-edition-pro { border-top-color: var(--ak-signal-action); }
+        .jc-edition-meta { display: flex; justify-content: space-between; align-items: center; gap: var(--ak-space-3); color: var(--ak-text-secondary); font: 10px var(--ak-font-mono); letter-spacing: .08em; }
+        .jc-tag { padding: var(--ak-space-1) var(--ak-space-2); border: var(--ak-line-hairline) solid var(--jc-line); font: 10px var(--ak-font-mono); }
+        .jc-edition h2 { font: 600 56px/1.2 var(--ak-font-command); letter-spacing: -.06em; margin-top: var(--ak-space-6); }
+        .jc-edition-summary { color: var(--ak-text-secondary); font-size: 13px; margin-top: var(--ak-space-2); }
+        .jc-price { margin-top: var(--ak-space-6); display: flex; align-items: baseline; gap: var(--ak-space-3); }
+        .jc-price strong { font: 600 36px var(--ak-font-command); letter-spacing: -.05em; }
+        .jc-price span { color: var(--ak-text-secondary); font-size: 12px; }
+        .jc-feature-list { list-style: none; padding: var(--ak-space-5) 0; margin-block: var(--ak-space-5); border-block: var(--ak-line-hairline) solid var(--jc-line); min-height: 155px; }
+        .jc-feature-list li { display: flex; gap: var(--ak-space-3); color: var(--ak-text-secondary); font-size: 13px; padding-block: var(--ak-space-1); }
+        .jc-feature-list li::before { content: "+"; color: var(--ak-signal-info); font-family: var(--ak-font-mono); }
+        .download-actions { margin-top: auto; display: grid; gap: var(--ak-space-5); }
+        .download-actions .jc-button { width: 100%; }
+        .domestic-download-wrap { display: grid; gap: var(--ak-space-2); }
+        .download-password-note { color: var(--ak-text-secondary); font: 12px var(--ak-font-mono); }
+        .jc-purchase-note { font-size: 12px; color: var(--ak-text-secondary); line-height: 1.8; }
+        .jc-help-strip { display: flex; align-items: center; justify-content: space-between; gap: var(--ak-space-5); padding: var(--ak-space-6) 0; border-bottom: var(--ak-line-hairline) solid var(--jc-line); margin-block: var(--ak-space-6) var(--jc-section-space); }
+        .jc-help-strip h2 { font-size: 17px; font-weight: 600; }
+        .jc-help-strip p { font-size: 13px; color: var(--ak-text-secondary); margin-top: var(--ak-space-2); }
+        .jc-document-layout { display: grid; grid-template-columns: 220px 1fr; gap: var(--ak-space-6); margin-bottom: var(--jc-section-space); }
+        .jc-side-note { border-top: var(--ak-line-hairline) solid var(--jc-line); padding-top: var(--ak-space-5); }
+        .jc-side-note strong { font: 12px var(--ak-font-mono); color: var(--ak-signal-info); }
+        .jc-side-note p { max-width: 190px; margin-top: var(--ak-space-3); font-size: 13px; color: var(--ak-text-secondary); }
+        .jc-directory { border-top: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-directory-item { display: grid; grid-template-columns: 32px 1fr 44px; gap: var(--ak-space-4); align-items: center; padding: var(--ak-space-6) var(--ak-space-3); border-bottom: var(--ak-line-hairline) solid var(--jc-line); transition: background var(--ak-motion-fast); }
+        .jc-directory-item:hover { background: var(--ak-surface-panel); }
+        .jc-directory-number { font: 11px var(--ak-font-mono); color: var(--ak-signal-info); }
+        .jc-directory-item h2 { font-size: 18px; font-weight: 600; line-height: 1.5; }
+        .jc-directory-item p { margin-top: var(--ak-space-2); font-size: 13px; color: var(--ak-text-secondary); }
+        .jc-directory-arrow { display: grid; place-items: center; width: 44px; height: 44px; font-size: 22px; color: var(--ak-text-secondary); transition: background var(--ak-motion-fast), color var(--ak-motion-fast); }
+        .jc-directory-item:hover .jc-directory-arrow { background: var(--ak-signal-action); color: var(--ak-text-inverse); }
+        .jc-recommended { font: 10px var(--ak-font-mono); color: var(--ak-signal-action); display: block; margin-bottom: var(--ak-space-2); }
+        .jc-files { border-top: var(--ak-line-hairline) solid var(--jc-line); padding-top: var(--ak-space-6); margin-bottom: var(--jc-section-space); }
+        .jc-files-header { display: flex; justify-content: space-between; gap: var(--ak-space-5); align-items: baseline; margin-bottom: var(--ak-space-6); }
+        .jc-files-header h2 { font-size: 20px; font-weight: 600; }
+        .jc-files-header p { font-size: 12px; color: var(--ak-text-secondary); }
+        .jc-file-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ak-space-5); }
+        .jc-file { padding: var(--ak-space-6); background: var(--ak-surface-panel); border-left: 2px solid var(--jc-line); }
+        .jc-file h3 { font: 16px var(--ak-font-mono); }
+        .jc-file p { font-size: 13px; color: var(--ak-text-secondary); margin-top: var(--ak-space-3); }
+        .jc-contact-list { border-top: var(--ak-line-hairline) solid var(--jc-line); margin-bottom: var(--jc-section-space); }
+        .jc-contact-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: var(--ak-space-6); align-items: center; padding-block: 2.5rem; border-bottom: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-contact-symbol { display: grid; place-items: center; width: 56px; height: 56px; border: var(--ak-line-hairline) solid var(--jc-line); font: 24px var(--ak-font-command); color: var(--ak-signal-info); }
+        .jc-contact-row h2 { font: 600 30px var(--ak-font-command); letter-spacing: -.03em; }
+        .jc-contact-row p { font-size: 13px; color: var(--ak-text-secondary); margin-top: var(--ak-space-2); }
+        .jc-contact-row .jc-button { min-width: 155px; }
+        .jc-qq-number { color: var(--ak-text-primary); font: 16px var(--ak-font-mono); user-select: all; }
+        .jc-copy-status { min-height: 1.8em; color: var(--ak-signal-info) !important; font-size: 12px !important; }
+        .jc-contact-note { padding-left: var(--ak-space-5); border-left: 2px solid var(--ak-signal-action); margin-bottom: var(--jc-section-space); font-size: 13px; color: var(--ak-text-secondary); max-width: 600px; }
+        .jc-footer { display: grid; grid-template-columns: 1fr auto auto; gap: var(--ak-space-6); border-top: var(--ak-line-hairline) solid var(--jc-line); padding-block: 2.5rem; align-items: center; }
+        .jc-footer-brand { font: 700 19px var(--ak-font-command); letter-spacing: -.04em; }
+        .jc-footer > div > p { color: var(--ak-text-secondary); font-size: 11px; margin-top: var(--ak-space-2); }
+        .jc-footer-links { display: flex; gap: var(--ak-space-5); font-size: 12px; }
+        .jc-footer-links a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; }
+        .jc-footer-links a:hover { color: var(--ak-signal-info); }
+        .jc-copyright { color: var(--ak-text-secondary); font: 10px/1.8 var(--ak-font-mono); }
+        .jc-preview { width: min(1600px, 96vw); max-height: 94dvh; padding: var(--ak-space-4); background: var(--ak-surface-canvas); color: var(--ak-text-primary); border: var(--ak-line-hairline) solid var(--jc-line); }
+        .jc-preview::backdrop { background: rgba(0,0,0,.88); }
+        .jc-preview-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--ak-space-4); padding-bottom: var(--ak-space-3); font: 11px/1.5 var(--ak-font-mono); }
+        .jc-preview img { width: 100%; max-height: calc(94dvh - 100px); object-fit: contain; }
+        .jc-preview-open { overflow: hidden; }
+        @keyframes jc-enter { from { opacity: .2; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+
+        @media (max-width: 1180px) {
+            .jc-header-actions { gap: var(--ak-space-4); }
+            .jc-nav a { padding-inline: var(--ak-space-3); }
+            .jc-nav-code { display: none; }
+            .jc-preview { padding: var(--ak-space-2); }
+            .jc-preview-bar { font-size: 10px; }
+        }
+        @media (max-width: 900px) {
+            .jc-header { gap: 1rem; flex-wrap: wrap; }
+            .jc-header-actions { gap: .75rem; }
+            .jc-nav { flex-wrap: wrap; }
+            .jc-js .jc-menu-toggle:not([hidden]) { display: inline-flex; }
+            .jc-js .jc-nav { display: none; position: absolute; top: 100%; left: var(--jc-gutter); right: var(--jc-gutter); padding: 1rem; background: #121414; border: 1px solid var(--jc-line); box-shadow: 0 20px 40px #0006; }
+            .jc-js .jc-nav.is-open { display: grid; grid-template-columns: 1fr 1fr; }
+            .jc-nav a { min-height: 52px; }
+            .jc-nav a:last-child { margin-left: 0; }
+        }
+        @media (max-width: 600px) {
+            .jackal-site { --jc-gutter: 20px; --jc-nav-height: 80px; }
+            .jc-header { gap: 8px; }
+            .jc-brand { font-size: 16px; gap: 8px; }
+            .jc-brand-mark { width: 27px; height: 34px; }
+            .jc-header-actions { gap: 8px; }
+            .jc-footer { grid-template-columns: 1fr; gap: 1rem; }
+            .jc-footer-links { flex-wrap: wrap; }
+            .jc-preview { padding: 8px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .jackal-site *, .jackal-site *::before, .jackal-site *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+    </style>
+    <style>
+        .jackal-site { --ak-signal-action: #ffe135; --jc-paper: #e9e9e2; --jc-ink: #121414; --jc-section-space: clamp(6rem, 12vw, 12rem); background-image: none; }
+        .jc-main { width: 100%; margin: 0; overflow: clip; }
+        .jc-header { background: #121414; }
+        .jc-brand, .jc-footer-brand { letter-spacing: 0; }
+        .jc-brand small, .jc-nav-code { display: none; }
+        .jc-scene { --jc-scene-bg: #121414; --jc-scene-fg: #ecece6; --jc-ghost: .045; position: relative; isolation: isolate; padding-inline: max(var(--jc-gutter), calc((100% - 1360px) / 2)); margin: 0; border: 0; background: var(--jc-scene-bg); color: var(--jc-scene-fg); }
+        .jc-scene > :where(:not(.jc-art):not(.jc-backdrop-word):not(.jc-wipe)) { position: relative; z-index: 2; }
+        .jc-light { --jc-scene-bg: var(--jc-paper); --jc-scene-fg: var(--jc-ink); --ak-surface-panel: #deded6; --ak-surface-raised: #d2d3c9; --ak-text-primary: #121414; --ak-text-secondary: #505650; --ak-signal-info: #205c63; --ak-focus-color: #205c63; --jc-line: #bfc2b8; --jc-ghost: .055; color-scheme: light; }
+        .jc-dark { --ak-surface-panel: #1b1e1d; --ak-surface-raised: #292d2a; --ak-text-primary: #ecece6; --ak-text-secondary: #a8ada5; --jc-line: #393d38; color-scheme: dark; }
+        .jc-backdrop-word { position: absolute; z-index: 0; top: 0; left: -.02em; max-width: none; color: currentColor; opacity: var(--jc-ghost); font: 900 clamp(100px, 18vw, 340px)/.85 var(--ak-font-command); letter-spacing: 0; white-space: nowrap; user-select: none; pointer-events: none; }
+        .jc-art { position: absolute; pointer-events: none; z-index: 0; }
+        .jc-geometry { width: min(62vw, 950px); aspect-ratio: 1; right: -12%; top: 2%; border: 1px solid currentColor; border-radius: 50%; opacity: .15; transform: translate3d(0, var(--jc-drift, 0px), 0) rotate(var(--jc-rotation, -24deg)); }
+        .jc-geometry::before { content: ""; position: absolute; inset: 12%; border: 1px solid currentColor; border-radius: 50%; }
+        .jc-geometry::after { content: ""; position: absolute; inset: 25% -25%; border-block: 1px solid currentColor; background: repeating-linear-gradient(0deg, transparent 0 18px, currentColor 18px 19px); transform: rotate(-34deg); mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent); }
+        .jc-point-field { width: 58%; height: 66%; left: -4%; bottom: 0; opacity: .2; background-image: radial-gradient(currentColor 1px, transparent 1.5px); background-size: 13px 13px; mask-image: linear-gradient(0deg, transparent, #000 45%, transparent); transform: skewY(-14deg) translateY(var(--jc-drift, 0px)); }
+        .jc-symbol { width: clamp(180px, 33vw, 540px); aspect-ratio: 1; right: 2%; bottom: -7%; opacity: .055; background: currentColor; mask: var(--jc-symbol) center / contain no-repeat; mask-image: linear-gradient(#000, transparent), var(--jc-symbol); mask-composite: intersect; transform: translateY(var(--jc-drift, 0px)) rotate(-12deg); }
+        .jc-symbol-command { --jc-symbol: url('/img/jackalclient/decor/command.png'); }
+        .jc-symbol-client { --jc-symbol: url('/img/jackalclient/decor/client.png'); }
+        .jc-symbol-docs { --jc-symbol: url('/img/jackalclient/decor/documentation.png'); }
+        .jc-symbol-contact { --jc-symbol: url('/img/jackalclient/decor/conversation.png'); }
+        .jc-wipe { position: absolute; inset: -1px 0 auto; width: 100%; height: clamp(60px, 8vw, 120px); z-index: 1; pointer-events: none; }
+        .jc-scroll-progress { position: fixed; inset: 0 auto auto 0; height: 3px; width: 100%; background: var(--ak-signal-action); transform: scaleX(var(--jc-page-progress, 0)); transform-origin: left; z-index: 100; pointer-events: none; }
+        .jc-motion .jc-hero-media { transform: none; }
+        .jc-motion .jc-gallery-grid figure:first-child { translate: 0 calc(var(--jc-drift, 0px) * -.6); }
+        .jc-motion .jc-gallery-grid figure:last-child { translate: 0 calc(var(--jc-drift, 0px) * .8); }
+        .jc-motion .jc-cta .jc-backdrop-word, .jc-motion .jc-page-heading .jc-backdrop-word { translate: calc(var(--jc-drift, 0px) * -1.5) 0; }
+        .jc-hero { min-height: calc(100svh - var(--jc-nav-height)); grid-template-columns: .9fr 1.1fr; gap: 3%; padding-block: clamp(5rem, 9vw, 9rem); }
+        .jc-hero-copy, .jc-hero-media { animation: none; }
+        .jc-hero .jc-backdrop-word { top: 4%; font-size: 23vw; }
+        .jc-wordmark { font-size: clamp(90px, 10.5vw, 182px); letter-spacing: 0; margin: 0 0 2rem; line-height: .9; }
+        .jc-wordmark > span { display: block; margin: .13em 0 0; color: currentColor; }
+        .jc-wordmark .jc-period { color: var(--ak-signal-action); }
+        .jc-hero-lead { font-size: clamp(24px, 2.25vw, 36px); line-height: 1.5; }
+        .jc-hero-description { max-width: 410px; font-size: 15px; margin-top: 1rem; }
+        .jc-hero-media { padding-top: 3rem; transform: rotate(-3deg); transform-origin: center; }
+        .jc-hero-media .jc-media-link { box-shadow: 20px 24px 0 #00000018; }
+        .jc-media-link { border: 1px solid var(--jc-line); }
+        .jc-media-link img { transition: transform .45s var(--ak-ease-emphasized); }
+        .jc-media-link:hover img { transform: scale(1.025); }
+        .jc-media-heading, .jc-media-caption, .jc-edition-meta { font: 13px/1.6 var(--ak-font-sans); letter-spacing: 0; }
+        .jc-media-caption { margin-top: 1rem; }
+        .jc-source-link { font: 13px var(--ak-font-sans); }
+        .jc-button { min-height: 52px; font-size: 14px; }
+        .jc-button-primary:hover { background: var(--jc-scene-fg, #ecece6); border-color: var(--jc-scene-fg, #ecece6); color: var(--jc-scene-bg, #121414) !important; }
+        .jc-spec-strip { padding-block: 9rem 3rem; gap: 2rem; border-bottom: 1px solid var(--jc-line); }
+        .jc-spec-strip > div { flex-direction: column; align-items: start; gap: 1rem; }
+        .jc-spec-strip strong { font-size: clamp(32px, 4vw, 64px); letter-spacing: 0; white-space: nowrap; }
+        .jc-spec-strip span { font-size: 14px; }
+        .jc-section h2 { font-size: clamp(34px, 4.4vw, 66px); line-height: 1.22; letter-spacing: -.055em; margin-top: 0; }
+        .jc-section-description { font-size: 16px; line-height: 1.9; }
+        .jc-capabilities { grid-template-columns: .9fr 1.1fr; gap: 8%; }
+        .jc-capabilities > div:first-of-type { align-self: start; position: sticky; top: 5rem; }
+        .jc-capabilities h2 { max-width: 480px; }
+        .jc-heading-line { display: block; }
+        .jc-capability { grid-template-columns: clamp(95px, 10vw, 150px) 1fr; align-items: center; gap: 1.5rem; min-height: 210px; padding-block: 2rem; }
+        .jc-capability:first-child { padding-top: 2rem; }
+        .jc-capability > span, .jc-directory-number { position: relative; color: currentColor; font: 900 clamp(90px, 10vw, 155px)/.85 var(--ak-font-command); letter-spacing: 0; opacity: .13; padding: 0; transition: opacity .25s, transform .25s; }
+        .jc-capability > span::before, .jc-directory-number::before { content: "#"; position: absolute; left: -.65em; top: .25em; color: var(--ak-signal-action); font-size: .4em; opacity: 0; transform: translateX(-15px); transition: opacity .25s, transform .25s; }
+        .jc-capability:is(:hover, :focus-within) > span, .jc-directory-item:is(:hover, :focus-visible) .jc-directory-number { opacity: .95; transform: translateX(6px); }
+        .jc-capability:is(:hover, :focus-within) > span::before, .jc-directory-item:is(:hover, :focus-visible) .jc-directory-number::before { opacity: 1; transform: none; }
+        .jc-capability h3 { font-size: clamp(20px, 1.9vw, 28px); line-height: 1.4; }
+        .jc-capability p { font-size: 15px; line-height: 1.9; }
+        .jc-gallery { padding-top: clamp(8rem, 14vw, 14rem); }
+        .jc-section-head { margin-bottom: 5rem; gap: 4rem; }
+        .jc-section-head h2 { max-width: 650px; }
+        .jc-gallery-grid { gap: 5%; }
+        .jc-gallery-grid figure:last-child { margin-top: 9rem; }
+        .jc-plan-strip { min-height: 650px; gap: 8%; }
+        .jc-plan-options { gap: 2rem; }
+        .jc-plan-option { border-left: 0; border-top: 2px solid var(--jc-line); padding: 2rem 0 0; }
+        .jc-plan-option:last-child { border-color: var(--jc-scene-fg); }
+        .jc-plan-option strong { font-size: clamp(48px, 6vw, 86px); font-weight: 800; letter-spacing: 0; }
+        .jc-plan-option p { font-size: 15px; }
+        .jc-text-link { margin-top: 1rem; font-size: 15px; }
+        .jc-cta { min-height: 500px; padding-block: 8rem; gap: 4rem; }
+        .jc-cta h2 { max-width: 830px; font-size: clamp(34px, 4.6vw, 72px); line-height: 1.25; }
+        .jc-cta p { font-size: 16px; margin-top: 1.5rem; }
+        .jc-page-heading { min-height: 70svh; display: flex; flex-direction: column; justify-content: center; padding-block: 8rem; }
+        .jc-page-heading .jc-backdrop-word { top: 5%; }
+        .jc-page-heading h1 { font-size: clamp(48px, 6.8vw, 106px); max-width: 1120px; line-height: 1.12; margin: 0; }
+        .jc-page-heading > p:last-child { font-size: 17px; margin-top: 2rem; }
+        .jc-editions { padding-block: var(--jc-section-space); gap: 5%; }
+        .jc-edition { background: transparent; border: 0; padding: 2rem 0; }
+        .jc-edition + .jc-edition { padding-left: 10%; border-left: 1px solid var(--jc-line); }
+        .jc-edition h2 { font-size: clamp(80px, 10vw, 148px); font-weight: 850; line-height: 1; letter-spacing: 0; }
+        .jc-tag { font: 13px var(--ak-font-sans); }
+        .jc-edition-summary, .jc-feature-list { font-size: 15px; }
+        .jc-price strong { font-size: 52px; letter-spacing: 0; }
+        .jc-edition .jc-button { border-color: currentColor; }
+        .jc-help-strip { min-height: 420px; padding-block: 7rem; }
+        .jc-help-strip h2 { font-size: clamp(28px, 3.6vw, 54px); line-height: 1.25; }
+        .jc-help-strip p { font-size: 16px; max-width: 640px; }
+        .jc-document-layout { padding-block: var(--jc-section-space); grid-template-columns: 1fr 3fr; gap: 7%; }
+        .jc-side-note { align-self: start; position: sticky !important; top: 4rem; }
+        .jc-side-note strong { font: 800 32px/1 var(--ak-font-command); letter-spacing: 0; }
+        .jc-side-note p { font-size: 15px; line-height: 1.9; }
+        .jc-directory-item { min-height: 220px; grid-template-columns: clamp(110px, 11vw, 160px) 1fr 44px; gap: 2rem; padding-block: 2rem; }
+        .jc-directory-item h2 { font-size: clamp(24px, 2.6vw, 38px); }
+        .jc-directory-item p { font-size: 15px; line-height: 1.8; }
+        .jc-directory-arrow { font-size: 36px; }
+        .jc-recommended { display: inline-block; font: 14px var(--ak-font-sans); letter-spacing: 0; color: var(--ak-text-inverse); background: var(--ak-signal-action); padding: .25rem .5rem; }
+        .jc-files { padding-block: var(--jc-section-space); }
+        .jc-files-header { margin-bottom: 4rem; align-items: end; }
+        .jc-files-header h2 { font-size: clamp(32px, 4vw, 60px); }
+        .jc-files-header p { font-size: 15px; }
+        .jc-file { background: transparent; border: 0; border-top: 1px solid var(--jc-line); padding: 2rem 0; }
+        .jc-file h3 { font: 800 clamp(26px, 3vw, 42px) var(--ak-font-command); letter-spacing: 0; }
+        .jc-file p { font-size: 15px; max-width: 480px; }
+        .jc-contact-list { padding-block: var(--jc-section-space); }
+        .jc-contact-row { min-height: 240px; grid-template-columns: 150px 1fr auto; gap: 3rem; padding-block: 3rem; }
+        .jc-contact-symbol { font: 900 100px/1 var(--ak-font-command); letter-spacing: 0; color: currentColor; opacity: .15; transition: opacity .25s; }
+        .jc-contact-row:is(:hover, :focus-within) .jc-contact-symbol { opacity: .9; }
+        .jc-contact-row h2 { font: 800 clamp(32px, 4vw, 58px)/1.2 var(--ak-font-command); letter-spacing: 0; }
+        .jc-contact-row p { font-size: 15px; }
+        .jc-contact-note { max-width: none; border: 0; padding-block: 3rem; font-size: 15px; }
+        .jc-footer { width: 100%; padding: 4rem max(var(--jc-gutter), calc((100% - 1360px) / 2)); background: #121414; border-top-color: #393d38; }
+        .jc-footer-brand { font-size: 28px; }
+        .jc-footer > div > p, .jc-footer-links, .jc-copyright { font-size: 13px; letter-spacing: 0; }
+
+        @media (max-width: 1000px) {
+            .jc-hero { grid-template-columns: 1fr; padding-block: 5rem; gap: 3rem; }
+            .jc-wordmark { font-size: clamp(90px, 18vw, 155px); }
+            .jc-wordmark > span { display: block; }
+            .jc-hero-media { width: 92%; margin: 0 auto; padding-top: 0; }
+            .jc-capabilities { grid-template-columns: 1fr; gap: 4rem; }
+            .jc-capabilities > div:first-of-type { position: relative; top: auto; }
+            .jc-capabilities h2 { max-width: 700px; }
+            .jc-capability { grid-template-columns: 130px 1fr; }
+            .jc-capability > span { font-size: 130px; }
+            .jc-section-head { flex-direction: column; align-items: start; gap: 2rem; }
+            .jc-section-description { max-width: 580px; }
+            .jc-plan-strip { grid-template-columns: 1fr; gap: 4rem; }
+            .jc-document-layout { grid-template-columns: 1fr; gap: 3rem; }
+            .jc-side-note { position: relative !important; top: auto; max-width: 540px; }
+            .jc-directory-item { grid-template-columns: 130px 1fr 44px; }
+            .jc-contact-row { grid-template-columns: 100px 1fr; gap: 2rem; }
+            .jc-contact-row .jc-button { grid-column: 2; justify-self: start; }
+        }
+        @media (max-width: 600px) {
+            .jackal-site { --jc-section-space: 6rem; }
+            .jc-header { padding-inline: 16px; }
+            .jc-scene { padding-inline: 24px; }
+            .jc-backdrop-word { font-size: 32vw; top: 1rem; }
+            .jc-hero .jc-backdrop-word { font-size: 33vw; }
+            .jc-hero { padding-block: 5rem 4rem; }
+            .jc-wordmark { font-size: clamp(78px, 23vw, 125px); }
+            .jc-hero-lead { font-size: 23px; }
+            .jc-hero-description { font-size: 14px; }
+            .jc-hero-media { width: 98%; transform: rotate(-2deg); }
+            .jc-media-heading, .jc-media-caption { flex-wrap: wrap; gap: .5rem; font-size: 12px; }
+            .jc-geometry { width: 120%; right: -40%; }
+            .jc-point-field { width: 90%; }
+            .jc-symbol { width: 72%; }
+            .jc-spec-strip { grid-template-columns: 1fr; gap: 1.5rem; }
+            .jc-spec-strip > div { flex-direction: row; align-items: center; justify-content: space-between; padding: 0; gap: 1rem; }
+            .jc-spec-strip > div + div { border: 0; padding-left: 0; }
+            .jc-spec-strip strong { font-size: 36px; }
+            .jc-spec-strip span { font-size: 13px; }
+            .jc-section h2 { font-size: 35px; }
+            .jc-capability { grid-template-columns: 83px 1fr; gap: 1rem; min-height: 230px; }
+            .jc-capability > span, .jc-directory-number { font-size: 88px; }
+            .jc-capability h3 { font-size: 21px; }
+            .jc-capability p { font-size: 14px; }
+            .jc-gallery-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .jc-gallery-grid figure:last-child { margin-top: 0; }
+            .jc-plan-options { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+            .jc-plan-option strong { font-size: 56px; }
+            .jc-cta { min-height: 480px; flex-direction: column; align-items: start; justify-content: center; gap: 2rem; padding-block: 6rem; }
+            .jc-cta h2 { font-size: 38px; }
+            .jc-page-heading { min-height: 620px; padding-block: 7rem; }
+            .jc-page-heading h1 { font-size: clamp(42px, 12vw, 68px); }
+            .jc-page-heading > p:last-child { font-size: 16px; }
+            .jc-editions { grid-template-columns: 1fr; gap: 4rem; }
+            .jc-edition + .jc-edition { border-left: 0; border-top: 1px solid var(--jc-line); padding: 4rem 0 0; }
+            .jc-edition h2 { font-size: 100px; }
+            .jc-directory-item { grid-template-columns: 80px 1fr; gap: 1rem; }
+            .jc-directory-item h2 { font-size: 24px; }
+            .jc-directory-item p { font-size: 14px; }
+            .jc-directory-arrow { display: none; }
+            .jc-files-header { display: block; }
+            .jc-file-grid { grid-template-columns: 1fr; }
+            .jc-file h3 { font-size: 30px; }
+            .jc-contact-row { grid-template-columns: 64px 1fr; gap: 1rem; }
+            .jc-contact-symbol { font-size: 60px; }
+            .jc-contact-row h2 { font-size: 36px; }
+            .jc-help-strip { flex-direction: column; justify-content: center; align-items: start; gap: 2rem; }
+            .jc-footer { padding: 3rem 24px 7rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .jc-motion .jc-gallery-grid figure, .jc-motion .jc-cta .jc-backdrop-word, .jc-motion .jc-page-heading .jc-backdrop-word { translate: none; }
+            .jc-motion .jc-hero-media { transform: rotate(-3deg); }
+            .jc-geometry, .jc-point-field, .jc-symbol { transform: none; }
+            .jc-wipe { display: none; }
+            .jc-capability > span::before, .jc-directory-number::before { transform: none; }
+        }
+    </style>
+    <style>
+        .jc-main, .jc-footer { width: 100%; max-width: none; margin-inline: 0; }
+        .jc-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        .jc-display { font: 800 clamp(64px, 7.8vw, 144px)/.98 var(--ak-font-command); letter-spacing: 0; text-wrap: balance; }
+        .jc-title-track { position: relative; }
+        .jc-motion [data-jc-title] { opacity: var(--jc-title-opacity, 1); transform: translate3d(var(--jc-title-x, 0px), var(--jc-title-y, 0px), 0); }
+        .jc-motion .jc-backdrop-word { opacity: calc(var(--jc-ghost) * var(--jc-word-opacity, 1)); transform: translate3d(var(--jc-word-x, 0px), 0, 0); translate: none; }
+        .jc-letter-word { display: inline-block; white-space: nowrap; }
+        .jc-glyph { display: inline-block; }
+        .jc-intro, .jc-desktop, .jc-custom { padding: 0; }
+        .jc-intro-stage, .jc-custom-stage { position: relative; isolation: isolate; min-height: 100svh; padding-inline: max(var(--jc-gutter), calc((100% - 1480px) / 2)); }
+        .jc-intro-stage { padding-block: clamp(6rem, 13svh, 10rem) 6rem; }
+        .jc-intro-copy { position: relative; z-index: 2; width: 56%; max-width: 780px; }
+        .jc-intro h1 { font-size: clamp(68px, 6.7vw, 128px); }
+        .jc-intro-lead { font-size: clamp(20px, 1.65vw, 28px); font-weight: 600; line-height: 1.5; margin-top: 2rem; max-width: 600px; }
+        .jc-intro-description { font-size: 16px; line-height: 1.85; max-width: 540px; margin-top: 1.25rem; color: var(--ak-text-secondary); }
+        .jc-intro-signoff { font-size: 18px; font-weight: 600; margin-top: 1.5rem; }
+        .jc-intro .jc-actions { margin-top: 2rem; }
+        .jc-intro-art { position: absolute; z-index: 0; width: 78%; right: -10%; top: 8%; height: 85%; pointer-events: none; }
+        .jc-intro-art img { width: 100%; height: 100%; object-fit: contain; opacity: .3; filter: blur(30px); mask-image: linear-gradient(90deg, transparent, #000 23%, #000 77%, transparent), linear-gradient(0deg, transparent, #000 23%, #000 77%, transparent); mask-composite: intersect; }
+        .jc-motion .jc-intro-art img { animation: jc-intro-image-in 2s cubic-bezier(.22, 1, .36, 1) both; }
+        .jc-intro .jc-backdrop-word { top: 4%; font-size: 20vw; }
+        .jc-motion .jc-intro { min-height: 165svh; }
+        .jc-motion .jc-intro-stage { position: sticky; top: 0; }
+        .jc-desktop-stage { position: relative; }
+        .jc-desktop-cheat, .jc-modules-panel { position: relative; isolation: isolate; min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 8rem var(--jc-gutter); overflow: clip; }
+        .jc-desktop-cheat { background: var(--jc-paper); color: var(--jc-ink); }
+        .jc-desktop-copy { position: relative; z-index: 2; text-align: center; max-width: 1100px; }
+        .jc-desktop-copy p { font-size: clamp(20px, 2.2vw, 34px); line-height: 1.55; margin-top: 1.5rem; }
+        .jc-glass-plane { position: absolute; inset: 12% 10%; border-radius: clamp(28px, 4vw, 72px); overflow: hidden; background: linear-gradient(130deg, #c7edff, #75c8f5 45%, #41acf0 75%, #bce9ff); border: 1px solid #ffffffb3; box-shadow: inset 0 2px 1px #ffffffe6, inset 0 -2px 3px #206b9a30, 0 30px 80px #2276a518; }
+        .jc-glass-plane::after { content: ""; position: absolute; inset: 0; background: linear-gradient(125deg, #ffffff70, transparent 45%, #ffffff20); border-radius: inherit; box-shadow: inset 0 0 50px #ffffff60; }
+        .jc-glass-plane canvas { display: block; width: 100%; height: 100%; filter: blur(2px); }
+        .jc-motion-toggle { position: absolute; z-index: 3; bottom: 2rem; right: var(--jc-gutter); background: #ffffff80; border-color: #1c52676b; color: #163744; }
+        .jc-modules-panel { color: #fff; background: #090c10; }
+        .jc-modules-image, .jc-modules-vignette { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .jc-modules-panel .jc-modules-image, .jc-video .jc-video-background { height: 100%; }
+        .jc-modules-vignette { background: radial-gradient(ellipse at 62% 45%, #050a1230, #05080ddd 85%), linear-gradient(90deg, #05090fba, #05090f18); }
+        .jc-modules-copy { position: relative; z-index: 2; width: min(1150px, 100%); margin-inline: auto; }
+        .jc-modules-copy h2 { max-width: 11ch; }
+        .jc-modules-copy p { font-size: clamp(18px, 1.9vw, 28px); line-height: 1.8; max-width: 830px; margin-top: 2rem; color: #f1f3f5; }
+        .jc-motion .jc-desktop { height: 330svh; }
+        .jc-motion .jc-desktop-stage { position: sticky; top: 0; height: 100svh; overflow: clip; }
+        .jc-motion .jc-desktop-cheat, .jc-motion .jc-modules-panel { position: absolute; inset: 0; min-height: 0; }
+        .jc-motion .jc-desktop-cheat { opacity: var(--jc-cheat-opacity, 1); transform: scale(var(--jc-glass-scale, 1)); }
+        .jc-motion .jc-modules-panel { pointer-events: none; background: transparent; }
+        .jc-motion .jc-modules-image, .jc-motion .jc-modules-vignette { opacity: 0; transition: opacity 2s cubic-bezier(.22, 1, .36, 1); }
+        .jc-motion .is-modules .jc-modules-image, .jc-motion .is-modules .jc-modules-vignette { opacity: 1; }
+        .jc-motion .jc-modules-copy { opacity: var(--jc-modules-opacity, 0); transform: translateY(var(--jc-modules-y, 35px)); }
+        .jc-custom-stage { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 5%; padding-block: 10rem; }
+        .jc-custom-copy { position: relative; z-index: 2; min-width: 0; max-width: 640px; }
+        .jc-custom h2 { font-size: clamp(60px, 6.7vw, 114px); }
+        .jc-custom-copy p { font-size: 17px; line-height: 1.9; color: var(--ak-text-secondary); margin-top: 1.5rem; }
+        .jc-custom-copy .jc-custom-lead { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.5; color: var(--jc-ink); }
+        .jc-custom-copy .jc-custom-signoff { color: var(--jc-ink); font-weight: 600; }
+        .jc-custom-media { position: relative; z-index: 2; min-width: 0; }
+        .jc-custom-media .jc-media-link { border: 0; }
+        .jc-custom-media img { transform: none !important; }
+        .jc-custom .jc-backdrop-word { top: 7%; font-size: 18vw; }
+        .jc-motion .jc-custom { min-height: 150svh; }
+        .jc-motion .jc-custom-stage { position: sticky; top: 0; }
+        .jc-motion .jc-custom-media { transform: translateY(var(--jc-custom-y, 0px)) scale(var(--jc-custom-scale, 1)); }
+        .jc-video { min-height: 120svh; padding-block: clamp(8rem, 14vw, 14rem); text-align: center; isolation: isolate; }
+        .jc-video-background { inset: 0; width: 100%; height: 100%; max-width: none !important; object-fit: cover; opacity: .65; }
+        .jc-video::after { content: ""; position: absolute; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(#0a0d1580, #0a0d1538 50%, #0a0d15d9); }
+        .jc-video h2 { font-size: clamp(58px, 7.3vw, 132px); margin-bottom: 4rem; }
+        .jc-video-player { width: min(1100px, 100%); margin-inline: auto; aspect-ratio: 16 / 9; background: #080b10; border: 1px solid #ffffff3b; }
+        .jc-video-player iframe { width: 100%; height: 100%; display: block; border: 0; }
+        .jc-video-fallback { margin-top: 1rem; }
+        .jc-video-fallback .jc-text-link { color: #eef1f5 !important; background: #0a0d1580; padding-inline: 1rem; }
+        .jc-plan-strip { min-height: 85svh; }
+        .jc-finale { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 3rem; padding-block: 8rem; }
+        .jc-finale h2 { max-width: 13ch; }
+        .jc-finale .jc-button { min-width: 210px; min-height: 60px; font-size: 17px; }
+        .jc-finale .jc-backdrop-word { top: 10%; }
+        @keyframes jc-intro-image-in { from { opacity: 0; } to { opacity: .3; } }
+        @media (max-width: 900px) {
+            .jc-intro-copy { width: 80%; }
+            .jc-intro h1 { font-size: clamp(72px, 10vw, 110px); }
+            .jc-intro-art { width: 110%; right: -35%; top: 15%; }
+            .jc-custom-stage { grid-template-columns: minmax(0, 1fr); gap: 3rem; min-height: auto; padding-block: 8rem; }
+            .jc-custom-copy { max-width: 740px; }
+            .jc-motion .jc-custom-stage { position: relative; }
+            .jc-motion .jc-custom { min-height: auto; }
+            .jc-glass-plane { inset: 16% 5%; }
+        }
+        @media (max-width: 600px) {
+            .jc-intro-stage { padding: 8rem 24px 6rem; }
+            .jc-intro-copy { width: 100%; }
+            .jc-intro h1 { font-size: clamp(62px, 17vw, 96px); max-width: 12ch; }
+            .jc-intro-lead { font-size: 21px; }
+            .jc-intro-description { font-size: 15px; }
+            .jc-intro-art { width: 150%; right: -60%; top: 0; }
+            .jc-intro-art img { filter: blur(22px); }
+            .jc-motion .jc-intro { min-height: auto; }
+            .jc-motion .jc-intro-stage { position: relative; }
+            .jc-desktop-cheat, .jc-modules-panel { padding: 6rem 24px; }
+            .jc-desktop .jc-display { font-size: clamp(56px, 16vw, 88px); }
+            .jc-desktop-copy p { font-size: 22px; }
+            .jc-glass-plane { inset: 15% 16px; border-radius: 32px; }
+            .jc-motion .jc-desktop { height: 320svh; }
+            .jc-modules-copy p { font-size: 17px; }
+            .jc-modules-image { object-position: 58% center; }
+            .jc-custom-stage { padding: 7rem 24px; }
+            .jc-custom h2 { font-size: clamp(48px, 15vw, 60px); }
+            .jc-custom-copy p { font-size: 16px; }
+            .jc-video { min-height: 95svh; padding-block: 7rem; }
+            .jc-video h2 { font-size: 60px; margin-bottom: 2.5rem; }
+            .jc-video-player { width: calc(100% + 16px); margin-inline: -8px; }
+            .jc-video-fallback .jc-text-link { font-size: 13px; }
+            .jc-finale { min-height: 85svh; padding-block: 7rem; }
+            .jc-finale h2 { font-size: clamp(58px, 17vw, 88px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .jc-motion [data-jc-title], .jc-motion .jc-backdrop-word, .jc-motion .jc-custom-media { transform: none; opacity: 1; }
+            .jc-motion .jc-backdrop-word { opacity: var(--jc-ghost); }
+            .jc-intro-art img { animation: none; opacity: .3; }
         }
     </style>
 </head>
-<body>
-    <canvas id="bgCanvas" class="dynamic-background"></canvas>
-    
-    <!-- Config Panel -->
-    <div class="config-panel" id="configPanel">
-        <div class="config-toggle" id="configToggle" title="Settings">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+<body class="jackal-site" data-ak-ui data-ak-intensity="terminal" data-path="{{ .RelPermalink }}">
+    <div class="jc-scroll-progress" aria-hidden="true"></div>
+    <a class="jc-skip" href="#main" data-i18n="site.skip">跳到主要内容</a>
+    <header class="jc-header">
+        <a class="jc-brand" href="{{ "jackalclient/" | relURL }}" aria-label="JackalClient">
+            <span class="jc-brand-mark" aria-hidden="true">J<span>／</span></span>
+            <span>JACKAL<span class="jc-brand-light">CLIENT</span><small>WINDOWS UTILITY</small></span>
+        </a>
+        <div class="jc-header-actions">
+            <div class="language-switcher" role="group" aria-label="选择语言 / Language">
+                <button type="button" data-lang-switch="zh" aria-pressed="true" aria-label="切换到中文">中</button>
+                <button type="button" data-lang-switch="en" aria-pressed="false" aria-label="Switch to English">EN</button>
+            </div>
+            <button class="jc-menu-toggle jc-control" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNavigation" data-i18n="nav.menu" hidden>菜单</button>
+            <nav class="jc-nav" id="siteNavigation" aria-label="主要导航" data-i18n-attr="aria-label:nav.label">
+                {{ $current := .RelPermalink }}
+                {{ range slice (dict "url" "jackalclient/" "key" "nav.home" "label" "概览" "code" "01") (dict "url" "jackalclient/docs/" "key" "nav.docs" "label" "文档" "code" "02") (dict "url" "jackalclient/contact/" "key" "nav.contact" "label" "联系" "code" "03") (dict "url" "jackalclient/download/" "key" "nav.download" "label" "获取客户端" "code" "04") }}
+                <a href="{{ .url | relURL }}"{{ if eq $current (.url | relURL) }} aria-current="page"{{ end }}><span class="jc-nav-code" aria-hidden="true">{{ .code }}</span><span data-i18n="{{ .key }}">{{ .label }}</span>{{ if eq .key "nav.download" }}<span aria-hidden="true">↗</span>{{ end }}</a>
+                {{ end }}
+            </nav>
         </div>
-        <div class="config-content">
-            <div class="config-row">
-                <span class="config-label">Sort Mode</span>
-                <div class="custom-select-wrapper">
-                    <div class="custom-select" id="sortSelectCustom">
-                        <div class="custom-select__trigger">
-                            <span>Length</span>
-                            <div class="arrow"></div>
-                        </div>
-                        <div class="custom-select__options">
-                            <span class="custom-option selected" data-value="width">Length</span>
-                            <span class="custom-option" data-value="alphabetical">Alphabet</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="config-row">
-                <span class="config-label">Color Mode</span>
-                <div class="custom-select-wrapper">
-                    <div class="custom-select" id="colorSelectCustom">
-                        <div class="custom-select__trigger">
-                            <span>Rainbow</span>
-                            <div class="arrow"></div>
-                        </div>
-                        <div class="custom-select__options">
-                            <span class="custom-option selected" data-value="rainbow">Rainbow</span>
-                            <span class="custom-option" data-value="rainbow-flow">Rainbow Flow</span>
-                            <span class="custom-option" data-value="astolfo">Astolfo</span>
-                            <span class="custom-option" data-value="gradient-purple">Grad. Purple</span>
-                            <span class="custom-option" data-value="gradient-blue">Grad. Blue</span>
-                            <span class="custom-option" data-value="gradient-fire">Grad. Fire</span>
-                            <span class="custom-option" data-value="gradient-ocean">Grad. Ocean</span>
-                            <span class="custom-option" data-value="gradient-nature">Grad. Nature</span>
-                            <span class="custom-option" data-value="gradient-cyber">Grad. Cyber</span>
-                            <span class="custom-option" data-value="gradient-sunset">Grad. Sunset</span>
-                            <span class="custom-option" data-value="static-purple">Static Purple</span>
-                            <span class="custom-option" data-value="static-red">Static Red</span>
-                            <span class="custom-option" data-value="static-blue">Static Blue</span>
-                            <span class="custom-option" data-value="static-green">Static Green</span>
-                            <span class="custom-option" data-value="static-white">Static White</span>
-                            <span class="custom-option" data-value="pulse-purple">Pulse Purple</span>
-                            <span class="custom-option" data-value="pulse-red">Pulse Red</span>
-                            <span class="custom-option" data-value="pulse-blue">Pulse Blue</span>
-                            <span class="custom-option" data-value="pulse-green">Pulse Green</span>
-                            <span class="custom-option" data-value="gold">Gold Luxury</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             <div class="config-row">
-                <span class="config-label">Actions</span>
-                <button class="config-select" id="rndBtn" style="width: auto;">RND</button>
-            </div>
-        </div>
-    </div>
+    </header>
 
-    <!-- ArrayList -->
-    <div class="arraylist" id="arraylist"></div>
+    <main class="jc-main" id="main" tabindex="-1">{{ .Content }}</main>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/jackalclient/" class="navbar-brand">JackalClient</a>
-            <div class="navbar-actions">
-                <div class="language-switcher" aria-label="Language selector">
-                    <button type="button" data-lang-switch="zh" aria-label="切换到中文">中</button>
-                    <button type="button" data-lang-switch="en" aria-label="Switch to English">EN</button>
-                </div>
-                <ul class="navbar-nav">
-                    <li><a href="/jackalclient/" data-i18n="nav.home">HOME</a></li>
-                    <li><a href="/jackalclient/docs" data-i18n="nav.docs">DOCS</a></li>
-                    <li><a href="/jackalclient/contact" data-i18n="nav.contact">CONTACT</a></li>
-                    <li><a href="/jackalclient/download" data-i18n="nav.download">DOWNLOAD</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="fade-in-up">
-        {{ .Content }}
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; {{ now.Year }} {{ .Site.Title }}. All rights reserved.</p>
+    <footer class="jc-footer">
+        <div><a class="jc-footer-brand" href="{{ "jackalclient/" | relURL }}">JACKALCLIENT</a><p data-i18n="footer.note">你的桌面，你的规则。</p></div>
+        <div class="jc-footer-links"><a href="{{ "jackalclient/download/" | relURL }}" data-i18n="nav.download">获取客户端</a><a href="{{ "jackalclient/docs/" | relURL }}" data-i18n="nav.docs">文档</a><a href="https://github.com/noexcept2005/JackalClient" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+        <p class="jc-copyright">© {{ now.Year }} Wormwake.<br><span data-i18n="footer.rights">保留所有权利。</span></p>
     </footer>
 
+    <dialog class="jc-preview" id="previewDialog" aria-label="界面截图预览" data-i18n-attr="aria-label:preview.label">
+        <div class="jc-preview-bar"><span id="previewCaption"></span><button class="jc-control" id="previewClose" type="button" autofocus><span data-i18n="preview.close">关闭</span><span aria-hidden="true">×</span></button></div>
+        <img id="previewImage" alt="">
+    </dialog>
     <script>
-        // --- 0. Language Auto Select & Switcher ---
         const JACKAL_I18N = {
             zh: {
-                'nav.home': '首页',
-                'nav.docs': '文档',
-                'nav.contact': '联系',
-                'nav.download': '下载',
-                'home.subtitle': '一个 Minecraft 作弊端视觉的 Windows 工具箱',
-                'home.downloadNow': '立即下载',
-                'home.githubRepo': 'GitHub 仓库',
-                'home.feature1.title': 'Minecraft 风格',
-                'home.feature1.subtitle': 'ClickGUI 风格',
-                'home.feature1.desc': '多种作弊端界面风格供你选择，包括 Vape, LiquidBounce, Meteor, Future, Opai 等经典设计，让你的工具箱与众不同。',
-                'home.feature2.title': '300+ 可用模块',
-                'home.feature2.subtitle': '强大的模块',
-                'home.feature2.desc': '涵盖竞技、窗口管理、进程控制、文件操作、注册表优化、渲染增强、网络工具等十大类，全方位覆盖 Windows 系统增强需求。',
-                'home.feature3.title': '高度可定制',
-                'home.feature3.subtitle': '完全可配置',
-                'home.feature3.desc': '上千行可调节配置项，支持导入导出配置。无论你是极简主义者还是硬核玩家，都能打造出专属的操作系统体验。',
-                'home.feature4.title': '命令系统',
-                'home.feature4.subtitle': '命令系统',
-                'home.feature4.desc': '内置强大的终端系统，支持上百条自定义命令。支持自动补全、命令别名和多种配色主题，让系统操作效率倍增。',
-                'home.feature5.title': '匠心打磨',
-                'home.feature5.subtitle': '匠心品质',
-                'home.feature5.desc': '历经两年持续开发，从最初的一个简单想法演变为成熟的软件生态。每一次更新都凝聚了对细节的极致追求。',
-                'home.feature6.title': '高级订阅',
-                'home.feature6.subtitle': '专业版计划',
-                'home.feature6.desc': '解锁专业版永久许可证，获取持续更新支持。享受更多独家视觉特效、高级功能模块和优先技术支持。',
-                'home.cta.title': '准备好开玩了吗？',
-                'home.cta.desc': '立即下载 JackalClient，开启全新的 Windows 体验',
-                'docs.title': '文档',
-                'docs.subtitle': '探索 JackalClient 的详细文档和指南',
-                'docs.list': '文档列表',
-                'docs.faq.title': 'JackalClient 常见问题',
-                'docs.faq.desc': '了解 JackalClient 的常见问题解答，快速解决您遇到的问题',
-                'docs.download.title': '如何下载并运行 JackalClient',
-                'docs.download.desc': 'How To Download and Run JackalClient Instructions - 给电脑小白用的详细指南',
-                'docs.lyrics.title': '更好的歌词 BetterLyrics 说明',
-                'docs.lyrics.desc': '了解 JackalClient 中的 BetterLyrics 功能及其使用方法',
-                'docs.more.desc': '查看更多教程？前往我们的文档官网！',
-                'docs.view': '查看文档',
-                'docs.builtin': '内置文档介绍',
-                'docs.history.desc': '更新日志 - 记录 JackalClient 每个版本的详细更新内容，包括新增功能、修复的问题和改进的地方。通过查看更新日志，您可以了解软件的发展历程和最新动态。',
-                'docs.commands.desc': '命令行帮助以及命令文档 - 提供完整的客户端命令列表和详细的使用说明。每个命令都有详细的参数说明和示例，帮助您快速掌握 JackalClient 的命令行操作。',
-                'contact.title': '联系我们',
-                'contact.subtitle': '随时与我们联系，获取帮助和支持',
-                'contact.section': '联系方式',
-                'contact.bilibili.desc': '关注我们的 B 站账号，获取最新动态',
-                'contact.visit': '访问主页',
-                'contact.qq.desc': '加入我们的 QQ 群，与其他用户交流',
-                'contact.qq.info': 'QQ群号: 196218959',
-                'contact.discord.desc': '加入我们的 Discord 社区，参与讨论',
-                'contact.discord.join': '加入服务器',
-                'download.title': '下载 JACKAL',
-                'download.subtitle': '选择版本',
-                'download.free': '免费版',
-                'download.free.1': '✓ 大多数用户的选择',
-                'download.free.2': '✓ 大量用户正在使用',
-                'download.free.3': '✓ 300+ 模块',
-                'download.domestic': '国内下载',
-                'download.password': '密码 d1lu',
-                'download.pro': '专业版',
-                'download.pro.1': '✓ 适合高级用户',
-                'download.pro.2': '✓ 100+ 用户',
-                'download.pro.3': '✓ 永久订阅',
-                'download.pro.4': '✓ 更多自定义能力',
-                'download.pro.5': '✓ 更多实用模块',
-                'download.purchase': '￥79 立即购买'
+                'site.description': 'JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。',
+                'site.skip': '跳到主要内容', 'nav.home': '概览', 'nav.docs': '文档', 'nav.contact': '联系', 'nav.download': '获取客户端', 'nav.menu': '菜单', 'nav.label': '主要导航',
+                'page.home': '概览', 'page.docs': '文档', 'page.contact': '联系', 'page.download': '下载',
+                'footer.note': '你的桌面，你的规则。', 'footer.rights': '保留所有权利。',
+                'preview.label': '界面截图预览', 'preview.close': '关闭', 'preview.open': '点击查看原图 ↗', 'preview.error': '原图加载失败。你可以关闭预览后重试。',
+                'image.neverlose3': '新版 NeverloseGUI：模块列表、音频可视化设置与桌面 HUD', 'image.neverlose2': '新版 NeverloseGUI：桌面歌词、音乐信息与渲染模块', 'image.shell': 'JackalClient 内置命令系统的运行截图',
+                "home.heroTitle": "重新定义 Windows 的无限可能",
+                "home.heroLead": "强大的原生工具箱。完全属于你的体验。",
+                "home.heroDescription": "JackalClient 将系统工具、HUD、实时可视化与深度定制，融合为一套模块化的 Windows 体验。",
+                "home.heroSignoff": "一个客户端，数百种可能。",
+                "home.desktopTitle": "为桌面开启黑客之旅",
+                "home.desktopLead": "你的桌面，不只是工作空间。",
+                "home.desktopDescription": "独一无二的黑客体验。",
+                "home.modulesTitle": "强大的模块。",
+                "home.modulesDescription": "包括竞技工具、窗口管理、进程控制、文件操作、注册表优化、渲染增强、网络工具，以及更多。",
+                "home.customTitle": "高度可定制。",
+                "home.customLead": "每一个细节，都由你定义。",
+                "home.customDescription": "从自定义主题、着色器背景与视觉效果，到个性化 HUD、布局和交互行为，JackalClient 让你自由打造自己的体验，不必受限于预设的设计。",
+                "home.customSignoff": "没有固定风格。没有多余限制。只有你的使用方式。",
+                "home.videoTitle": "深入了解",
+                "home.videoLabel": "JackalClient 视频演示",
+                "home.videoFallback": "播放器无法加载？在B站打开 ↗",
+                "home.finaleTitle": "准备好启程了吗？",
+                "home.downloadNow": "立即下载",
+                "motion.pause": "暂停背景动画",
+                "motion.resume": "播放背景动画",
+                'home.lead': '你的桌面，不止一种可能。',
+                'home.description': 'Minecraft 客户端的视觉语言，Windows 工具箱的实用内核。把模块、命令与界面，调成你的习惯。',
+                'home.download': '获取 JackalClient', 'home.readDocs': '阅读文档', 'home.source': '在 GitHub 探索项目', 'home.currentInterface': '当前界面 / 全屏实拍', 'home.interfaceCaption': '界面、模块、HUD，按你的方式协同。',
+                'home.specs': '产品概览', 'home.platform': '为桌面而生', 'home.modules': '可用功能模块', 'home.editions': '选择适合你的版本',
+                'home.capabilitiesLead': '不是换个皮肤。', 'home.capabilitiesEnd': '是换一种使用方式。', 'home.capabilitiesDescription': '从窗口到进程，从桌面表现到命令操作。把分散的工具，放进同一套工作方式。',
+                'home.feature1Title': '熟悉的风格，不同的桌面', 'home.feature1Description': '多种 ClickGUI 视觉风格。切换界面，也重新定义你与工具的交互。',
+                'home.feature2Title': '模块各司其职', 'home.feature2Description': '窗口管理、进程控制、文件操作、渲染与网络工具，按需启用，不必全部打开。',
+                'home.feature3Title': '细节，由你设定', 'home.feature3Description': '调节界面、模块与 HUD，导入或导出配置，让工具适应你的习惯。',
+                'home.feature4Title': '不止于点击', 'home.feature4Description': '通过内置命令系统完成操作。自动补全、命令别名与主题，为键盘工作流留出空间。',
+                'home.interfaceTitle': '看得见，也调得动。', 'home.interfaceDescription': '真实运行界面，不是概念渲染。展开截图，看看模块、视觉效果与命令系统如何融入桌面。',
+                'home.desktopCaption': '让桌面成为你的界面', 'home.shellCaption': '键盘，也是一条捷径',
+                'home.editionsTitle': '从适合你的版本开始。', 'home.compare': '查看版本与下载渠道', 'home.freeDescription': '从丰富的基础模块出发，探索属于你的桌面工作流。', 'home.proDescription': '面向进阶使用，提供更多模块与定制选择。',
+                'home.ctaTitle': '下一步，让它运行起来。', 'home.ctaDescription': '选择版本，下载客户端。第一次使用？文档会带你开始。',
+                'download.title': '选好版本，即刻开始。', 'download.description': '从 Free 开始探索，或通过 Pro 获取更多功能。选择版本，再选择适合你的获取方式。', 'download.editionLabel': '版本选择',
+                'download.freeTag': '从这里开始', 'download.freeSummary': '日常工具与桌面探索的起点。', 'download.freePrice': '免费下载',
+                'download.freeFeature1': '300+ 可用功能模块', 'download.freeFeature2': '多种界面风格与可调节配置', 'download.freeFeature3': '内置命令系统',
+                'download.password': '国内网盘密码', 'download.domestic': '国内网盘下载',
+                'download.proTag': '进阶选择', 'download.proSummary': '为更多定制与进阶需求而准备。', 'download.proPrice': '永久许可证',
+                'download.proFeature1': '更多实用功能模块', 'download.proFeature2': '更丰富的定制选择', 'download.proFeature3': '高级功能与视觉效果',
+                'download.purchaseNote': '通过爱发电购买。具体价格、功能范围与授权条款，请以购买页面说明为准。', 'download.purchase': '前往购买 Pro',
+                'download.helpTitle': '第一次使用 JackalClient？', 'download.helpDescription': '从下载到运行，跟着指南完成第一次启动。', 'download.helpLink': '查看下载与运行指南',
+                'docs.title': '从这里，找到答案。', 'docs.description': '从第一次运行，到更深入的功能配置。选择你需要的指南，继续探索 JackalClient。',
+                'docs.sideNote': '以下指南将在独立的文档站打开。第一次使用，建议从运行指南开始。', 'docs.directoryLabel': '在线文档', 'docs.recommended': '推荐起点 / START HERE',
+                'docs.startTitle': '下载与运行', 'docs.startDescription': '从获取客户端到第一次启动，适合刚接触 JackalClient 的你。',
+                'docs.faqTitle': '常见问题', 'docs.faqDescription': '遇到问题，先看看这里是否已经有解答。',
+                'docs.lyricsTitle': 'BetterLyrics 使用说明', 'docs.lyricsDescription': '了解更好的歌词功能，以及相关设置和使用方式。',
+                'docs.allTitle': '完整文档', 'docs.allDescription': '进入文档站，浏览更多模块说明、教程与使用指南。',
+                'docs.bundledTitle': '也在客户端里。', 'docs.bundledNote': '以下文件随客户端提供，并非在线下载入口。',
+                'docs.historyDescription': '版本更新日志。查看新增功能、问题修复与调整，了解每次更新带来了什么。', 'docs.commandsDescription': '命令系统参考。查找可用命令、参数和使用方式，为键盘操作建立索引。',
+                'contact.title': '保持连接，一起探索。', 'contact.description': '关注项目动态，交流使用心得，或带着问题来找我们。选择你习惯的渠道。', 'contact.channels': '社区渠道',
+                'contact.bilibiliDescription': '视频、项目动态，以及 JackalClient 的更多使用方式。', 'contact.bilibiliLink': '访问主页',
+                'contact.qqDescription': '加入群聊，和其他用户交流。', 'contact.groupNumber': '群号', 'contact.copy': '复制群号', 'contact.copied': '已复制群号：196218959', 'contact.copyFailed': '无法自动复制，请选中群号 196218959 手动复制。',
+                'contact.discordDescription': '加入社区服务器，参与讨论，分享你的配置与想法。', 'contact.discordLink': '加入服务器',
+                'contact.note': '遇到运行问题？建议先查看文档中的常见问题。交流时附上版本、问题描述与必要截图，能帮助大家更快理解情况。',
+                'contact.docsTitle': '有些答案，已经在文档里。', 'contact.docsDescription': '运行指南、常见问题和功能说明，都从这里开始。'
             },
             en: {
-                'nav.home': 'HOME',
-                'nav.docs': 'DOCS',
-                'nav.contact': 'CONTACT',
-                'nav.download': 'DOWNLOAD',
-                'home.subtitle': 'A Windows toolbox with a Minecraft cheat-client visual style',
-                'home.downloadNow': 'Download Now',
-                'home.githubRepo': 'GitHub Repo',
-                'home.feature1.title': 'Minecraft Style',
-                'home.feature1.subtitle': 'ClickGUI Style',
-                'home.feature1.desc': 'Choose from multiple cheat-client inspired interface styles, including classic looks like Vape, LiquidBounce, Meteor, Future, and Opai.',
-                'home.feature2.title': '300+ Modules',
-                'home.feature2.subtitle': 'Powerful Modules',
-                'home.feature2.desc': 'Covers competitive tools, window management, process control, file operations, registry optimization, rendering enhancements, network tools, and more.',
-                'home.feature3.title': 'Highly Customizable',
-                'home.feature3.subtitle': 'Fully Configurable',
-                'home.feature3.desc': 'Thousands of adjustable configuration lines with import and export support, so both minimalists and power users can craft their own Windows experience.',
-                'home.feature4.title': 'Command System',
-                'home.feature4.subtitle': 'Command System',
-                'home.feature4.desc': 'A powerful built-in terminal system with hundreds of custom commands, autocomplete, aliases, and multiple color themes for faster system operations.',
-                'home.feature5.title': 'Carefully Crafted',
-                'home.feature5.subtitle': 'Craftsmanship',
-                'home.feature5.desc': 'After two years of continuous development, a simple idea has grown into a mature software ecosystem, with every update focused on details.',
-                'home.feature6.title': 'Premium Plan',
-                'home.feature6.subtitle': 'Premium Plan',
-                'home.feature6.desc': 'Unlock a permanent Pro license with ongoing updates, exclusive visual effects, advanced modules, and priority technical support.',
-                'home.cta.title': 'Ready to Hack?',
-                'home.cta.desc': 'Download JackalClient now and start a new Windows experience',
-                'docs.title': 'Documentation',
-                'docs.subtitle': 'Explore detailed JackalClient documentation and guides',
-                'docs.list': 'Documentation List',
-                'docs.faq.title': 'JackalClient FAQ',
-                'docs.faq.desc': 'Learn answers to common JackalClient questions and quickly solve issues you encounter.',
-                'docs.download.title': 'How to Download and Run JackalClient',
-                'docs.download.desc': 'Detailed instructions for beginners on how to download and run JackalClient.',
-                'docs.lyrics.title': 'BetterLyrics Guide',
-                'docs.lyrics.desc': 'Learn about the BetterLyrics feature in JackalClient and how to use it.',
-                'docs.more.desc': 'Want more tutorials? Visit our documentation site!',
-                'docs.view': 'View Docs',
-                'docs.builtin': 'Built-in Documentation',
-                'docs.history.desc': 'Update log - Records detailed changes for each JackalClient version, including new features, fixes, and improvements.',
-                'docs.commands.desc': 'Command-line help and command documentation - Provides a complete client command list with detailed usage notes, parameters, and examples.',
-                'contact.title': 'Contact Us',
-                'contact.subtitle': 'Contact us anytime for help and support',
-                'contact.section': 'Contact Methods',
-                'contact.bilibili.desc': 'Follow our Bilibili account for the latest updates',
-                'contact.visit': 'Visit Page',
-                'contact.qq.desc': 'Join our QQ group to chat with other users',
-                'contact.qq.info': 'QQ Group: 196218959',
-                'contact.discord.desc': 'Join our Discord community and take part in discussions',
-                'contact.discord.join': 'Join Server',
-                'download.title': 'DOWNLOAD JACKAL',
-                'download.subtitle': 'Select an Edition',
-                'download.free': 'Free',
-                'download.free.1': '✓ Most People Choose',
-                'download.free.2': '✓ Lots of Users',
-                'download.free.3': '✓ 300+ Modules',
-                'download.domestic': 'Domestic Download',
-                'download.password': 'Password: d1lu',
-                'download.pro': 'Pro',
-                'download.pro.1': '✓ For Advanced Users',
-                'download.pro.2': '✓ 100+ Users',
-                'download.pro.3': '✓ Permanent Subscription',
-                'download.pro.4': '✓ More Customizable',
-                'download.pro.5': '✓ More Useful Modules',
-                'download.purchase': '￥79 PURCHASE NOW'
+                'site.description': 'JackalClient is a Windows toolbox with configurable interfaces, utility modules, and a built-in command system.',
+                'site.skip': 'Skip to content', 'nav.home': 'Overview', 'nav.docs': 'Docs', 'nav.contact': 'Contact', 'nav.download': 'Get JackalClient', 'nav.menu': 'Menu', 'nav.label': 'Main navigation',
+                'page.home': 'Overview', 'page.docs': 'Documentation', 'page.contact': 'Contact', 'page.download': 'Download',
+                'footer.note': 'Your desktop. Your rules.', 'footer.rights': 'All rights reserved.',
+                'preview.label': 'Interface screenshot preview', 'preview.close': 'Close', 'preview.open': 'View full image ↗', 'preview.error': 'The full image could not load. Close the preview and try again.',
+                'image.neverlose3': 'New NeverloseGUI with module list, Audio Visualizer settings, and desktop HUD', 'image.neverlose2': 'New NeverloseGUI with desktop lyrics, Music Overlay, and rendering modules', 'image.shell': 'JackalClient built-in command system in use',
+                "home.heroTitle": "Redefine Possibilities For Your Windows.",
+                "home.heroLead": "A powerful native toolkit. An entirely personal experience.",
+                "home.heroDescription": "JackalClient brings system utilities, intelligent overlays, real-time visualizations, and deep customization into one modular Windows experience.",
+                "home.heroSignoff": "One client. Hundreds of possibilities.",
+                "home.desktopTitle": "A Desktop Cheat.",
+                "home.desktopLead": "Your desktop is more than a workspace.",
+                "home.desktopDescription": "A unique hacking experience.",
+                "home.modulesTitle": "Powerful Modules.",
+                "home.modulesDescription": "Covers competitive tools, window management, process control, file operations, registry optimization, rendering enhancements, network tools, and more.",
+                "home.customTitle": "Highly Customizable.",
+                "home.customLead": "Every detail is yours to define.",
+                "home.customDescription": "From custom themes, shader-powered backgrounds, and visual effects to personalized HUDs, layouts, and interactive behaviors, JackalClient gives you the freedom to shape your experience without being confined to a predefined design.",
+                "home.customSignoff": "No fixed style. No unnecessary limits. Just your way of doing things.",
+                "home.videoTitle": "Take a closer look.",
+                "home.videoLabel": "JackalClient video showcase",
+                "home.videoFallback": "Player unavailable? Watch on Bilibili ↗",
+                "home.finaleTitle": "Ready to Make It Yours?",
+                "home.downloadNow": "Download Now",
+                "motion.pause": "Pause background motion",
+                "motion.resume": "Play background motion",
+                'home.lead': 'Your desktop. More possibilities.',
+                'home.description': 'Minecraft-client aesthetics. Windows-toolbox substance. Make the modules, commands, and interface work your way.',
+                'home.download': 'Get JackalClient', 'home.readDocs': 'Read the docs', 'home.source': 'Explore the project on GitHub', 'home.currentInterface': 'CURRENT INTERFACE / FULLSCREEN', 'home.interfaceCaption': 'Interface, modules, and HUD. Working your way.',
+                'home.specs': 'Product overview', 'home.platform': 'Built for your desktop', 'home.modules': 'Utility modules', 'home.editions': 'Find your edition',
+                'home.capabilitiesLead': 'Not just a new look.', 'home.capabilitiesEnd': 'A different way to work.', 'home.capabilitiesDescription': 'Windows and processes. Desktop visuals and commands. Bring your everyday tools into one workflow.',
+                'home.feature1Title': 'Familiar aesthetics. A different desktop.', 'home.feature1Description': 'Choose from multiple ClickGUI styles. Change the interface and the way you interact with your tools.',
+                'home.feature2Title': 'A module for the task', 'home.feature2Description': 'Window management, process control, files, rendering, and networking. Enable what you need, when you need it.',
+                'home.feature3Title': 'The details are yours', 'home.feature3Description': 'Adjust the interface, modules, and HUD. Import or export configurations and build around your habits.',
+                'home.feature4Title': 'Go beyond the click', 'home.feature4Description': 'Use the built-in command system. Autocomplete, aliases, and themes make room for a keyboard-first workflow.',
+                'home.interfaceTitle': 'See it. Make it yours.', 'home.interfaceDescription': 'Real software in use, not concept renders. Open the screenshots to explore modules, visuals, and the command system.',
+                'home.desktopCaption': 'Make the desktop your interface', 'home.shellCaption': 'Take the keyboard shortcut',
+                'home.editionsTitle': 'Start with the edition that fits.', 'home.compare': 'Compare editions and downloads', 'home.freeDescription': 'Explore your desktop workflow with a wide range of core modules.', 'home.proDescription': 'Go further with additional modules and customization options.',
+                'home.ctaTitle': 'Next, put it to work.', 'home.ctaDescription': 'Choose an edition and download the client. New here? The docs will get you started.',
+                'download.title': 'Choose your edition. Get started.', 'download.description': 'Explore with Free, or unlock more with Pro. Pick an edition, then choose how to get it.', 'download.editionLabel': 'Choose an edition',
+                'download.freeTag': 'START HERE', 'download.freeSummary': 'Your starting point for desktop tools and discovery.', 'download.freePrice': 'Free download',
+                'download.freeFeature1': '300+ utility modules', 'download.freeFeature2': 'Multiple interface styles and configurable settings', 'download.freeFeature3': 'Built-in command system',
+                'download.password': 'China mirror password', 'download.domestic': 'Download from China mirror',
+                'download.proTag': 'GO FURTHER', 'download.proSummary': 'For deeper customization and advanced needs.', 'download.proPrice': 'Permanent license',
+                'download.proFeature1': 'Additional utility modules', 'download.proFeature2': 'More customization options', 'download.proFeature3': 'Advanced features and visual effects',
+                'download.purchaseNote': 'Purchase through Afdian. Refer to the purchase page for current pricing, included features, and license terms.', 'download.purchase': 'Get Pro on Afdian',
+                'download.helpTitle': 'First time using JackalClient?', 'download.helpDescription': 'Follow the guide from download to your first launch.', 'download.helpLink': 'Read the download and launch guide',
+                'docs.title': 'Find your next step.', 'docs.description': 'From your first launch to deeper configuration. Pick a guide and keep exploring JackalClient.',
+                'docs.sideNote': 'These guides open on our separate documentation site. New here? Start with the download and launch guide.', 'docs.directoryLabel': 'Online documentation', 'docs.recommended': 'START HERE',
+                'docs.startTitle': 'Download and launch', 'docs.startDescription': 'Get the client running for the first time. A guide for new JackalClient users.',
+                'docs.faqTitle': 'Frequently asked questions', 'docs.faqDescription': 'Run into an issue? Check whether the answer is already here.',
+                'docs.lyricsTitle': 'BetterLyrics guide', 'docs.lyricsDescription': 'Explore the lyrics features, related settings, and how to use them.',
+                'docs.allTitle': 'Full documentation', 'docs.allDescription': 'Visit the documentation site for more modules, tutorials, and guides.',
+                'docs.bundledTitle': 'Inside the client', 'docs.bundledNote': 'These files ship with the client; they are not online downloads.',
+                'docs.historyDescription': 'The version history. Read about new features, fixes, and adjustments in each release.', 'docs.commandsDescription': 'Your command-system reference. Find commands, parameters, and usage details for keyboard-driven work.',
+                'contact.title': 'Stay connected. Keep exploring.', 'contact.description': 'Follow the project, share your experience, or bring your questions. Choose the channel that works for you.', 'contact.channels': 'Community channels',
+                'contact.bilibiliDescription': 'Videos, project updates, and more ways to use JackalClient.', 'contact.bilibiliLink': 'Visit the channel',
+                'contact.qqDescription': 'Join the group and talk with other users.', 'contact.groupNumber': 'Group', 'contact.copy': 'Copy group number', 'contact.copied': 'Group number copied: 196218959', 'contact.copyFailed': 'Automatic copying is unavailable. Select and copy 196218959 manually.',
+                'contact.discordDescription': 'Join the server, take part in discussions, and share configurations and ideas.', 'contact.discordLink': 'Join the server',
+                'contact.note': 'Having trouble launching? Check the FAQ first. Include your version, a description, and relevant screenshots when asking the community for help.',
+                'contact.docsTitle': 'Some answers are already written.', 'contact.docsDescription': 'Launch guides, common questions, and feature references. Start here.'
             }
         };
+        const jackalStorage = {
+            getItem(key) { try { return localStorage.getItem(key); } catch { return null; } },
+            setItem(key, value) { try { localStorage.setItem(key, value); } catch {} }
+        };
+        let jackalLang = 'zh';
+        const mobileNavigation = window.matchMedia('(max-width: 900px)');
+        const siteNavigation = document.getElementById('siteNavigation');
+        const menuToggle = document.getElementById('menuToggle');
+        const previewDialog = document.getElementById('previewDialog');
+        const previewImage = document.getElementById('previewImage');
+        const previewCaption = document.getElementById('previewCaption');
+        let previewTrigger = null;
 
+        function jackalText(key) { return JACKAL_I18N[jackalLang][key] ?? JACKAL_I18N.en[key] ?? key; }
         function getInitialJackalLang() {
-            const savedLang = localStorage.getItem('jackalclient-lang');
+            const savedLang = jackalStorage.getItem('jackalclient-lang');
             if (savedLang === 'zh' || savedLang === 'en') return savedLang;
-            const browserLanguages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
-            return browserLanguages.some(lang => (lang || '').toLowerCase().startsWith('zh')) ? 'zh' : 'en';
+            const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+            return languages.some(language => (language || '').toLowerCase().startsWith('zh')) ? 'zh' : 'en';
         }
-
-        function setJackalLang(lang, persist = true) {
-            const dictionary = JACKAL_I18N[lang] || JACKAL_I18N.en;
-            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const translation = dictionary[element.dataset.i18n];
-                if (translation) element.textContent = translation;
+        function setJackalLang(language, persist = true) {
+            jackalLang = language === 'zh' ? 'zh' : 'en';
+            document.documentElement.lang = jackalLang === 'zh' ? 'zh-CN' : 'en';
+            document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = jackalText(element.dataset.i18n); });
+            document.querySelectorAll('[data-i18n-attr]').forEach(element => {
+                element.dataset.i18nAttr.split(';').forEach(mapping => {
+                    const separator = mapping.indexOf(':');
+                    element.setAttribute(mapping.slice(0, separator), jackalText(mapping.slice(separator + 1)));
+                });
             });
             document.querySelectorAll('[data-lang-switch]').forEach(button => {
-                button.classList.toggle('active', button.dataset.langSwitch === lang);
+                const selected = button.dataset.langSwitch === jackalLang;
+                button.classList.toggle('active', selected);
+                button.setAttribute('aria-pressed', String(selected));
             });
-            document.querySelectorAll('.language-switcher').forEach(switcher => {
-                switcher.classList.toggle('lang-en', lang === 'en');
-            });
-            if (persist) localStorage.setItem('jackalclient-lang', lang);
+            document.querySelector('.language-switcher').classList.toggle('lang-en', jackalLang === 'en');
+            const pageName = document.body.dataset.path.replace(/\/$/, '').split('/').pop();
+            const title = `JackalClient — ${jackalText('page.' + (pageName === 'jackalclient' ? 'home' : pageName))}`;
+            document.title = title;
+            document.querySelector('meta[property="og:title"]').content = title;
+            if (previewDialog.open && previewTrigger) {
+                previewImage.alt = previewTrigger.querySelector('img').alt;
+                previewCaption.textContent = previewImage.alt;
+            }
+            if (persist) jackalStorage.setItem('jackalclient-lang', jackalLang);
+            document.dispatchEvent(new CustomEvent('jackal:language'));
         }
-
-        document.querySelectorAll('[data-lang-switch]').forEach(button => {
-            button.addEventListener('click', () => setJackalLang(button.dataset.langSwitch));
+        function setMenuOpen(open, restoreFocus = false) {
+            siteNavigation.classList.toggle('is-open', open);
+            menuToggle.setAttribute('aria-expanded', String(open));
+            if (restoreFocus) menuToggle.focus();
+        }
+        document.documentElement.classList.add('jc-js');
+        menuToggle.hidden = false;
+        menuToggle.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'));
+        document.querySelectorAll('[data-lang-switch]').forEach(button => button.addEventListener('click', () => setJackalLang(button.dataset.langSwitch)));
+        document.addEventListener('click', event => {
+            if (!siteNavigation.contains(event.target) && !menuToggle.contains(event.target)) setMenuOpen(false);
         });
-
+        siteNavigation.addEventListener('click', event => { if (event.target.closest('a')) setMenuOpen(false); });
+        mobileNavigation.addEventListener('change', () => setMenuOpen(false, mobileNavigation.matches && siteNavigation.contains(document.activeElement)));
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && !previewDialog.open && menuToggle.getAttribute('aria-expanded') === 'true') setMenuOpen(false, true);
+        });
+        const copyButton = document.getElementById('copyQQ');
+        if (copyButton) {
+            copyButton.hidden = false;
+            copyButton.addEventListener('click', async () => {
+                const status = document.getElementById('copyStatus');
+                try {
+                    await navigator.clipboard.writeText('196218959');
+                    status.dataset.i18n = 'contact.copied';
+                } catch { status.dataset.i18n = 'contact.copyFailed'; }
+                status.textContent = jackalText(status.dataset.i18n);
+            });
+        }
+        document.querySelectorAll('[data-preview]').forEach(link => {
+            link.addEventListener('click', event => {
+                if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || typeof previewDialog.showModal !== 'function') return;
+                event.preventDefault();
+                previewTrigger = link;
+                previewImage.alt = link.querySelector('img').alt;
+                previewCaption.textContent = previewImage.alt;
+                previewImage.src = link.href;
+                previewDialog.showModal();
+                document.body.classList.add('jc-preview-open');
+            });
+        });
+        previewImage.addEventListener('error', () => { previewCaption.textContent = jackalText('preview.error'); });
+        document.getElementById('previewClose').addEventListener('click', () => previewDialog.close());
+        previewDialog.addEventListener('click', event => { if (event.target === previewDialog) previewDialog.close(); });
+        previewDialog.addEventListener('close', () => {
+            document.body.classList.remove('jc-preview-open');
+            previewImage.removeAttribute('src');
+            previewTrigger?.focus({ preventScroll: true });
+        });
         setJackalLang(getInitialJackalLang(), false);
-
-        // --- 1. Canvas Particle System ---
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
-                this.color = `rgba(139, 92, 246, ${Math.random() * 0.5})`; // Primary color
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < 50; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw connections
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < particles.length; i++) {
-                let p1 = particles[i];
-                p1.update();
-                p1.draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    let p2 = particles[j];
-                    let dx = p1.x - p2.x;
-                    let dy = p1.y - p2.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 150) {
-                        ctx.strokeStyle = `rgba(139, 92, 246, ${1 - dist / 150})`;
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', resize);
-        
-        // Optimize LCP: Defer particle system initialization
-        window.addEventListener('load', () => {
-            resize();
-            initParticles();
-            animateParticles();
-        });
-
-        // --- 2. Navbar Scroll Effect ---
-        const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // --- 4. 3D Tilt Effect for Cards ---
-        document.querySelectorAll('.feature-image-wrapper').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -5;
-                const rotateY = ((x - centerX) / centerX) * 5;
-
-                const img = card.querySelector('.feature-image');
-                if(img) {
-                    img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-                }
-            });
-
-            card.addEventListener('mouseleave', () => {
-                const img = card.querySelector('.feature-image');
-                if(img) {
-                    img.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                }
-            });
-        });
-        
-        // --- 5. Hero Title Glitch on Load ---
-        const heroTitle = document.querySelector('.hero-title');
-        if(heroTitle) {
-            heroTitle.classList.add('glitch-text');
-            heroTitle.setAttribute('data-text', heroTitle.innerText);
-        }
-
-        // --- 6. ArrayList Implementation ---
-        let arrayListModules = [];
-        let activeModuleElements = []; // Cache for performance
-        let sortMode = localStorage.getItem('jackal_sortMode') || 'width'; 
-        let colorMode = localStorage.getItem('jackal_colorMode') || 'rainbow';
-        let rainbowSpeed = 0.5;
-        let rainbowOffset = 0;
-        let animationFrameId;
-
-        const arrayListContainer = document.getElementById('arraylist');
-        const configPanel = document.getElementById('configPanel');
-        const configToggle = document.getElementById('configToggle');
-        const rndBtn = document.getElementById('rndBtn');
-        
-        // Initial UI State Sync
-        document.querySelector(`#sortSelectCustom .custom-option[data-value="${sortMode}"]`)?.classList.add('selected');
-        document.querySelector(`#sortSelectCustom .custom-select__trigger span`).textContent = 
-            document.querySelector(`#sortSelectCustom .custom-option[data-value="${sortMode}"]`)?.textContent || 'Length';
-
-        document.querySelector(`#colorSelectCustom .custom-option[data-value="${colorMode}"]`)?.classList.add('selected');
-        document.querySelector(`#colorSelectCustom .custom-select__trigger span`).textContent = 
-            document.querySelector(`#colorSelectCustom .custom-option[data-value="${colorMode}"]`)?.textContent || 'Rainbow';
-
-        // Toggle Config Panel
-        configToggle.addEventListener('click', () => {
-            configPanel.classList.toggle('open');
-        });
-        
-        // Save Settings
-        function saveSettings() {
-            localStorage.setItem('jackal_sortMode', sortMode);
-            localStorage.setItem('jackal_colorMode', colorMode);
-            // Save enabled states
-            const enabledMap = {};
-            arrayListModules.forEach(m => enabledMap[m.name] = m.enabled);
-            localStorage.setItem('jackal_modules', JSON.stringify(enabledMap));
-        }
-
-        // Custom Select Implementation
-        function initCustomSelect(selectorId, onChange) {
-            const wrapper = document.getElementById(selectorId);
-            if (!wrapper) return;
-            
-            const trigger = wrapper.querySelector('.custom-select__trigger');
-            const options = wrapper.querySelectorAll('.custom-option');
-            const triggerSpan = trigger.querySelector('span');
-            
-            // Set initial selected class based on current mode
-            const currentVal = selectorId === 'sortSelectCustom' ? sortMode : colorMode;
-            options.forEach(opt => {
-                if(opt.dataset.value === currentVal) opt.classList.add('selected');
-                else opt.classList.remove('selected');
-            });
-
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // Close other selects
-                document.querySelectorAll('.custom-select').forEach(s => {
-                    if (s !== wrapper) s.classList.remove('open');
-                });
-                wrapper.classList.toggle('open');
-            });
-
-            options.forEach(option => {
-                option.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent closing immediately from window click
-                    wrapper.classList.remove('open');
-                    
-                    // Update visual selection
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    triggerSpan.textContent = option.textContent;
-                    
-                    // Trigger callback
-                    onChange(option.dataset.value);
-                    saveSettings();
-                });
-            });
-        }
-        
-        // Close selects when clicking outside
-        window.addEventListener('click', () => {
-             document.querySelectorAll('.custom-select').forEach(s => {
-                s.classList.remove('open');
-            });
-        });
-
-        // Initialize Selects
-        initCustomSelect('sortSelectCustom', (value) => {
-            sortMode = value;
-            renderArrayList();
-        });
-
-        initCustomSelect('colorSelectCustom', (value) => {
-            colorMode = value;
-        });
-
-        rndBtn.addEventListener('click', () => {
-             const randomIdx = Math.floor(Math.random() * arrayListModules.length);
-             if (arrayListModules[randomIdx]) {
-                arrayListModules[randomIdx].enabled = !arrayListModules[randomIdx].enabled;
-                renderArrayList();
-                saveSettings();
-             }
-        });
-
-        // Fetch Modules
-        arrayListContainer.innerHTML = '<div style="color:white; opacity:0.7;">Loading...</div>';
-        
-        fetch('/jackalclient/modules.json')
-            .then(response => response.json())
-            .then(data => {
-                // Restore enabled states
-                const savedModules = JSON.parse(localStorage.getItem('jackal_modules') || '{}');
-                
-                arrayListModules = data.map(mod => ({
-                    ...mod,
-                    enabled: savedModules.hasOwnProperty(mod.name) ? savedModules[mod.name] : mod.enabled
-                }));
-                
-                renderArrayList();
-                updateVisuals();
-            })
-            .catch(err => {
-                console.error('Failed to load modules:', err);
-                // Fallback data if fetch fails
-                arrayListModules = [
-                    { name: 'Modules Failed', enabled: true },
-                    { name: 'Check Console', enabled: true }
-                ];
-                renderArrayList();
-                updateVisuals();
-            });
-
-        function renderArrayList() {
-            // Sort modules
-            const sortedModules = [...arrayListModules].sort((a, b) => {
-                // Enabled first
-                if (a.enabled && !b.enabled) return -1;
-                if (!a.enabled && b.enabled) return 1;
-                
-                // Then by sort mode
-                if (sortMode === 'width') {
-                    const lenA = a.name.length;
-                    const lenB = b.name.length;
-                    return lenB - lenA; // Descending
-                } else {
-                    return a.name.localeCompare(b.name);
-                }
-            });
-
-            // Clear container and cache
-            arrayListContainer.innerHTML = '';
-            activeModuleElements = [];
-
-            // Module Items
-            sortedModules.forEach((mod, index) => {
-                const item = document.createElement('div');
-                item.className = `module-item ${mod.enabled ? '' : 'disabled'}`;
-                item.innerText = mod.name;
-                item.style.animationDelay = `${index * 0.05}s`; // Staggered entrance
-                
-                // Accessibility
-                item.setAttribute('role', 'button');
-                item.setAttribute('tabindex', '0');
-                item.setAttribute('aria-pressed', mod.enabled);
-                
-                const toggle = () => {
-                     const originalMod = arrayListModules.find(m => m.name === mod.name);
-                     if (originalMod) {
-                         originalMod.enabled = !originalMod.enabled;
-                         renderArrayList();
-                         saveSettings();
-                     }
-                };
-
-                // Click to toggle
-                item.onclick = toggle;
-                
-                // Keyboard toggle
-                item.onkeydown = (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggle();
-                    }
-                };
-                
-                arrayListContainer.appendChild(item);
-                
-                // Cache active items for animation loop
-                if (mod.enabled) {
-                    activeModuleElements.push(item);
-                }
-            });
-        }
-
-        function updateVisuals() {
-            // Use cached elements instead of querySelectorAll
-            const items = activeModuleElements;
-            rainbowOffset -= rainbowSpeed; 
-            // const time = Date.now() / 1000; // Replaced by rainbowOffset for consistent speed
-
-            items.forEach((item, index) => {
-                let color;
-                
-                // Helper for oscillating hue
-                // center: middle hue
-                // range: deviation (+/-)
-                // speed: multiplier for rainbowOffset (animation speed)
-                // offset: multiplier for index (wave density)
-                const getDynamicHue = (center, range, speed = 0.05, offset = 0.2) => {
-                    return center + Math.sin((rainbowOffset * speed) + (index * offset)) * range;
-                };
-
-                switch (colorMode) {
-                    case 'rainbow':
-                        const hue = (rainbowOffset + (index * 15)) % 360;
-                        color = `hsl(${hue}, 80%, 60%)`;
-                        break;
-                    case 'rainbow-flow':
-                        color = `hsl(${(rainbowOffset * 2 + (index * 10)) % 360}, 90%, 65%)`;
-                        break;
-                    case 'astolfo':
-                         // Pink (320) <-> Cyan (190). Center 255, Range 65.
-                        const aHue = getDynamicHue(255, 65, 0.05, 0.2); 
-                        color = `hsl(${aHue}, 90%, 75%)`;
-                        break;
-                    case 'gradient-purple':
-                        // 240 (Blue) <-> 300 (Magenta). Center 270, Range 30.
-                        const gHueP = getDynamicHue(270, 30, 0.05, 0.2); 
-                        color = `hsl(${gHueP}, 70%, 65%)`;
-                        break;
-                    case 'gradient-blue':
-                        // 190 (Cyan) <-> 250 (Blue). Center 220, Range 30.
-                        const gHueB = getDynamicHue(220, 30, 0.05, 0.2); 
-                        color = `hsl(${gHueB}, 80%, 60%)`;
-                        break;
-                    case 'gradient-fire':
-                        // 0 (Red) <-> 60 (Yellow). Center 30, Range 30.
-                        const gHueF = getDynamicHue(30, 30, 0.05, 0.2); 
-                        color = `hsl(${gHueF}, 100%, 60%)`;
-                        break;
-                    case 'gradient-ocean':
-                        // 170 (Turquoise) <-> 230 (Blue). Center 200, Range 30.
-                        const gHueO = getDynamicHue(200, 30, 0.05, 0.2); 
-                        color = `hsl(${gHueO}, 80%, 60%)`;
-                        break;
-                    case 'gradient-nature':
-                        // 80 (Lime) <-> 140 (Green). Center 110, Range 30.
-                        const gHueN = getDynamicHue(110, 30, 0.05, 0.2); 
-                        color = `hsl(${gHueN}, 80%, 50%)`;
-                        break;
-                    case 'gradient-cyber':
-                         // 280 (Purple) <-> 180 (Cyan). Center 230, Range 50.
-                         const gHueC = getDynamicHue(230, 50, 0.05, 0.2);
-                         color = `hsl(${gHueC}, 100%, 60%)`;
-                         break;
-                    case 'gradient-sunset':
-                         // 340 (Pink) <-> 40 (Orange). Center 10 (Red). Range 30.
-                         const gHueS = getDynamicHue(10, 30, 0.05, 0.2);
-                         color = `hsl(${gHueS}, 90%, 60%)`;
-                         break;
-                    
-                    // Static modes remain static
-                    case 'static-purple': color = '#8b5cf6'; break;
-                    case 'static-red': color = '#ef4444'; break;
-                    case 'static-blue': color = '#3b82f6'; break;
-                    case 'static-green': color = '#10b981'; break; 
-                    case 'static-white': color = '#ffffff'; break;
-                    
-                    // Pulse modes (using rainbowOffset for sync)
-                    case 'pulse-purple':
-                        const pp = (Math.sin(rainbowOffset * 0.1 + index * 0.5) + 1) / 2;
-                        color = `hsl(260, 80%, ${50 + (pp * 20)}%)`;
-                        break;
-                    case 'pulse-red':
-                        const pr = (Math.sin(rainbowOffset * 0.1 + index * 0.2) + 1) / 2;
-                        color = `hsl(0, 80%, ${50 + (pr * 30)}%)`;
-                        break;
-                    case 'pulse-blue':
-                        const pb = (Math.sin(rainbowOffset * 0.1 + index * 0.5) + 1) / 2;
-                        color = `hsl(210, 90%, ${50 + (pb * 20)}%)`;
-                        break;
-                    case 'pulse-green':
-                        const pg = (Math.sin(rainbowOffset * 0.2 + index * 0.1) + 1) / 2;
-                        color = `hsl(140, 100%, ${40 + (pg * 40)}%)`;
-                        break;
-                    case 'gold':
-                         const goldHue = 45 + Math.sin(rainbowOffset * 0.1 + index * 0.5) * 5;
-                         color = `hsl(${goldHue}, 100%, 60%)`;
-                         break;
-                    default:
-                        color = '#8b5cf6';
-                        break;
-                }
-
-                item.style.color = color;
-                item.style.borderRightColor = color;
-            });
-            
-            animationFrameId = requestAnimationFrame(updateVisuals);
-        }
-
-
     </script>
+    {{ if eq .RelPermalink ("jackalclient/" | relURL) }}<script defer src="{{ "js/jackalclient-glass.js" | relURL }}"></script>{{ end }}
+    <script defer src="{{ "js/jackalclient-motion.js" | relURL }}"></script>
 </body>
 </html>
-

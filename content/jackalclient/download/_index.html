@@ -3,46 +3,35 @@ title: "Download"
 layout: "jackalclient"
 ---
 
-<!-- Hero Section -->
-<div class="hero-section">
-    <h1 class="hero-title" data-i18n="download.title">DOWNLOAD JACKAL</h1>
-    <p class="hero-subtitle" data-i18n="download.subtitle">Select an Edition</p>
-</div>
+<header class="jc-page-heading jc-scene jc-light">
+    <span class="jc-backdrop-word" aria-hidden="true">DOWNLOAD</span>
+    <span class="jc-art jc-geometry" aria-hidden="true"></span>
+    <span class="jc-art jc-point-field" aria-hidden="true"></span>
+    <span class="jc-art jc-symbol jc-symbol-client" aria-hidden="true"></span><h1 data-i18n="download.title">选好版本，即刻开始。</h1><p data-i18n="download.description">从免费版开始体验，或通过专业版获取更多功能。选择版本，再选择适合你的获取方式。</p></header>
 
-<!-- Pricing Section -->
-<div class="pricing-section">
-    <div class="container">
-        <div class="pricing-grid">
-            <!-- Free Edition -->
-            <div class="pricing-card">
-                <h2 class="pricing-title" data-i18n="download.free">Free</h2>
-                <ul class="pricing-features">
-                    <li data-i18n="download.free.1">✓ Most People Choose</li>
-                    <li data-i18n="download.free.2">✓ Lots of Users</li>
-                    <li data-i18n="download.free.3">✓ 300+ Modules</li>
-                </ul>
-                <div class="download-actions">
-                    <a href="https://github.com/JackalClient/JackalClient/releases" target="_blank" class="btn btn-primary btn-large">Github Releases</a>
-                    <div class="domestic-download-wrap">
-                        <p class="download-password-note" data-i18n="download.password">密码 d1lu</p>
-                        <a href="https://wormwake.lanzout.com/b00mq8dxcb" target="_blank" class="btn btn-primary btn-large" data-i18n="download.domestic">Domestic Download</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pro Edition -->
-            <div class="pricing-card pro">
-                <div class="pro-badge">PRO</div>
-                <h2 class="pricing-title" data-i18n="download.pro">Pro</h2>
-                <ul class="pricing-features">
-                    <li data-i18n="download.pro.1">✓ For Advanced Users</li>
-                    <li data-i18n="download.pro.2">✓ 100+ Users</li>
-                    <li data-i18n="download.pro.3">✓ Permanent Subscription</li>
-                    <li data-i18n="download.pro.4">✓ More Customizable</li>
-                    <li data-i18n="download.pro.5">✓ More Useful Modules</li>
-                </ul>
-                <a href="https://afdian.com/item/1eda4ca6ca2511f0a7ae52540025c377" target="_blank" class="btn btn-primary btn-large" data-i18n="download.purchase">￥79 PURCHASE NOW</a>
-            </div>
+<section class="jc-editions jc-scene jc-dark" aria-label="版本选择" data-i18n-attr="aria-label:download.editionLabel">
+    <span class="jc-backdrop-word" aria-hidden="true">EDITION</span>
+    <span class="jc-art jc-point-field" aria-hidden="true"></span>
+    <article class="jc-edition">
+        <div class="jc-edition-meta"><span>Free edition</span><span class="jc-tag" data-i18n="download.freeTag">从这里开始</span></div>
+        <h2>Free</h2><p class="jc-edition-summary" data-i18n="download.freeSummary">日常工具与桌面探索的起点。</p>
+        <div class="jc-price"><strong>¥0</strong><span data-i18n="download.freePrice">免费下载</span></div>
+        <ul class="jc-feature-list"><li data-i18n="download.freeFeature1">400+ 可用功能模块</li><li data-i18n="download.freeFeature2">多种界面风格与可调节配置</li><li data-i18n="download.freeFeature3">内置命令系统</li></ul>
+        <div class="download-actions">
+            <a class="jc-button jc-button-primary" href="https://github.com/JackalClient/JackalClient/releases" target="_blank" rel="noopener noreferrer"><span>GitHub Releases</span><span class="jc-button-arrow" aria-hidden="true">↗</span></a>
+            <div class="domestic-download-wrap"><p class="download-password-note"><span data-i18n="download.password">国内网盘密码</span> / <strong>d1lu</strong></p><a class="jc-button" href="https://wormwake.lanzout.com/b00mq8dxcb" target="_blank" rel="noopener noreferrer"><span data-i18n="download.domestic">国内网盘下载</span><span class="jc-button-arrow" aria-hidden="true">↗</span></a></div>
         </div>
-    </div>
-</div>
+    </article>
+    <article class="jc-edition jc-edition-pro">
+        <div class="jc-edition-meta"><span>Pro edition</span><span class="jc-tag" data-i18n="download.proTag">进阶选择</span></div>
+        <h2>Pro</h2><p class="jc-edition-summary" data-i18n="download.proSummary">为更多定制与进阶需求而准备。</p>
+        <div class="jc-price"><strong>¥79</strong><span data-i18n="download.proPrice">永久许可证</span></div>
+        <ul class="jc-feature-list"><li data-i18n="download.proFeature1">更多实用功能模块</li><li data-i18n="download.proFeature2">更丰富的定制选择</li><li data-i18n="download.proFeature3">高级功能与视觉效果</li></ul>
+        <div class="download-actions"><p class="jc-purchase-note" data-i18n="download.purchaseNote">通过爱发电购买。具体价格、功能范围与授权条款，请以购买页面说明为准。</p><a class="jc-button jc-button-primary" href="https://afdian.com/item/1eda4ca6ca2511f0a7ae52540025c377" target="_blank" rel="noopener noreferrer"><span data-i18n="download.purchase">前往购买 Pro</span><span class="jc-button-arrow" aria-hidden="true">↗</span></a></div>
+    </article>
+</section>
+<section class="jc-help-strip jc-scene jc-light">
+    <span class="jc-backdrop-word" aria-hidden="true">START</span>
+    <span class="jc-art jc-geometry" aria-hidden="true"></span>
+    <span class="jc-art jc-point-field" aria-hidden="true"></span>
+    <span class="jc-art jc-symbol jc-symbol-docs" aria-hidden="true"></span><div><h2 data-i18n="download.helpTitle">第一次使用 JackalClient？</h2><p data-i18n="download.helpDescription">从下载到运行，跟着指南完成第一次启动。</p></div><a class="jc-text-link" href="https://doc.wormwake.com/download-and-run.html" target="_blank" rel="noopener noreferrer"><span data-i18n="download.helpLink">查看下载与运行指南</span><span aria-hidden="true">↗</span></a></section>

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark light">
-    <title>JackalClient — {{ .Title }}</title>
+    <title>Jackal Client: {{ .Title }}</title>
     <meta name="description" content="JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。" data-i18n-attr="content:site.description">
     <link rel="canonical" href="{{ .Permalink }}">
     <link rel="icon" type="image/svg+xml" href="{{ "img/jackalclient/favicon.svg" | relURL }}">
-    <meta property="og:title" content="JackalClient — {{ .Title }}">
+    <meta property="og:title" content="Jackal Client: {{ .Title }}">
     <meta property="og:description" content="JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。" data-i18n-attr="content:site.description">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ .Permalink }}">
@@ -19,12 +19,14 @@
     <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "SoftwareApplication" "name" "JackalClient" "applicationCategory" "UtilitiesApplication" "operatingSystem" "Windows" "description" "A configurable Windows toolbox with utility modules and a built-in command system." "url" .Permalink | jsonify | safeJS }}</script>
     {{ end }}
     <style>
+        @font-face { font-family: "Product Sans"; src: local("Product Sans Regular"), local("Product Sans"); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: "Product Sans"; src: local("Product Sans Bold"), local("ProductSans-Bold"); font-weight: 600 900; font-style: normal; font-display: swap; }
         @font-face { font-family: "Jackal Display"; src: url('{{ "fonts/jackalclient/BarlowCondensed-ExtraBold.ttf" | relURL }}') format("truetype"); font-style: normal; font-weight: 800 900; font-display: swap; }
         .jackal-site {
             --ak-surface-canvas: #090b0e; --ak-surface-panel: #11161c; --ak-surface-muted: #0d1116; --ak-surface-raised: #19212a;
             --ak-text-primary: #edf1f5; --ak-text-secondary: #a6b0bd; --ak-text-inverse: #101319;
             --ak-signal-info: #52cbe8; --ak-signal-action: #e6c65a; --ak-signal-accent: #8b5cf6; --ak-signal-success: #68c99b; --ak-signal-danger: #f07a7a;
-            --ak-font-sans: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; --ak-font-command: "Jackal Display", "Bahnschrift", "Arial Narrow", "Arial Black", var(--ak-font-sans);
+            --ak-font-sans: "Product Sans", "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; --ak-font-command: "Jackal Display", "Bahnschrift", "Arial Narrow", "Arial Black", var(--ak-font-sans);
             --ak-font-mono: "JetBrains Mono", Consolas, "SFMono-Regular", monospace;
             --primary-color: #8b5cf6; --font-mono: var(--ak-font-mono); --jc-gutter: clamp(1.25rem, 4vw, 4.5rem);
             --jc-line: #2b323b; --jc-nav-height: 88px; --jc-section-space: clamp(4rem, 8vw, 8rem);
@@ -48,8 +50,6 @@
         .jc-brand { display: flex; align-items: center; gap: var(--ak-space-3); font-family: var(--ak-font-command); font-weight: 800; font-size: 20px; line-height: 1.1; letter-spacing: -.05em; }
         .jc-brand-light { font-weight: 400; }
         .jc-brand small { display: block; color: var(--ak-text-secondary); font-family: var(--ak-font-mono); font-weight: 400; font-size: 9px; letter-spacing: .2em; margin-top: 6px; }
-        .jc-brand-mark { display: flex; align-items: center; justify-content: center; width: 35px; height: 42px; background: var(--ak-signal-action); color: var(--ak-text-inverse); font-size: 30px; font-weight: 900; clip-path: polygon(0 0, 100% 0, 100% 76%, 72% 100%, 0 100%); }
-        .jc-brand-mark span { font-size: 17px; margin-left: -7px; }
         .jc-header-actions, .jc-nav { display: flex; align-items: center; gap: var(--ak-space-6); }
         .jc-nav { gap: var(--ak-space-2); }
         .jc-nav a { display: flex; min-height: 44px; align-items: center; gap: var(--ak-space-2); padding: var(--ak-space-2) var(--ak-space-4); border-bottom: 2px solid transparent; font-size: 13px; transition: background var(--ak-motion-fast), border-color var(--ak-motion-fast); }
@@ -57,11 +57,6 @@
         .jc-nav a[aria-current] { border-color: var(--ak-signal-action); color: var(--ak-signal-action); }
         .jc-nav a:last-child { border: var(--ak-line-hairline) solid var(--jc-line); margin-left: var(--ak-space-3); }
         .jc-nav-code { color: var(--ak-text-secondary); font: 10px var(--ak-font-mono); }
-        .language-switcher { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; position: relative; width: 96px; height: 52px; border: var(--ak-line-hairline) solid var(--jc-line); flex: 0 0 auto; }
-        .language-switcher::before { content: ""; position: absolute; inset: 3px auto 3px 3px; width: calc(50% - 3px); background: var(--ak-surface-raised); border-bottom: 2px solid var(--ak-signal-action); transition: transform var(--ak-motion-base) var(--ak-ease-emphasized); }
-        .language-switcher.lang-en::before { transform: translateX(100%); }
-        .language-switcher button { z-index: 1; padding: 0; min-width: 44px; min-height: 44px; border: 0; color: var(--ak-text-secondary); background: transparent; font: 12px var(--ak-font-mono); }
-        .language-switcher button.active { color: var(--ak-text-primary); }
         .jc-control { min-height: 44px; padding: var(--ak-space-2) var(--ak-space-4); border: var(--ak-line-hairline) solid var(--jc-line); background: var(--ak-surface-panel); color: var(--ak-text-primary); display: inline-flex; align-items: center; justify-content: center; gap: var(--ak-space-3); font-size: 12px; transition: background var(--ak-motion-fast), border-color var(--ak-motion-fast); }
         .jc-control:hover { background: var(--ak-surface-raised); border-color: var(--ak-text-secondary); }
         .jc-menu-toggle { display: none; }
@@ -249,7 +244,7 @@
         .jc-symbol-client { --jc-symbol: url('/img/jackalclient/decor/client.png'); }
         .jc-symbol-docs { --jc-symbol: url('/img/jackalclient/decor/documentation.png'); }
         .jc-symbol-contact { --jc-symbol: url('/img/jackalclient/decor/conversation.png'); }
-        .jc-wipe { position: absolute; inset: -1px 0 auto; width: 100%; height: clamp(60px, 8vw, 120px); z-index: 1; pointer-events: none; }
+        .jc-wipe { position: absolute; inset: -1px 0 auto; width: 100%; height: clamp(280px, 56svh, 620px); z-index: 4; pointer-events: none; }
         .jc-scroll-progress { position: fixed; inset: 0 auto auto 0; height: 3px; width: 100%; background: var(--ak-signal-action); transform: scaleX(var(--jc-page-progress, 0)); transform-origin: left; z-index: 100; pointer-events: none; }
         .jc-motion .jc-hero-media { transform: none; }
         .jc-motion .jc-gallery-grid figure:first-child { translate: 0 calc(var(--jc-drift, 0px) * -.6); }
@@ -543,27 +538,211 @@
             .jc-intro-art img { animation: none; opacity: .3; }
         }
     </style>
+    <style>
+        .jc-brand .jc-brand-mark { flex: 0 0 auto; width: 42px; height: 42px; background: none; clip-path: none; }
+        .language-switcher { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 44px; padding: .5rem 0; flex: 0 0 auto; border: 0; background: transparent; color: var(--ak-signal-action); font: 15px var(--ak-font-sans); }
+        .jc-language-value { color: #959c9c; }
+        .language-switcher:hover { opacity: .85; }
+        .jc-nav a { font-family: var(--ak-font-command); font-size: 21px; font-weight: 800; letter-spacing: 0; }
+        .jc-motion .jc-intro { min-height: auto; }
+        .jc-motion .jc-intro-stage { position: relative; }
+        .jc-dropdown-showcase { display: none; }
+        .jc-motion .jc-desktop { height: 400svh; }
+        .jc-dropdown-tagline { display: none; }
+        .jc-motion .jc-dropdown-tagline { display: block; position: absolute; z-index: 4; top: 90%; left: var(--jc-gutter); right: var(--jc-gutter); margin: 0; color: #121414; text-align: center; font-size: clamp(18px, 2vw, 32px); opacity: var(--jc-tagline-opacity, 0); transform: translateY(var(--jc-tagline-y, 45px)); pointer-events: none; }
+        .jc-motion .jc-desktop-cheat { background: transparent; opacity: var(--jc-cheat-opacity, 0); transform: none; }
+        .jc-motion .jc-glass-plane { transform: scale(var(--jc-glass-scale, .92)); }
+        .jc-motion .jc-desktop-copy { position: absolute; left: var(--jc-gutter); right: var(--jc-gutter); top: max(62%, calc(8% + var(--jc-gui-tallest, 480px) + 20px)); max-width: none; }
+        .jc-motion .jc-desktop-copy p { margin-top: .6rem; font-size: clamp(18px, 2vw, 28px); line-height: 1.4; }
+        .jc-motion #desktopTitle { font-size: clamp(36px, 8.5svh, 96px); transform: scale(var(--jc-desktop-title-scale, .62)); transform-origin: center; }
+        .jc-motion .jc-desktop-backdrop { z-index: 1; top: 4%; }
+        .jc-motion .jc-dropdown-showcase { position: absolute; z-index: 3; top: 8%; left: var(--jc-gutter); width: calc(100% - var(--jc-gutter) * 2); display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: clamp(7px, .9vw, 18px); align-items: start; pointer-events: none; opacity: var(--jc-gui-opacity, 0); filter: blur(var(--jc-gui-blur, 0px)); transform: translateX(var(--jc-gui-pan, 0px)) scale(var(--jc-gui-scale, 1)); transform-origin: center 40%; }
+        .jc-dropdown-column { min-width: 0; padding: 1rem .7rem; border: 1px solid #ffffff13; border-radius: 3px; background: #090b10f5; box-shadow: 0 18px 45px #0006, 0 5px 12px #0005; color: #858b98; transform: translateY(var(--jc-column-y, -120svh)); }
+        .jc-dropdown-column h3 { margin: 0 0 1rem; padding-inline: .2rem; font: 800 clamp(18px, 1.8vw, 30px)/1.2 var(--ak-font-command); color: #eff4fa; }
+        .jc-dropdown-column ul { list-style: none; padding: 0; margin: 0; }
+        .jc-dropdown-column li { position: relative; padding: clamp(2px, .4svh, 4px) .2rem; font: clamp(10px, 1.2svh, 12px)/1.7 var(--ak-font-sans); white-space: nowrap; }
+        .jc-dropdown-column .is-enabled { animation: jc-module-rainbow 8s linear infinite; animation-delay: var(--jc-module-phase); animation-play-state: paused; }
+        .jc-dropdown-column .is-enabled::before { content: ""; position: absolute; inset: 0 -.3rem; background: currentColor; opacity: .065; }
+        .is-dropdown .jc-dropdown-column .is-enabled { animation-play-state: running; }
+        .jc-showcase-paused .jc-dropdown-column .is-enabled { animation-play-state: paused; }
+        @keyframes jc-module-rainbow { 0%,100% { color: #ff7fa6; } 17% { color: #ffd37d; } 33% { color: #a9ed8f; } 50% { color: #7ce3ed; } 67% { color: #8daaff; } 83% { color: #d29aff; } }
+        .jc-motion .jc-desktop .jc-modules-image { top: -10%; height: 120%; transform: translateY(var(--jc-modules-image-y, 0px)); }
+        .jc-motion .jc-modules-copy { transform: translateY(calc(var(--jc-modules-y, 35px) + var(--jc-modules-parallax, 0px))); }
+        .jc-video { padding: 0; min-height: 0; }
+        .jc-video::after { content: none; }
+        .jc-video-stage { position: relative; isolation: isolate; min-height: 100svh; padding: clamp(3rem, 6svh, 6rem) max(var(--jc-gutter), calc((100% - 1480px) / 2)); overflow: clip; }
+        .jc-video-stage::after { content: ""; position: absolute; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(#090d1260, #090d1238 55%, #090d12b8); mask-image: linear-gradient(#000 65%, transparent); }
+        .jc-video-stage > :not(.jc-video-background) { position: relative; z-index: 2; }
+        .jc-video .jc-video-background { top: -4%; left: -4%; width: 108%; height: 108%; opacity: var(--jc-film-opacity, .65); filter: blur(var(--jc-film-blur, 0px)); mask-image: linear-gradient(#000 0%, #000 52%, transparent 100%); }
+        .jc-video h2 { font-size: clamp(58px, 7vw, 112px); margin-bottom: clamp(1.5rem, 4svh, 3rem); }
+        .jc-video-layout { --jc-rail-width: clamp(160px, 17vw, 235px); --jc-rail-gap: clamp(14px, 2.3vw, 36px); display: grid; grid-template-columns: minmax(0, 1fr) var(--jc-rail-width); align-items: center; gap: var(--jc-rail-gap); width: min(1480px, 100%); margin-inline: auto; }
+        .jc-video-main { min-width: 0; transition: transform 1.25s cubic-bezier(.22, 1, .36, 1); }
+        .jc-video-enhanced:not(.is-video-list-visible) .jc-video-main { transform: translateX(calc((var(--jc-rail-width) + var(--jc-rail-gap)) / 2)); transition: none; }
+        .jc-video-fallback { opacity: var(--jc-video-helper-opacity, 1); }
+        .jc-video-player { width: 100%; margin: 0; }
+        .jc-video-options { --jc-rail-lift: 0px; --jc-more-height: 58px; --jc-cover-gap: 10px; position: relative; height: min(60svh, 610px); min-width: 0; }
+        .jc-video-stack { display: flex; flex-direction: column; gap: var(--jc-cover-gap); height: 100%; transform: translateY(calc(-1 * var(--jc-rail-lift))); transition: transform 1.2s cubic-bezier(.22, 1, .36, 1); }
+        .jc-video-subscribe { position: absolute; bottom: 100%; left: 50%; width: max-content; max-width: min(260px, 80vw); margin: 0 0 1rem; color: #fff; text-align: center; font-size: 16px; line-height: 1.3; opacity: 0; transform: translate(-50%, calc(-1 * var(--jc-rail-lift))); transition: opacity .5s ease, transform 1.2s cubic-bezier(.22, 1, .36, 1); pointer-events: none; }
+        .is-video-rail-near .jc-video-subscribe { opacity: var(--jc-video-helper-opacity, 1); }
+        .jc-video-more { position: absolute; top: calc(100% + var(--jc-cover-gap)); left: 0; width: 100%; height: var(--jc-more-height); display: grid; place-items: center; border: 2px solid #000; background: transparent; color: #fff; transform: translateY(calc(-1 * var(--jc-rail-lift))); transition: opacity .5s ease, transform 1.2s cubic-bezier(.22, 1, .36, 1), visibility .5s; }
+        .jc-video-enhanced .jc-video-more { opacity: 0; visibility: hidden; pointer-events: none; }
+        .is-video-more-visible .jc-video-options { --jc-rail-lift: calc(var(--jc-more-height) + var(--jc-cover-gap)); }
+        .is-video-more-visible .jc-video-more { opacity: var(--jc-more-exit-opacity, 1); visibility: visible; pointer-events: auto; }
+        .jc-video-more-dots { display: flex; flex-direction: column; gap: 5px; transition: opacity .3s ease; }
+        .jc-video-more-dots i { width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+        .jc-video-more-label { position: absolute; inset: 0; display: grid; place-items: center; padding: 5px; color: #fff; text-align: center; font-size: 16px; opacity: 0; transition: opacity .3s ease; }
+        .jc-video-more:is(:hover, :focus-visible) .jc-video-more-dots { opacity: 0; }
+        .jc-video-more:is(:hover, :focus-visible) .jc-video-more-label { opacity: 1; }
+        .jc-video-more:focus-visible { outline: 2px solid #e6c36b; outline-offset: 4px; }
+        .jc-video-option-slot { flex: 1; min-height: 0; opacity: var(--jc-cover-opacity, 1); transform: translateX(var(--jc-cover-exit-x, 0px)); }
+        .jc-video-option { position: relative; display: block; width: 100%; height: 100%; border: 2px solid #ffffff26; background: #11161c; overflow: hidden; transform: none; transition: border-color .2s; }
+        .jc-video-option[aria-current="true"] { border-color: #e6c36b; box-shadow: 0 0 0 1px #e6c36b33; }
+        .jc-video-option img { width: 100%; height: 100%; object-fit: cover; filter: blur(var(--jc-cover-blur, 6px)); transform: scale(var(--jc-cover-scale, 1)); transition: filter .18s ease-out, transform .25s cubic-bezier(.2,.9,.25,1.3); }
+        .jc-video-option:is(:hover, :focus-visible) img { filter: blur(0); transform: scale(1.035); }
+        .jc-video-option-caption { position: absolute; inset: auto 0 0; display: flex; align-items: center; gap: .5rem; padding: .45rem .65rem; background: linear-gradient(transparent, #000d); color: #fff; font-size: 11px; pointer-events: none; }
+        .jc-video-number { font: 800 26px/1 var(--ak-font-command); }
+        .jc-video-current { display: none; margin-left: auto; color: #e6c36b; font-size: 10px; }
+        .jc-video-option[aria-current="true"] .jc-video-current { display: inline; }
+        .jc-video-hint { min-height: 1.5em; margin: -1rem 0 1.5rem; color: #b6bbc380; font-size: 15px; opacity: 0; transition: opacity .65s ease; }
+        .is-video-hint-visible .jc-video-hint { opacity: var(--jc-video-helper-opacity, 1); }
+        .jc-video:not(.jc-video-enhanced) .jc-video-hint { display: none; }
+        .jc-video-enhanced .jc-video-options { visibility: hidden; }
+        .jc-video-enhanced.is-video-list-visible .jc-video-options { visibility: visible; }
+        .jc-motion .jc-video { height: 190svh; }
+        .jc-motion .jc-video-stage { position: sticky; top: 0; }
+        @media (max-width: 1180px) {
+            .jc-header-actions { gap: 1.25rem; }
+            .jc-nav a { padding-inline: .6rem; }
+            .jc-dropdown-column { padding-inline: .4rem; }
+            .jc-dropdown-column li { font-size: clamp(10px, 1.2svh, 11px); }
+        }
+        @media (max-width: 900px) {
+            .jc-motion .jc-dropdown-showcase { width: 1160px; }
+            .jc-dropdown-column li { font-size: clamp(10px, 1.42svh, 12px); }
+            .jc-video-layout { --jc-rail-width: 150px; --jc-rail-gap: 16px; }
+            .jc-video-current { display: none !important; }
+        }
+        @media (max-width: 600px) {
+            .jc-brand .jc-brand-mark { width: 32px; height: 32px; }
+            .jc-brand { font-size: 15px; }
+            .jc-header-actions { gap: 12px; }
+            .language-switcher { flex-direction: column; align-items: start; gap: 0; font-size: 12px; line-height: 1.45; }
+            .jc-menu-toggle { order: 2; }
+            .jc-header { flex-wrap: nowrap; padding-inline: 16px; }
+            .jc-motion .jc-desktop { height: 420svh; }
+            .jc-motion .jc-dropdown-showcase { top: 10%; left: 24px; width: 1160px; }
+            .jc-dropdown-column { padding-block: 1rem; }
+            .jc-motion .jc-desktop-copy { top: max(70%, calc(10% + var(--jc-gui-tallest, 480px) + 16px)); }
+            .jc-motion #desktopTitle { font-size: clamp(28px, 9vw, 54px); white-space: nowrap; }
+            .jc-motion .jc-desktop-copy p { font-size: 16px; }
+            .jc-video-stage { padding: 4rem 20px; }
+            .jc-video h2 { font-size: clamp(48px, 14vw, 76px); }
+            .jc-video-layout { --jc-rail-width: 78px; --jc-rail-gap: 10px; padding-top: 48px; }
+            .jc-video-options { --jc-cover-gap: 8px; --jc-more-height: 52px; height: min(47svh, 350px); }
+            .jc-video-subscribe { left: auto; right: 0; font-size: 13px; transform: translateY(calc(-1 * var(--jc-rail-lift))); }
+            .jc-video-more-label { font-size: 12px; }
+            .jc-video-option-caption { padding: .25rem; gap: 0; }
+            .jc-video-option-caption > :not(.jc-video-number) { display: none; }
+            .jc-video-number { font-size: 22px; }
+            .jc-video-fallback .jc-text-link { font-size: 11px; padding: 0; }
+            .jc-video-hint { font-size: 11px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .jc-motion .jc-dropdown-showcase { display: none; }
+            .jc-video .jc-video-background { filter: none; opacity: .65; }
+            .jc-video-option-slot { transform: none; opacity: 1; }
+            .jc-video-main, .jc-video-stack, .jc-video-subscribe, .jc-video-more, .jc-video-hint { transition: none; }
+        }
+    </style>
+
+    <style>
+        .jc-dropdown-tagline { display: block; padding: 3rem var(--jc-gutter); margin: 0; background: var(--jc-paper); color: var(--jc-ink); text-align: center; font-size: clamp(40px, 5.8vw, 100px); }
+        .jc-motion .jc-desktop-cheat { display: contents; opacity: 1; isolation: auto; }
+        .jc-motion .jc-glass-plane { z-index: 0; opacity: var(--jc-glass-opacity, 0); }
+        .jc-motion .jc-motion-toggle { opacity: var(--jc-glass-opacity, 0); }
+        .jc-motion .jc-modules-panel { background: rgb(9 12 16 / var(--jc-modules-darkness, 0)); }
+        .jc-motion .jc-desktop-copy { z-index: 4; top: 50%; opacity: var(--jc-desktop-copy-opacity, 0); transform: translateY(-50%) scale(var(--jc-desktop-copy-scale, .86)); transform-origin: center; }
+        .jc-motion #desktopTitle { font-size: clamp(64px, 7.5vw, 130px); white-space: normal; transform: none; }
+        .jc-motion .jc-desktop-copy p { margin-top: 1.25rem; font-size: clamp(20px, 2.2vw, 34px); }
+        .jc-motion .jc-dropdown-tagline { top: max(64%, calc(8% + var(--jc-gui-tallest, 480px) + 24px)); padding: 0; background: transparent; font-size: clamp(42px, 5.8vw, 100px); line-height: .98; transform: none; }
+        .jc-motion .jc-modules-image, .jc-motion .jc-modules-vignette { opacity: 0; transition: none; }
+        .jc-motion .is-modules .jc-modules-image, .jc-motion .is-modules .jc-modules-vignette { opacity: 1; transition: opacity 2s cubic-bezier(.22, 1, .36, 1); }
+        .jc-modules-visual { position: absolute; inset: 0; overflow: clip; }
+        .jc-motion .jc-modules-visual { opacity: var(--jc-modules-image-fade, 1); }
+        .jc-text-line { display: block; transform-origin: left center; }
+        .jc-modules-bokeh { display: none; }
+        .jc-motion .jc-modules-bokeh { display: block; position: absolute; inset: 0; z-index: 3; opacity: var(--jc-bokeh-opacity, 0); pointer-events: none; }
+        .jc-modules-bokeh span { position: absolute; width: 42vmin; height: 42vmin; left: 16%; top: 22%; border-radius: 50%; background: radial-gradient(circle, #fcf7d1a0, #fff4 45%, transparent 72%); filter: blur(24px); transform: scale(var(--jc-bokeh-scale, 0)); }
+        .jc-modules-bokeh span:nth-child(2) { left: 40%; top: 31%; width: 28vmin; height: 28vmin; background: radial-gradient(circle, #bfdcffa0, #d2ebff33 46%, transparent 72%); }
+        .jc-modules-bokeh span:nth-child(3) { left: 31%; top: 8%; width: 18vmin; height: 18vmin; }
+        .jc-custom-sequence { position: relative; width: 100%; aspect-ratio: 1550 / 1047; border-radius: 12px; overflow: clip; isolation: isolate; }
+        .jc-custom-frames, .jc-custom-shutters { position: absolute; inset: 0; }
+        .jc-custom-sequence .jc-custom-frame, .jc-custom-sequence .jc-custom-slice { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+        .jc-custom-frame:not(:first-child), .jc-custom-shutters, .jc-custom-scan-line, .jc-custom-flash { display: none; }
+        .jc-sequence-enhanced .jc-custom-frame:not(:first-child) { display: block; clip-path: inset(0 0 0 100%); }
+        .is-custom-shutters .jc-custom-frames { visibility: hidden; }
+        .is-custom-shutters .jc-custom-shutters { display: block; }
+        .jc-custom-slice { clip-path: inset(0 calc((4 - var(--jc-slice)) * 20%) 0 calc(var(--jc-slice) * 20%)); }
+        .jc-motion .jc-custom { min-height: 360svh; }
+        .jc-motion .jc-custom-stage { position: sticky; top: 0; height: 100svh; min-height: 0; padding-block: clamp(3rem, 8svh, 6rem); overflow: clip; }
+        .jc-motion .jc-custom-media { transform: scale(var(--jc-custom-scale, .82)); opacity: var(--jc-custom-opacity, 0); transform-origin: center; }
+        .jc-custom-media .jc-media-link { overflow: visible; background: transparent; box-shadow: none; }
+        .jc-motion .jc-custom-sequence { clip-path: polygon(0 0, var(--jc-sequence-exit, 100%) 0, var(--jc-sequence-exit, 100%) 100%, 0 100%); }
+        .jc-sequence-enhanced .jc-custom-scan-line { display: block; position: absolute; z-index: 3; top: -2%; height: 104%; left: var(--jc-scan-position, 106%); width: 2px; background: #d9b65f; box-shadow: 0 0 12px #d9b65f60; transform: skewX(4.2deg); transform-origin: center; opacity: var(--jc-scan-visible, 0); pointer-events: none; }
+        .jc-sequence-enhanced .jc-custom-flash { display: block; position: absolute; z-index: 4; inset: 0; background: #fff; opacity: var(--jc-sequence-flash, 0); pointer-events: none; }
+        .jc-download-open { overflow: hidden; }
+        .jc-download-dialog { position: fixed; inset: 50% auto auto 50%; transform: translate(-50%, -50%); width: min(780px, calc(100vw - 32px)); max-width: none; max-height: calc(100svh - 48px); margin: 0; padding: clamp(2rem, 6vw, 4.5rem); border: 0; background: #fff; color: #121414; overflow: auto; clip-path: polygon(0 0, calc(100% - 96px) 0, calc(100% - 120px) 24px, 100% 24px, 100% 100%, 0 100%); }
+        .jc-download-dialog::backdrop { background: #05080bc4; backdrop-filter: blur(10px); }
+        .jc-download-dialog > :not(.jc-download-symbol) { position: relative; z-index: 1; }
+        .jc-download-dialog .jc-display { padding-right: 1.5rem; font-size: clamp(48px, 6vw, 80px); color: #121414; }
+        .jc-download-dialog #domesticDescription { margin-top: 1.5rem; color: #121414; font-size: 17px; line-height: 1.7; }
+        .jc-download-dialog .jc-download-close { position: absolute; z-index: 3; right: 16px; top: 32px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer; }
+        .jc-download-close span::before, .jc-download-close span::after { content: ''; position: absolute; width: 24px; height: 3px; top: 21px; left: 10px; background: #e5bc22; transform: rotate(45deg); }
+        .jc-download-close span::after { transform: rotate(-45deg); }
+        .jc-download-dialog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2.5rem; }
+        .jc-download-dialog .jc-button-primary { background: #ffe135; border-color: #ffe135; color: #121414; }
+        .jc-download-dialog .jc-download-direct { background: #121414; border-color: #121414; color: #fff; }
+        .jc-download-symbol { position: absolute; right: 16px; bottom: 16px; width: 200px; aspect-ratio: 1; background: #121414; opacity: .065; mask: url('/img/jackalclient/decor/inventory.png') center / contain no-repeat; pointer-events: none; }
+        .jc-download-status { min-height: 1.5em; margin-top: 1rem; color: #784422; font-size: 14px; line-height: 1.6; }
+        .jc-download-dialog :focus-visible { outline: 2px solid #b3921c; outline-offset: 5px; }
+        @media (max-width: 900px) {
+            .jc-motion .jc-custom-stage { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 20px; padding: 80px 24px 32px; }
+            .jc-custom-copy { max-width: 660px; }
+            .jc-custom h2 { font-size: clamp(40px, 9vw, 66px); }
+            .jc-custom-copy p { font-size: 14px; line-height: 1.6; margin-top: .9rem; }
+            .jc-custom-copy .jc-custom-lead { font-size: 20px; line-height: 1.4; }
+            .jc-custom-media { width: min(100%, 560px); margin: 0 auto; align-self: center; }
+        }
+        @media (max-width: 600px) {
+            .jc-motion #desktopTitle { font-size: clamp(40px, 11vw, 70px); }
+            .jc-motion .jc-desktop-copy p { font-size: 20px; }
+            .jc-motion .jc-dropdown-tagline { top: max(64%, calc(10% + var(--jc-gui-tallest, 480px) + 16px)); font-size: clamp(28px, 8.4vw, 44px); }
+            .jc-download-dialog { padding: 4.5rem 24px 24px; }
+            .jc-download-dialog-actions { flex-direction: column; }
+            .jc-download-symbol { width: 150px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .jc-custom-scan-line, .jc-custom-flash, .jc-modules-bokeh { display: none !important; }
+        }
+    </style>
 </head>
 <body class="jackal-site" data-ak-ui data-ak-intensity="terminal" data-path="{{ .RelPermalink }}">
     <div class="jc-scroll-progress" aria-hidden="true"></div>
     <a class="jc-skip" href="#main" data-i18n="site.skip">跳到主要内容</a>
     <header class="jc-header">
         <a class="jc-brand" href="{{ "jackalclient/" | relURL }}" aria-label="JackalClient">
-            <span class="jc-brand-mark" aria-hidden="true">J<span>／</span></span>
+            <img class="jc-brand-mark" src="{{ "img/jackalclient/favicon.svg" | relURL }}" width="42" height="42" alt="" aria-hidden="true">
             <span>JACKAL<span class="jc-brand-light">CLIENT</span><small>WINDOWS UTILITY</small></span>
         </a>
         <div class="jc-header-actions">
-            <div class="language-switcher" role="group" aria-label="选择语言 / Language">
-                <button type="button" data-lang-switch="zh" aria-pressed="true" aria-label="切换到中文">中</button>
-                <button type="button" data-lang-switch="en" aria-pressed="false" aria-label="Switch to English">EN</button>
-            </div>
             <button class="jc-menu-toggle jc-control" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNavigation" data-i18n="nav.menu" hidden>菜单</button>
             <nav class="jc-nav" id="siteNavigation" aria-label="主要导航" data-i18n-attr="aria-label:nav.label">
                 {{ $current := .RelPermalink }}
-                {{ range slice (dict "url" "jackalclient/" "key" "nav.home" "label" "概览" "code" "01") (dict "url" "jackalclient/docs/" "key" "nav.docs" "label" "文档" "code" "02") (dict "url" "jackalclient/contact/" "key" "nav.contact" "label" "联系" "code" "03") (dict "url" "jackalclient/download/" "key" "nav.download" "label" "获取客户端" "code" "04") }}
+                {{ range slice (dict "url" "jackalclient/" "key" "nav.home" "label" "首页" "code" "01") (dict "url" "jackalclient/docs/" "key" "nav.docs" "label" "文档" "code" "02") (dict "url" "jackalclient/contact/" "key" "nav.contact" "label" "联系" "code" "03") (dict "url" "jackalclient/download/" "key" "nav.download" "label" "获取客户端" "code" "04") }}
                 <a href="{{ .url | relURL }}"{{ if eq $current (.url | relURL) }} aria-current="page"{{ end }}><span class="jc-nav-code" aria-hidden="true">{{ .code }}</span><span data-i18n="{{ .key }}">{{ .label }}</span>{{ if eq .key "nav.download" }}<span aria-hidden="true">↗</span>{{ end }}</a>
                 {{ end }}
             </nav>
+            <button class="language-switcher" id="languageToggle" type="button" data-i18n-attr="aria-label:nav.switchLanguage" hidden><span data-i18n="nav.language">语言</span><span class="jc-language-value" data-i18n="nav.currentLanguage">中文</span></button>
         </div>
     </header>
 
@@ -579,11 +758,42 @@
         <div class="jc-preview-bar"><span id="previewCaption"></span><button class="jc-control" id="previewClose" type="button" autofocus><span data-i18n="preview.close">关闭</span><span aria-hidden="true">×</span></button></div>
         <img id="previewImage" alt="">
     </dialog>
+    {{ if eq .RelPermalink ("jackalclient/download/" | relURL) }}
+    <dialog class="jc-download-dialog" id="domesticDialog" aria-labelledby="domesticTitle" aria-describedby="domesticDescription">
+        <button class="jc-download-close" id="domesticClose" type="button" aria-label="关闭弹窗" data-i18n-attr="aria-label:preview.close"><span aria-hidden="true"></span></button>
+        <span class="jc-download-symbol" aria-hidden="true"></span>
+        <h2 class="jc-display" id="domesticTitle" data-i18n="download.dialogTitle">还差一步</h2>
+        <p id="domesticDescription" data-i18n="download.dialogDescription">国内网盘受到密码保护。</p>
+        <div class="jc-download-dialog-actions"><button class="jc-button jc-button-primary" id="domesticCopy" type="button" autofocus data-i18n="download.copyAndGo">复制密码并前往下载</button><a class="jc-button jc-download-direct" id="domesticDirect" href="https://wormwake.lanzout.com/b00mq8dxcb" target="_blank" rel="noopener noreferrer" data-i18n="download.go">前往下载</a></div>
+        <p class="jc-download-status" id="domesticStatus" role="status" aria-live="polite"></p>
+    </dialog>
+    {{ end }}
     <script>
         const JACKAL_I18N = {
             zh: {
+                "nav.language": "语言",
+                "nav.currentLanguage": "中文",
+                "nav.switchLanguage": "切换到 English",
+                "home.desktopExperience": "独一无二的黑客体验。",
+                "image.customSequence": "Neverlose GUI：五种可定制界面风格",
+                "contact.join": "点击加群",
+                "download.dialogTitle": "还差一步",
+                "download.dialogDescription": "国内网盘受到密码保护。",
+                "download.copyAndGo": "复制密码并前往下载",
+                "download.go": "前往下载",
+                "download.copyFailure": "自动复制失败，请手动复制密码 d1lu，然后点击「前往下载」。",
+                "home.videoChoose": "选择视频",
+                "home.videoHint": "停留片刻，发现更多影片。",
+                "home.videoSubscribe": "订阅我们的频道！",
+                "home.videoMore": "发现更多...",
+                "home.nowShowing": "正在观看",
+                "home.video1": "第 1 部视频",
+                "home.video2": "第 2 部视频",
+                "home.video3": "第 3 部视频",
+                "home.video4": "第 4 部视频",
+                "home.video5": "第 5 部视频",
                 'site.description': 'JackalClient，一个拥有多种界面风格、模块与命令系统的 Windows 工具箱。',
-                'site.skip': '跳到主要内容', 'nav.home': '概览', 'nav.docs': '文档', 'nav.contact': '联系', 'nav.download': '获取客户端', 'nav.menu': '菜单', 'nav.label': '主要导航',
+                'site.skip': '跳到主要内容', 'nav.home': '首页', 'nav.docs': '文档', 'nav.contact': '联系', 'nav.download': '获取客户端', 'nav.menu': '菜单', 'nav.label': '主要导航',
                 'page.home': '概览', 'page.docs': '文档', 'page.contact': '联系', 'page.download': '下载',
                 'footer.note': '你的桌面，你的规则。', 'footer.rights': '保留所有权利。',
                 'preview.label': '界面截图预览', 'preview.close': '关闭', 'preview.open': '点击查看原图 ↗', 'preview.error': '原图加载失败。你可以关闭预览后重试。',
@@ -645,8 +855,29 @@
                 'contact.docsTitle': '有些答案，已经在文档里。', 'contact.docsDescription': '运行指南、常见问题和功能说明，都从这里开始。'
             },
             en: {
+                "nav.language": "Language",
+                "nav.currentLanguage": "English",
+                "nav.switchLanguage": "Switch to 中文",
+                "home.desktopExperience": "A Unique Hacking Experience.",
+                "image.customSequence": "Neverlose GUI: five customizable interface styles",
+                "contact.join": "Join the group",
+                "download.dialogTitle": "One more step.",
+                "download.dialogDescription": "The China mirror is password-protected.",
+                "download.copyAndGo": "Copy password & download",
+                "download.go": "Continue to download",
+                "download.copyFailure": "Automatic copying failed. Copy d1lu manually, then choose Continue to download.",
+                "home.videoChoose": "Choose a film",
+                "home.videoHint": "Stay a moment. Discover more films.",
+                "home.videoSubscribe": "Subscribe to our channel!",
+                "home.videoMore": "Find out more...",
+                "home.nowShowing": "Now showing",
+                "home.video1": "Film 01",
+                "home.video2": "Film 02",
+                "home.video3": "Film 03",
+                "home.video4": "Film 04",
+                "home.video5": "Film 05",
                 'site.description': 'JackalClient is a Windows toolbox with configurable interfaces, utility modules, and a built-in command system.',
-                'site.skip': 'Skip to content', 'nav.home': 'Overview', 'nav.docs': 'Docs', 'nav.contact': 'Contact', 'nav.download': 'Get JackalClient', 'nav.menu': 'Menu', 'nav.label': 'Main navigation',
+                'site.skip': 'Skip to content', 'nav.home': 'Home', 'nav.docs': 'Docs', 'nav.contact': 'Contact', 'nav.download': 'Get JackalClient', 'nav.menu': 'Menu', 'nav.label': 'Main navigation',
                 'page.home': 'Overview', 'page.docs': 'Documentation', 'page.contact': 'Contact', 'page.download': 'Download',
                 'footer.note': 'Your desktop. Your rules.', 'footer.rights': 'All rights reserved.',
                 'preview.label': 'Interface screenshot preview', 'preview.close': 'Close', 'preview.open': 'View full image ↗', 'preview.error': 'The full image could not load. Close the preview and try again.',
@@ -738,14 +969,9 @@
                     element.setAttribute(mapping.slice(0, separator), jackalText(mapping.slice(separator + 1)));
                 });
             });
-            document.querySelectorAll('[data-lang-switch]').forEach(button => {
-                const selected = button.dataset.langSwitch === jackalLang;
-                button.classList.toggle('active', selected);
-                button.setAttribute('aria-pressed', String(selected));
-            });
             document.querySelector('.language-switcher').classList.toggle('lang-en', jackalLang === 'en');
             const pageName = document.body.dataset.path.replace(/\/$/, '').split('/').pop();
-            const title = `JackalClient — ${jackalText('page.' + (pageName === 'jackalclient' ? 'home' : pageName))}`;
+            const title = `Jackal Client: ${jackalText('page.' + (pageName === 'jackalclient' ? 'home' : pageName))}`;
             document.title = title;
             document.querySelector('meta[property="og:title"]').content = title;
             if (previewDialog.open && previewTrigger) {
@@ -763,7 +989,9 @@
         document.documentElement.classList.add('jc-js');
         menuToggle.hidden = false;
         menuToggle.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'));
-        document.querySelectorAll('[data-lang-switch]').forEach(button => button.addEventListener('click', () => setJackalLang(button.dataset.langSwitch)));
+        const languageToggle = document.getElementById('languageToggle');
+        languageToggle.hidden = false;
+        languageToggle.addEventListener('click', () => setJackalLang(jackalLang === 'en' ? 'zh' : 'en'));
         document.addEventListener('click', event => {
             if (!siteNavigation.contains(event.target) && !menuToggle.contains(event.target)) setMenuOpen(false);
         });
@@ -772,18 +1000,6 @@
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape' && !previewDialog.open && menuToggle.getAttribute('aria-expanded') === 'true') setMenuOpen(false, true);
         });
-        const copyButton = document.getElementById('copyQQ');
-        if (copyButton) {
-            copyButton.hidden = false;
-            copyButton.addEventListener('click', async () => {
-                const status = document.getElementById('copyStatus');
-                try {
-                    await navigator.clipboard.writeText('196218959');
-                    status.dataset.i18n = 'contact.copied';
-                } catch { status.dataset.i18n = 'contact.copyFailed'; }
-                status.textContent = jackalText(status.dataset.i18n);
-            });
-        }
         document.querySelectorAll('[data-preview]').forEach(link => {
             link.addEventListener('click', event => {
                 if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || typeof previewDialog.showModal !== 'function') return;
@@ -807,6 +1023,9 @@
         setJackalLang(getInitialJackalLang(), false);
     </script>
     {{ if eq .RelPermalink ("jackalclient/" | relURL) }}<script defer src="{{ "js/jackalclient-glass.js" | relURL }}"></script>{{ end }}
+    {{ if eq .RelPermalink ("jackalclient/" | relURL) }}<script defer src="{{ "js/jackalclient-video.js" | relURL }}"></script>{{ end }}
+    {{ if eq .RelPermalink ("jackalclient/" | relURL) }}<script defer src="{{ "js/jackalclient-sequence.js" | relURL }}"></script>{{ end }}
+    {{ if eq .RelPermalink ("jackalclient/download/" | relURL) }}<script defer src="{{ "js/jackalclient-download.js" | relURL }}"></script>{{ end }}
     <script defer src="{{ "js/jackalclient-motion.js" | relURL }}"></script>
 </body>
 </html>

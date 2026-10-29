@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#e6c65a" d="M0 0h64v46L46 64H0z"/><path fill="#101319" d="M34 12h9v28c0 11-6 16-16 16-6 0-11-2-14-6l6-7c2 2 4 4 7 4 5 0 8-2 8-8z"/><path stroke="#101319" stroke-width="3" d="m47 14-23 37"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="wolf-blue" x1="9" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#153e85"/>
+      <stop offset=".5" stop-color="#398bd3"/>
+      <stop offset="1" stop-color="#9adeff"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#wolf-blue)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m9 7 17 12h12L55 7l-3 24 4 9-14 12-10 7-10-7L8 40l4-9L9 7Z"/>
+    <path d="m10 9 10 23-9 8 14 4 7 15 7-15 14-4-9-8L54 9M20 32l6-13M44 32l-6-13"/>
+    <path d="m16 28 11 8-8-1m29-7-11 8 8-1M27 36l-2 8 7 5 7-5-2-8m-8 6h6l-3 4-3-4Z"/>
+  </g>
+</svg>

@@ -9,7 +9,7 @@
     { "name": "MemeTrigger", "enabled": true },
     { "name": "WindowTags", "enabled": true },
     { "name": "BiliFans Title", "enabled": true },
-    { "name": "GUIBlur Blur", "enabled": true },
+    { "name": "GUI Blur", "enabled": true },
     { "name": "SessionHUD", "enabled": true },
     { "name": "TargetHUD", "enabled": true },
     { "name": "AutoSpeak", "enabled": true },
